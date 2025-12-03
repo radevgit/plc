@@ -1,0 +1,14 @@
+[package]
+name = "iecst"
+version = "0.1.0"
+edition = "2021"
+description = "IEC 61131-3 Structured Text parser"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/radevgit/plc"
+keywords = ["plc", "iec61131", "structured-text", "parser", "automation"]
+categories = ["parsing", "development-tools"]
+
+[dependencies]
+winnow = "0.7"
+
+[dev-dependencies]

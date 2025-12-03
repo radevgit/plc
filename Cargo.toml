@@ -1,0 +1,35 @@
+[workspace]
+resolver = "2"
+members = [
+    "l5x",
+    "iecst",
+    "plceye",
+]
+
+[profile.dev]
+# Faster debug builds
+opt-level = 0
+
+[profile.test]
+# Faster test builds - minimal optimization for speed
+opt-level = 0
+
+[profile.release]
+# Fast release builds - no LTO, lower opt-level for faster compilation
+lto = false
+codegen-units = 16
+panic = "abort"
+opt-level = 2  # opt-level 2 is much faster than 3, still good performance
+# for samply
+#debug = 1
+
+# Optimized release profile for production (use with --profile release-lto)
+[profile.release-lto]
+inherits = "release"
+lto = "thin"
+codegen-units = 1
+opt-level = 3
+
+# Test builds in release mode should also be fast
+[profile.bench]
+inherits = "release"
