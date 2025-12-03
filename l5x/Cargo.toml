@@ -2,11 +2,19 @@
 name = "l5x"
 version = "0.3.0"
 edition = "2021"
-description = "Tools for parsing and analyzing PLC software"
+description = "Parser for Rockwell Automation L5X files (Studio 5000 Logix Designer)"
 license = "MIT"
+repository = "https://github.com/radevgit/plc"
+homepage = "https://github.com/radevgit/plc"
+documentation = "https://docs.rs/l5x"
+readme = "README.md"
+keywords = ["plc", "l5x", "rockwell", "allen-bradley", "ladder-logic"]
+categories = ["parsing", "development-tools"]
+authors = ["radevgit"]
+rust-version = "1.70"
 
 [dependencies]
 quick-xml = { version = "0.37", features = ["serialize", "overlapped-lists"] }
 serde = { version = "1.0", features = ["derive"] }
 winnow = "0.6"
-iecst = { path = "../iecst" }
+iecst = "0.1"
