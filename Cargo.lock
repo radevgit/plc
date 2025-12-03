@@ -165,6 +165,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "l5x"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0c5e7bdbdf0361c05147df04c8ed5a10f3160d0d4004e5652600a8071b2110ae"
+dependencies = [
+ "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "quick-xml",
+ "serde",
+ "winnow 0.6.26",
+]
+
+[[package]]
 name = "memchr"
 version = "2.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -181,8 +193,8 @@ name = "plceye"
 version = "0.1.0"
 dependencies = [
  "clap",
- "iecst 0.1.0",
- "l5x",
+ "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "l5x 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-xml",
  "serde",
  "serde_json",
