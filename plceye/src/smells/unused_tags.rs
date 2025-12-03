@@ -4,8 +4,9 @@
 
 use std::collections::HashSet;
 
-use l5x::analysis::ProjectAnalysis;
 use l5x::Controller;
+
+use crate::analysis::ProjectAnalysis;
 
 use crate::config::UnusedTagsConfig;
 use crate::report::{Report, Severity, Smell, SmellKind};

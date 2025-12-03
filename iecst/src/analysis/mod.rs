@@ -3,18 +3,16 @@
 //! This module provides:
 //! - Symbol table management
 //! - Type checking and inference
-//! - Code smell detection
+//! - Diagnostics reporting
 //! - Unused variable detection
 
 mod symbol_table;
 mod type_check;
 mod diagnostics;
-mod code_smells;
 
 pub use symbol_table::{Symbol, SymbolKind, SymbolTable, Scope};
 pub use type_check::{TypeChecker, Type, TypeInfo};
 pub use diagnostics::{Diagnostic, DiagnosticKind, Severity};
-pub use code_smells::{CodeSmellDetector, CodeSmell, SmellKind};
 
 use crate::ast::*;
 
@@ -48,10 +46,6 @@ pub fn analyze_pou(pou: &Pou) -> Vec<Diagnostic> {
     for stmt in &pou.body {
         diagnostics.extend(type_checker.check_statement(stmt));
     }
-    
-    // Detect code smells
-    let mut smell_detector = CodeSmellDetector::new();
-    diagnostics.extend(smell_detector.analyze_pou(pou));
     
     // Check for unused variables
     diagnostics.extend(symbols.check_unused());

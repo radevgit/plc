@@ -1,22 +1,20 @@
-//! L5X file parser and utilities for PLC programs.
+//! L5X file parser for PLC programs.
 //!
-//! This crate provides functionality for parsing, manipulating, and generating
-//! L5X files exported from PLC programming software.
+//! This crate provides functionality for parsing L5X files exported from
+//! Rockwell Automation Studio 5000 Logix Designer.
 //!
-//! # Parsing Approaches
+//! # Parsing Features
 //!
-//! ## quick-xml (100% compatibility)
-//! Fast, type-safe parsing using serde and generated structs.
-//!
-//! ## RLL (Ladder Logic) Parsing
-//! Parse rung text into structured AST for analysis.
+//! - Fast, type-safe parsing using quick-xml and serde
+//! - Generated types from the official L5X XSD schema
+//! - RLL (Relay Ladder Logic) instruction parsing
 //!
 //! # Example
 //!
 //! ```ignore
 //! use l5x::Project;
 //!
-//! // Parse with quick-xml (fast, typed)
+//! // Parse L5X file
 //! let xml = std::fs::read_to_string("project.L5X")?;
 //! let project: Project = l5x::from_str(&xml)?;
 //! println!("Controller: {:?}", project.controller);
@@ -25,11 +23,6 @@
 //! use l5x::rll::parse_rung;
 //! let rung = parse_rung("XIC(Start)OTE(Motor);");
 //! let tags = rung.tag_references();
-//!
-//! // Analyze entire project
-//! use l5x::analysis::analyze_controller;
-//! let analysis = analyze_controller(&project.controller);
-//! println!("Found {} unique tags", analysis.stats.unique_tags);
 //! ```
 
 #![allow(dead_code)]
@@ -41,9 +34,6 @@ use serde::{Deserialize, Serialize};
 
 // RLL (Relay Ladder Logic) parser
 pub mod rll;
-
-// Project analysis (L5X + RLL integration)
-pub mod analysis;
 
 // Include pre-generated types (no build.rs needed)
 #[path = "../generated/generated.rs"]

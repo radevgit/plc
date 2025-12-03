@@ -3,8 +3,8 @@
 use std::path::Path;
 
 use l5x::Controller;
-use l5x::analysis::analyze_controller;
 
+use crate::analysis::analyze_controller;
 use crate::config::SmellConfig;
 use crate::error::{Error, L5xParseErrorKind};
 use crate::report::{Report, Severity};

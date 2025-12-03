@@ -22,12 +22,14 @@
 //! }
 //! ```
 
+pub mod analysis;
 mod config;
 mod detector;
 mod error;
 mod report;
 mod smells;
 
+pub use analysis::{ProjectAnalysis, analyze_controller};
 pub use config::SmellConfig;
 pub use detector::SmellDetector;
 pub use error::{Error, Result, L5xParseErrorKind, ConfigErrorKind};

@@ -3,7 +3,8 @@
 //! Detects routines that have no logic (empty or only NOPs).
 
 use l5x::Controller;
-use l5x::analysis::ProjectAnalysis;
+
+use crate::analysis::ProjectAnalysis;
 
 use crate::config::EmptyRoutinesConfig;
 use crate::report::{Report, Severity, Smell, SmellKind};

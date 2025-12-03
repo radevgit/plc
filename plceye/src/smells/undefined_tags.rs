@@ -5,8 +5,9 @@
 
 use std::collections::HashSet;
 
-use l5x::analysis::ProjectAnalysis;
 use l5x::{Controller, UDIDefinitionContent};
+
+use crate::analysis::ProjectAnalysis;
 
 use crate::config::UndefinedTagsConfig;
 use crate::report::{Report, Severity, Smell, SmellKind};
