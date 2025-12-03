@@ -34,8 +34,3 @@ plceye init
 # Show only warnings and errors
 plceye --severity warning path/to/project.L5X
 ```
-
-
-## License
-
-MIT License - See [LICENSE](LICENSE) for details.
