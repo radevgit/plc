@@ -2,6 +2,10 @@
 
 PLC code visualization tool - generate SVG diagrams from L5X files.
 
+## Example Output
+
+![Example combined graph](img/example.svg)
+
 ## Features
 
 - **Structure graphs**: Program → Routine containment hierarchy

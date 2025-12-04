@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="603" height="390" viewBox="0 0 603 390">
+<defs>
+  <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+  </marker>
+  <marker id="arrowhead-struct" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#757575"/>
+  </marker>
+  <marker id="arrowhead-call" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#1565C0"/>
+  </marker>
+  <marker id="arrowhead-data" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#2E7D32"/>
+  </marker>
+</defs>
+<rect width="100%" height="100%" fill="#fafafa"/>
+<rect x="351.2" y="30.0" width="139.0" height="40.0" rx="4" fill="#bbdefb" stroke="#1565c0" stroke-width="2"/>
+<text x="420.8" y="50.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">MainProgram</text>
+<rect x="34.5" y="30.0" width="139.0" height="40.0" rx="4" fill="#bbdefb" stroke="#1565c0" stroke-width="2"/>
+<text x="104.0" y="50.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">CommProgram</text>
+<rect x="397.0" y="130.0" width="139.0" height="40.0" rx="4" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+<text x="466.5" y="150.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">MainRoutine</text>
+<rect x="184.5" y="230.0" width="148.0" height="40.0" rx="4" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+<text x="258.5" y="250.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">InitSequence</text>
+<rect x="392.5" y="330.0" width="148.0" height="40.0" rx="4" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+<text x="466.5" y="350.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">FaultHandler</text>
+<rect x="392.5" y="230.0" width="148.0" height="40.0" rx="4" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+<text x="466.5" y="250.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">MotorControl</text>
+<rect x="30.0" y="130.0" width="148.0" height="40.0" rx="4" fill="#ffffff" stroke="#424242" stroke-width="2"/>
+<text x="104.0" y="150.0" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif" font-size="15">EthernetComm</text>
+<path d="M 429.9,70.0 C 442.4,97.3 444.9,102.7 457.3,130.0" fill="none" stroke="#757575" stroke-dasharray="4,2" marker-end="url(#arrowhead-struct)" stroke-width="2"/>
+<path d="M 376.7,70.0 C 364.1,97.2 354.8,124.4 339.6,150.0 S 316.4,202.6 304.3,230.0" fill="none" stroke="#757575" stroke-dasharray="4,2" marker-end="url(#arrowhead-struct)" stroke-width="2"/>
+<path d="M 481.0,70.0 C 504.6,88.5 583.0,120.0 583.0,150.0 S 583.0,220.0 583.0,250.0 S 538.1,306.5 519.4,330.0" fill="none" stroke="#757575" stroke-dasharray="4,2" marker-end="url(#arrowhead-struct)" stroke-width="2"/>
+<path d="M 478.8,70.0 C 501.6,89.5 569.6,130.0 572.0,150.0 S 534.2,205.2 517.2,230.0" fill="none" stroke="#757575" stroke-dasharray="4,2" marker-end="url(#arrowhead-struct)" stroke-width="2"/>
+<path d="M 104.0,70.0 C 104.0,100.0 104.0,100.0 104.0,130.0" fill="none" stroke="#757575" stroke-dasharray="4,2" marker-end="url(#arrowhead-struct)" stroke-width="2"/>
+<path d="M 397.1,170.0 C 371.1,185.0 344.5,211.4 320.9,230.0" fill="none" stroke="#1565C0" marker-end="url(#arrowhead-call)" stroke-width="2"/>
+<path d="M 466.5,170.0 C 466.5,200.0 466.5,200.0 466.5,230.0" fill="none" stroke="#1565C0" marker-end="url(#arrowhead-call)" stroke-width="2"/>
+<path d="M 466.5,270.0 C 466.5,300.0 466.5,300.0 466.5,330.0" fill="none" stroke="#1565C0" marker-end="url(#arrowhead-call)" stroke-width="2"/>
+</svg>
+
