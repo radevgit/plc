@@ -4,7 +4,7 @@ use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use clap::{Parser, Subcommand};
-use plceye::{SmellConfig, SmellDetector, Report};
+use plceye::{SmellConfig, SmellDetector, Report, ParseStats};
 
 #[derive(Parser)]
 #[command(name = "plceye")]
@@ -24,6 +24,10 @@ struct Cli {
     /// Minimum severity to report: info, warning, error
     #[arg(short, long, value_name = "LEVEL", default_value = "info")]
     severity: String,
+
+    /// Show file statistics only (no smell detection)
+    #[arg(long)]
+    stats: bool,
 }
 
 #[derive(Subcommand)]
@@ -46,6 +50,11 @@ fn main() -> ExitCode {
         eprintln!("Usage: plceye <FILE>...");
         eprintln!("Try 'plceye --help' for more information.");
         return ExitCode::from(1);
+    }
+
+    // Handle --stats mode
+    if cli.stats {
+        return show_stats(&cli.files);
     }
 
     // Load or create configuration
@@ -142,4 +151,51 @@ fn init_config() -> ExitCode {
             ExitCode::from(1)
         }
     }
+}
+
+fn show_stats(files: &[PathBuf]) -> ExitCode {
+    let detector = SmellDetector::new();
+    let mut has_errors = false;
+
+    for file in files {
+        println!("=== {} ===", file.display());
+        
+        match detector.get_stats_file(file) {
+            Ok(stats) => {
+                print_stats(&stats);
+            }
+            Err(e) => {
+                eprintln!("Error: {}", e);
+                has_errors = true;
+            }
+        }
+        println!();
+    }
+
+    if has_errors {
+        ExitCode::from(1)
+    } else {
+        ExitCode::SUCCESS
+    }
+}
+
+fn print_stats(stats: &ParseStats) {
+    println!("Programs:           {:>6}", stats.programs);
+    println!("AOIs:               {:>6}", stats.aois);
+    println!("Routines:           {:>6}", stats.routines);
+    println!();
+    println!("RLL Rungs (total):  {:>6}", stats.rungs);
+    println!("  In programs:      {:>6}", stats.rll_rungs_programs);
+    println!("  In AOIs:          {:>6}", stats.rll_rungs_aois);
+    println!("  Parsed OK:        {:>6}", stats.parsed_ok);
+    println!("  Parse errors:     {:>6}", stats.parsed_err);
+    println!();
+    println!("ST Routines:        {:>6}", stats.st_routines);
+    println!("  In programs:      {:>6}", stats.st_routines_programs);
+    println!("  In AOIs:          {:>6}", stats.st_routines_aois);
+    println!("  Parsed OK:        {:>6}", stats.st_parsed_ok);
+    println!("  Parse errors:     {:>6}", stats.st_parsed_err);
+    println!();
+    println!("Tag references:     {:>6}", stats.tag_references);
+    println!("Unique tags:        {:>6}", stats.unique_tags);
 }

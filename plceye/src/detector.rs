@@ -4,7 +4,7 @@ use std::path::Path;
 
 use l5x::Controller;
 
-use crate::analysis::analyze_controller;
+use crate::analysis::{analyze_controller, ParseStats};
 use crate::config::SmellConfig;
 use crate::error::{Error, L5xParseErrorKind};
 use crate::report::{Report, Severity};
@@ -92,6 +92,31 @@ impl SmellDetector {
         empty_routines_detector.detect(controller, &analysis, &mut report);
 
         Ok(report)
+    }
+
+    /// Get statistics for an L5X file without running smell detection.
+    pub fn get_stats_file(&self, path: &Path) -> Result<ParseStats> {
+        let content = std::fs::read_to_string(path).map_err(|e| Error::FileRead {
+            path: path.display().to_string(),
+            source: e,
+        })?;
+
+        self.get_stats_str(&content)
+    }
+
+    /// Get statistics for L5X content from a string.
+    pub fn get_stats_str(&self, content: &str) -> Result<ParseStats> {
+        let project: l5x::Project = quick_xml::de::from_str(content)
+            .map_err(|_| Error::L5xParse {
+                kind: L5xParseErrorKind::XmlDeserialize,
+            })?;
+
+        let controller = project.controller.ok_or(Error::L5xParse {
+            kind: L5xParseErrorKind::MissingElement("Controller"),
+        })?;
+
+        let analysis = analyze_controller(&controller);
+        Ok(analysis.stats)
     }
 }
 

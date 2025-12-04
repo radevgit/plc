@@ -34,3 +34,4 @@ pub use config::SmellConfig;
 pub use detector::SmellDetector;
 pub use error::{Error, Result, L5xParseErrorKind, ConfigErrorKind};
 pub use report::{Report, Smell, Severity, SmellKind};
+pub use analysis::ParseStats;
