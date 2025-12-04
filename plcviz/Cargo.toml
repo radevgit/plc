@@ -1,0 +1,19 @@
+[package]
+name = "plcviz"
+version = "0.1.0"
+edition = "2021"
+description = "PLC code visualization - graphs, dependencies, and documentation"
+license = "MIT"
+repository = "https://github.com/radevgit/plc"
+homepage = "https://github.com/radevgit/plc"
+documentation = "https://docs.rs/plcviz"
+readme = "README.md"
+keywords = ["plc", "l5x", "visualization", "graph", "svg"]
+categories = ["visualization", "development-tools"]
+authors = ["radevgit"]
+rust-version = "1.70"
+
+[dependencies]
+l5x = "0.3"
+
+[dev-dependencies]

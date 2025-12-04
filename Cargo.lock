@@ -203,6 +203,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "plcviz"
+version = "0.1.0"
+dependencies = [
+ "l5x 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
 name = "proc-macro2"
 version = "1.0.103"
 source = "registry+https://github.com/rust-lang/crates.io-index"
