@@ -1,5 +1,7 @@
 //! Visualization configuration
 
+use std::str::FromStr;
+
 /// Type of graph to generate
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub enum GraphType {
@@ -8,8 +10,35 @@ pub enum GraphType {
     Structure,
     /// Call graph (Routine → Routine via JSR, AOI calls)
     CallGraph,
+    /// Data flow graph (Tag read/write relationships)
+    DataFlow,
     /// Combined structure + calls
     Combined,
+}
+
+impl FromStr for GraphType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "structure" | "struct" | "s" => Ok(GraphType::Structure),
+            "call" | "callgraph" | "calls" | "c" => Ok(GraphType::CallGraph),
+            "dataflow" | "data" | "flow" | "d" => Ok(GraphType::DataFlow),
+            "combined" | "all" | "a" => Ok(GraphType::Combined),
+            _ => Err(format!("Unknown graph type: '{}'. Valid: structure, call, dataflow, combined", s)),
+        }
+    }
+}
+
+impl GraphType {
+    pub fn description(&self) -> &'static str {
+        match self {
+            GraphType::Structure => "Containment hierarchy (Programs → Routines)",
+            GraphType::CallGraph => "Call graph (JSR, AOI calls)",
+            GraphType::DataFlow => "Data flow (Tag read/write)",
+            GraphType::Combined => "Combined structure + calls",
+        }
+    }
 }
 
 /// What elements to include in the graph

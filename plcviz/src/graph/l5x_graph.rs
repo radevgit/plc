@@ -79,12 +79,25 @@ impl L5xNodeType {
     }
 }
 
+/// Type of edge
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub enum EdgeType {
+    /// Containment edge (Program → Routine)
+    #[default]
+    Structure,
+    /// Call edge (JSR call between routines)
+    Call,
+    /// Data flow edge (tag read/write)
+    DataFlow,
+}
+
 /// An edge in the L5X graph
 #[derive(Debug, Clone)]
 pub struct L5xEdge {
     pub from: String,
     pub to: String,
     pub label: Option<String>,
+    pub edge_type: EdgeType,
 }
 
 impl Default for L5xGraph {
@@ -150,15 +163,17 @@ impl L5xGraph {
             from: from.to_string(),
             to: to.to_string(),
             label: None,
+            edge_type: EdgeType::Call,
         });
     }
 
-    /// Add a labeled edge
+    /// Add a labeled edge (structure/containment by default)
     pub fn add_edge(&mut self, from: &str, to: &str, label: Option<&str>) {
         self.edges.push(L5xEdge {
             from: from.to_string(),
             to: to.to_string(),
             label: label.map(|s| s.to_string()),
+            edge_type: EdgeType::Structure,
         });
     }
 
@@ -197,8 +212,17 @@ impl L5xGraph {
         // Add edges
         for edge in &self.edges {
             if let (Some(&from_h), Some(&to_h)) = (handles.get(&edge.from), handles.get(&edge.to)) {
-                let label = edge.label.as_deref().unwrap_or("");
-                let arrow = Arrow::simple(label);
+                // Encode edge type in label prefix for renderer to parse
+                let type_prefix = match edge.edge_type {
+                    EdgeType::Structure => "__STRUCT__",
+                    EdgeType::Call => "__CALL__",
+                    EdgeType::DataFlow => "__DATA__",
+                };
+                let label = match &edge.label {
+                    Some(l) => format!("{}{}", type_prefix, l),
+                    None => type_prefix.to_string(),
+                };
+                let arrow = Arrow::simple(&label);
                 vg.add_edge(arrow, from_h, to_h);
             }
         }

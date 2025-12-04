@@ -65,12 +65,19 @@ impl SvgRenderer {
         ));
 
         // Defs for arrow markers
-        // refX=10 positions arrow tip at exact endpoint, but we want gap
-        // markerWidth=8, markerHeight=6 for smaller arrows
         svg.push_str(
             r##"<defs>
   <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
     <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+  </marker>
+  <marker id="arrowhead-struct" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#757575"/>
+  </marker>
+  <marker id="arrowhead-call" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#1565C0"/>
+  </marker>
+  <marker id="arrowhead-data" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+    <polygon points="0 0, 8 3, 0 6" fill="#2E7D32"/>
   </marker>
 </defs>
 "##,
@@ -85,6 +92,50 @@ impl SvgRenderer {
 
         svg.push_str("</svg>\n");
         svg
+    }
+
+    /// Draw an arrow path with specific style
+    fn draw_arrow_with_style(
+        &mut self,
+        path: &[(Point, Point)],
+        stroke: &str,
+        dash: &str,
+        has_head: bool,
+        marker_id: &str,
+        line_width: usize,
+    ) {
+        let marker = if has_head {
+            format!(r#" marker-end="url(#{})""#, marker_id)
+        } else {
+            String::new()
+        };
+
+        // Build path data - cubic bezier curves
+        let mut d = String::new();
+
+        // First segment: M start C control1, control2, end
+        d.push_str(&format!("M {:.1},{:.1}", path[0].0.x, path[0].0.y));
+
+        if path.len() >= 2 {
+            d.push_str(&format!(
+                " C {:.1},{:.1} {:.1},{:.1} {:.1},{:.1}",
+                path[0].1.x, path[0].1.y, path[1].0.x, path[1].0.y, path[1].1.x, path[1].1.y
+            ));
+        }
+
+        // Additional segments use S (smooth curve)
+        for point in path.iter().skip(2) {
+            d.push_str(&format!(
+                " S {:.1},{:.1} {:.1},{:.1}",
+                point.0.x, point.0.y, point.1.x, point.1.y
+            ));
+        }
+
+        self.content.push_str(&format!(
+            r#"<path d="{}" fill="none" stroke="{}"{}{} stroke-width="{}"/>
+"#,
+            d, stroke, dash, marker, line_width
+        ));
     }
 }
 
@@ -178,7 +229,7 @@ impl RenderBackend for SvgRenderer {
         head: (bool, bool),
         look: &StyleAttr,
         _properties: Option<String>,
-        _text: &str,
+        text: &str,
     ) {
         if path.is_empty() {
             return;
@@ -188,44 +239,24 @@ impl RenderBackend for SvgRenderer {
             self.grow(p1.x.max(p2.x), p1.y.max(p2.y));
         }
 
-        let stroke = Self::color_to_svg(&look.line_color);
-        let dash = if dashed {
-            r#" stroke-dasharray="5,3""#
+        // Parse edge type from text prefix and set color/style accordingly
+        let (stroke, dash, marker_id) = if text.starts_with("__CALL__") {
+            // Call edges: solid blue with blue arrow
+            ("#1565C0", "", "arrowhead-call")
+        } else if text.starts_with("__DATA__") {
+            // Data flow edges: dashed green
+            ("#2E7D32", r#" stroke-dasharray="5,3""#, "arrowhead-data")
+        } else if text.starts_with("__STRUCT__") {
+            // Structure edges: gray dashed
+            ("#757575", r#" stroke-dasharray="4,2""#, "arrowhead-struct")
         } else {
-            ""
-        };
-        let marker = if head.1 {
-            r#" marker-end="url(#arrowhead)""#
-        } else {
-            ""
+            // Default: black solid
+            let stroke = Self::color_to_svg(&look.line_color);
+            let dash = if dashed { r#" stroke-dasharray="5,3""# } else { "" };
+            return self.draw_arrow_with_style(path, &stroke, dash, head.1, "arrowhead", look.line_width);
         };
 
-        // Build path data - cubic bezier curves
-        let mut d = String::new();
-
-        // First segment: M start C control1, control2, end
-        d.push_str(&format!("M {:.1},{:.1}", path[0].0.x, path[0].0.y));
-
-        if path.len() >= 2 {
-            d.push_str(&format!(
-                " C {:.1},{:.1} {:.1},{:.1} {:.1},{:.1}",
-                path[0].1.x, path[0].1.y, path[1].0.x, path[1].0.y, path[1].1.x, path[1].1.y
-            ));
-        }
-
-        // Additional segments use S (smooth curve)
-        for point in path.iter().skip(2) {
-            d.push_str(&format!(
-                " S {:.1},{:.1} {:.1},{:.1}",
-                point.0.x, point.0.y, point.1.x, point.1.y
-            ));
-        }
-
-        self.content.push_str(&format!(
-            r#"<path d="{}" fill="none" stroke="{}"{}{} stroke-width="{}"/>
-"#,
-            d, stroke, dash, marker, look.line_width
-        ));
+        self.draw_arrow_with_style(path, stroke, dash, head.1, marker_id, look.line_width);
     }
 
     fn create_clip(&mut self, _xy: Point, _size: Point, _rounded_px: usize) -> ClipHandle {
