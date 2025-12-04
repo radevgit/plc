@@ -3,8 +3,7 @@
 use std::path::PathBuf;
 use std::fs;
 
-use plcviz::{Graph, Node, Edge, SvgBuilder, HierarchicalLayout};
-use plcviz::output::{node_box, arrow_edge_curved};
+use plcviz::L5xGraph;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
@@ -35,55 +34,29 @@ fn print_usage() {
 }
 
 fn run_example() {
-    // Create example graph (L5X-like structure)
-    let mut graph = Graph::new();
+    let mut graph = L5xGraph::new();
     
-    // Programs (layer 2)
-    graph.add_node(Node::program("main_prog", "MainProgram"));
-    graph.add_node(Node::program("comm_prog", "CommProgram"));
+    // Programs
+    graph.add_program("MainProgram");
+    graph.add_program("CommProgram");
     
-    // Routines (layer 3)
-    graph.add_node(Node::routine("main", "MainRoutine").with_parent("main_prog"));
-    graph.add_node(Node::routine("init", "InitSequence").with_parent("main_prog"));
-    graph.add_node(Node::routine("fault", "FaultHandler").with_parent("main_prog"));
-    graph.add_node(Node::routine("motor", "MotorControl").with_parent("main_prog"));
-    graph.add_node(Node::routine("eth", "EthernetComm").with_parent("comm_prog"));
+    // Routines under MainProgram
+    graph.add_routine("MainProgram", "MainRoutine");
+    graph.add_routine("MainProgram", "InitSequence");
+    graph.add_routine("MainProgram", "FaultHandler");
+    graph.add_routine("MainProgram", "MotorControl");
     
-    // Call edges
-    graph.add_edge(Edge::call("main", "init"));
-    graph.add_edge(Edge::call("main", "motor"));
-    graph.add_edge(Edge::call("main", "fault"));
-    graph.add_edge(Edge::call("motor", "fault"));
+    // Routines under CommProgram
+    graph.add_routine("CommProgram", "EthernetComm");
     
-    // Apply hierarchical layout
-    let layout = HierarchicalLayout::new()
-        .layer_height(120.0)
-        .node_spacing(40.0);
-    layout.layout(&mut graph);
+    // Call edges (using full routine IDs)
+    graph.add_call("MainProgram.MainRoutine", "MainProgram.InitSequence");
+    graph.add_call("MainProgram.MainRoutine", "MainProgram.MotorControl");
+    graph.add_call("MainProgram.MainRoutine", "MainProgram.FaultHandler");
+    graph.add_call("MainProgram.MotorControl", "MainProgram.FaultHandler");
     
-    // Calculate dimensions
-    let (width, height) = layout.dimensions(&graph);
-    
-    // Build SVG
-    let mut svg = SvgBuilder::new(width.max(600), height.max(400))
-        .with_default_arrows()
-        .with_default_styles();
-    
-    // Add edges first (below nodes)
-    for edge in &graph.edges {
-        if let (Some(from), Some(to)) = (graph.get_node(&edge.from), graph.get_node(&edge.to)) {
-            let (x1, y1) = from.bottom();
-            let (x2, y2) = to.top();
-            svg.add(arrow_edge_curved(x1, y1, x2, y2, "arrow"));
-        }
-    }
-    
-    // Add nodes
-    for node in &graph.nodes {
-        svg.add(node_box(node.x, node.y, node.width, node.height, &node.label));
-    }
-    
-    println!("{}", svg.build());
+    let svg = graph.render_svg();
+    println!("{}", svg);
 }
 
 fn generate_from_l5x(path: &str) {
@@ -112,53 +85,31 @@ fn generate_from_l5x(path: &str) {
     };
     
     // Build graph from L5X structure
-    let mut graph = Graph::new();
+    let mut graph = L5xGraph::new();
     
     // Add programs and routines from controller
     if let Some(ref controller) = project.controller {
         if let Some(ref programs) = controller.programs {
             for program in &programs.program {
-                let prog_id = &program.name;
-                graph.add_node(Node::program(prog_id, prog_id));
+                let prog_name = &program.name;
+                graph.add_program(prog_name);
                 
                 if let Some(ref routines) = program.routines {
                     for routine in &routines.routine {
-                        let routine_id = format!("{}.{}", prog_id, routine.name);
-                        graph.add_node(
-                            Node::routine(&routine_id, &routine.name)
-                                .with_parent(prog_id)
-                        );
+                        graph.add_routine(prog_name, &routine.name);
+                        
+                        // Add containment edge from program to routine
+                        let routine_id = format!("{}.{}", prog_name, routine.name);
+                        graph.add_edge(prog_name, &routine_id, None);
                     }
                 }
             }
         }
     }
     
-    // TODO: Extract JSR calls from routines to build edges
+    // TODO: Extract JSR calls from routines to build call edges
     // This requires parsing the RLL/ST content
     
-    // Apply layout
-    let layout = HierarchicalLayout::new();
-    layout.layout(&mut graph);
-    
-    let (width, height) = layout.dimensions(&graph);
-    
-    // Build SVG
-    let mut svg = SvgBuilder::new(width.max(600), height.max(400))
-        .with_default_arrows()
-        .with_default_styles();
-    
-    for edge in &graph.edges {
-        if let (Some(from), Some(to)) = (graph.get_node(&edge.from), graph.get_node(&edge.to)) {
-            let (x1, y1) = from.bottom();
-            let (x2, y2) = to.top();
-            svg.add(arrow_edge_curved(x1, y1, x2, y2, "arrow"));
-        }
-    }
-    
-    for node in &graph.nodes {
-        svg.add(node_box(node.x, node.y, node.width, node.height, &node.label));
-    }
-    
-    println!("{}", svg.build());
+    let svg = graph.render_svg();
+    println!("{}", svg);
 }

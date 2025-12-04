@@ -177,6 +177,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "layout-rs"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5b8b38bc67665e362eb770c6b6ae88b48d040d94a0a10c4904c37bc79d263b95"
+
+[[package]]
 name = "memchr"
 version = "2.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -207,6 +213,7 @@ name = "plcviz"
 version = "0.1.0"
 dependencies = [
  "l5x 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "layout-rs",
 ]
 
 [[package]]

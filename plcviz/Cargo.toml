@@ -15,5 +15,6 @@ rust-version = "1.70"
 
 [dependencies]
 l5x = "0.3"
+layout-rs = "0.1"
 
 [dev-dependencies]
