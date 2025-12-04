@@ -11,8 +11,8 @@
 //! - **Combined**: Both structure and calls
 //!
 //! # Example
-//! ```ignore
-//! use plcviz::{L5xGraph, VizConfig, GraphType};
+//! ```
+//! use plcviz::L5xGraph;
 //!
 //! let mut graph = L5xGraph::new();
 //! graph.add_program("MainProgram");
@@ -20,6 +20,7 @@
 //! graph.add_call("MainRoutine", "SubRoutine");
 //!
 //! let svg = graph.render_svg();
+//! assert!(svg.contains("<svg"));
 //! ```
 
 pub mod config;
