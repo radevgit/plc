@@ -210,6 +210,11 @@ impl RenderBackend for SvgRenderer {
     }
 
     fn draw_text(&mut self, xy: Point, text: &str, look: &StyleAttr) {
+        // Skip empty text
+        if text.is_empty() {
+            return;
+        }
+
         self.grow(xy.x + 50.0, xy.y + 20.0);
 
         self.content.push_str(&format!(
@@ -228,8 +233,8 @@ impl RenderBackend for SvgRenderer {
         dashed: bool,
         head: (bool, bool),
         look: &StyleAttr,
-        _properties: Option<String>,
-        text: &str,
+        properties: Option<String>,
+        _text: &str,
     ) {
         if path.is_empty() {
             return;
@@ -239,14 +244,15 @@ impl RenderBackend for SvgRenderer {
             self.grow(p1.x.max(p2.x), p1.y.max(p2.y));
         }
 
-        // Parse edge type from text prefix and set color/style accordingly
-        let (stroke, dash, marker_id) = if text.starts_with("__CALL__") {
+        // Parse edge type from properties and set color/style accordingly
+        let props = properties.as_deref().unwrap_or("");
+        let (stroke, dash, marker_id) = if props.contains("__CALL__") {
             // Call edges: solid blue with blue arrow
             ("#1565C0", "", "arrowhead-call")
-        } else if text.starts_with("__DATA__") {
+        } else if props.contains("__DATA__") {
             // Data flow edges: dashed green
             ("#2E7D32", r#" stroke-dasharray="5,3""#, "arrowhead-data")
-        } else if text.starts_with("__STRUCT__") {
+        } else if props.contains("__STRUCT__") {
             // Structure edges: gray dashed
             ("#757575", r#" stroke-dasharray="4,2""#, "arrowhead-struct")
         } else {

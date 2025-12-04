@@ -175,13 +175,23 @@ fn generate_from_l5x(path: &str, graph_type: GraphType, show_aois: bool) {
         }
     };
     
-    // Build graph from L5X structure
+    // Dispatch based on export type
+    let target_type = project.target_type.as_deref().unwrap_or("Controller");
+    eprintln!("Export type: {}", target_type);
+    
+    let svg = match target_type {
+        "Program" => generate_program_export(&project, graph_type, show_aois),
+        "AddOnInstructionDefinition" => generate_aoi_export(&project, graph_type),
+        _ => generate_controller_export(&project, graph_type, show_aois),
+    };
+    
+    println!("{}", svg);
+}
+
+/// Generate graph from Controller export (full project)
+fn generate_controller_export(project: &l5x::Project, graph_type: GraphType, show_aois: bool) -> String {
     let mut graph = L5xGraph::new();
     
-    // Collect routine names for JSR resolution
-    let mut routine_ids: std::collections::HashSet<String> = std::collections::HashSet::new();
-    
-    // Add programs and routines from controller
     if let Some(ref controller) = project.controller {
         // Add AOIs if requested
         if show_aois {
@@ -194,30 +204,77 @@ fn generate_from_l5x(path: &str, graph_type: GraphType, show_aois: bool) {
         
         if let Some(ref programs) = controller.programs {
             for program in &programs.program {
-                let prog_name = &program.name;
-                
-                // Add program node for structure/combined
-                if graph_type == GraphType::Structure || graph_type == GraphType::Combined {
-                    graph.add_program(prog_name);
+                add_program_to_graph(program, &mut graph, graph_type);
+            }
+        }
+    }
+    
+    graph.render_svg()
+}
+
+/// Generate graph from Program export (single program)
+fn generate_program_export(project: &l5x::Project, graph_type: GraphType, show_aois: bool) -> String {
+    let mut graph = L5xGraph::new();
+    
+    if let Some(ref controller) = project.controller {
+        // Add AOIs from context if requested
+        if show_aois {
+            if let Some(ref aois) = controller.add_on_instruction_definitions {
+                for aoi in &aois.add_on_instruction_definition {
+                    // Only add target AOIs or all if none are marked as target
+                    if aoi.r#use.as_deref() == Some("Target") || aoi.r#use.is_none() {
+                        graph.add_node(&aoi.name, &aoi.name, L5xNodeType::Aoi);
+                    }
                 }
-                
-                if let Some(ref routines) = program.routines {
-                    for routine in &routines.routine {
-                        let routine_id = format!("{}.{}", prog_name, routine.name);
-                        routine_ids.insert(routine_id.clone());
-                        
-                        // Add routine node
-                        if graph_type == GraphType::Structure || graph_type == GraphType::Combined {
-                            graph.add_routine(prog_name, &routine.name);
-                            graph.add_edge(prog_name, &routine_id, None);
-                        } else {
-                            // For call/dataflow, just add routine nodes
-                            graph.add_node(&routine_id, &routine.name, L5xNodeType::Routine);
-                        }
-                        
-                        // Extract JSR calls for call graph
-                        if graph_type == GraphType::CallGraph || graph_type == GraphType::Combined {
-                            extract_jsr_calls(&routine_id, prog_name, routine, &mut graph);
+            }
+        }
+        
+        // Find the target program (Use="Target")
+        if let Some(ref programs) = controller.programs {
+            for program in &programs.program {
+                // In program export, the target program has Use="Target"
+                if program.r#use.as_deref() == Some("Target") {
+                    add_program_to_graph(program, &mut graph, graph_type);
+                }
+            }
+        }
+    }
+    
+    graph.render_svg()
+}
+
+/// Generate graph from AddOnInstructionDefinition export (single AOI)
+fn generate_aoi_export(project: &l5x::Project, graph_type: GraphType) -> String {
+    let mut graph = L5xGraph::new();
+    
+    if let Some(ref controller) = project.controller {
+        if let Some(ref aois) = controller.add_on_instruction_definitions {
+            for aoi in &aois.add_on_instruction_definition {
+                // Find the target AOI (Use="Target")
+                if aoi.r#use.as_deref() == Some("Target") {
+                    let aoi_name = &aoi.name;
+                    
+                    // Add AOI as main node
+                    graph.add_node(aoi_name, aoi_name, L5xNodeType::Aoi);
+                    
+                    // Find routines in the AOI content
+                    for item in &aoi.content {
+                        if let l5x::UDIDefinitionContent::Routines(ref routines) = item {
+                            for routine in &routines.routine {
+                                let routine_id = format!("{}.{}", aoi_name, routine.name);
+                                
+                                if graph_type == GraphType::Structure || graph_type == GraphType::Combined {
+                                    graph.add_node(&routine_id, &routine.name, L5xNodeType::Routine);
+                                    graph.add_edge(aoi_name, &routine_id, None);
+                                } else {
+                                    graph.add_node(&routine_id, &routine.name, L5xNodeType::Routine);
+                                }
+                                
+                                // Extract JSR calls for call graph
+                                if graph_type == GraphType::CallGraph || graph_type == GraphType::Combined {
+                                    extract_jsr_calls(&routine_id, aoi_name, routine, &mut graph);
+                                }
+                            }
                         }
                     }
                 }
@@ -225,8 +282,37 @@ fn generate_from_l5x(path: &str, graph_type: GraphType, show_aois: bool) {
         }
     }
     
-    let svg = graph.render_svg();
-    println!("{}", svg);
+    graph.render_svg()
+}
+
+/// Add a program and its routines to the graph
+fn add_program_to_graph(program: &l5x::AProgram, graph: &mut L5xGraph, graph_type: GraphType) {
+    let prog_name = &program.name;
+    
+    // Add program node for structure/combined
+    if graph_type == GraphType::Structure || graph_type == GraphType::Combined {
+        graph.add_program(prog_name);
+    }
+    
+    if let Some(ref routines) = program.routines {
+        for routine in &routines.routine {
+            let routine_id = format!("{}.{}", prog_name, routine.name);
+            
+            // Add routine node
+            if graph_type == GraphType::Structure || graph_type == GraphType::Combined {
+                graph.add_routine(prog_name, &routine.name);
+                graph.add_edge(prog_name, &routine_id, None);
+            } else {
+                // For call/dataflow, just add routine nodes
+                graph.add_node(&routine_id, &routine.name, L5xNodeType::Routine);
+            }
+            
+            // Extract JSR calls for call graph
+            if graph_type == GraphType::CallGraph || graph_type == GraphType::Combined {
+                extract_jsr_calls(&routine_id, prog_name, routine, graph);
+            }
+        }
+    }
 }
 
 /// Extract JSR (Jump to Subroutine) calls from a routine

@@ -198,9 +198,9 @@ impl L5xGraph {
             );
             look.rounded = node.node_type.corner_radius();
             
-            // Calculate width based on text length (approx 8px per char + padding)
-            let text_width = (node.label.len() as f64) * 8.0 + 20.0;
-            let width = text_width.max(80.0).min(300.0); // min 80, max 300
+            // Calculate width based on text length (approx 9px per char + padding)
+            let text_width = (node.label.len() as f64) * 9.0 + 40.0;
+            let width = text_width.max(80.0).min(350.0); // min 80, max 350
             let sz = Point::new(width, 40.);
 
             let element = Element::create(shape, look, Orientation::LeftToRight, sz);
@@ -212,17 +212,23 @@ impl L5xGraph {
         // Add edges
         for edge in &self.edges {
             if let (Some(&from_h), Some(&to_h)) = (handles.get(&edge.from), handles.get(&edge.to)) {
-                // Encode edge type in label prefix for renderer to parse
-                let type_prefix = match edge.edge_type {
+                // Encode edge type in properties for renderer to parse
+                let edge_type_prop = match edge.edge_type {
                     EdgeType::Structure => "__STRUCT__",
                     EdgeType::Call => "__CALL__",
                     EdgeType::DataFlow => "__DATA__",
                 };
-                let label = match &edge.label {
-                    Some(l) => format!("{}{}", type_prefix, l),
-                    None => type_prefix.to_string(),
-                };
-                let arrow = Arrow::simple(&label);
+                let label = edge.label.as_deref().unwrap_or("");
+                let arrow = Arrow::with_properties(
+                    layout::std_shapes::shapes::LineEndKind::None,
+                    layout::std_shapes::shapes::LineEndKind::Arrow,
+                    layout::core::style::LineStyleKind::Normal,
+                    label,
+                    &StyleAttr::simple(),
+                    edge_type_prop,
+                    &None,
+                    &None,
+                );
                 vg.add_edge(arrow, from_h, to_h);
             }
         }
