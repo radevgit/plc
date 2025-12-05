@@ -1,12 +1,17 @@
 # plceye
 
-A static analyzer and code smell detector for Rockwell Automation L5X files (Studio 5000 Logix Designer).
+A static analyzer and code smell detector for PLC files.
+
+## Supported Formats
+
+- **L5X** - Rockwell Automation Studio 5000 Logix Designer
+- **PLCopen XML** - IEC 61131-3 standard exchange format
 
 ## Features
 
-- **Unused Tags** - Detect tags that are defined but never referenced
-- **Undefined Tags** - Find tags referenced in code but not declared
-- **Empty Routines** - Identify routines with no logic
+- **Unused Tags/Variables** (P00001) - Detect tags that are defined but never referenced
+- **Undefined Tags** (P00002) - Find tags referenced in code but not declared
+- **Empty Routines/POUs** (P00003) - Identify routines with no logic
 - **Configurable** - Customize detection via `plceye.toml`
 
 ## Installation
@@ -21,11 +26,17 @@ cargo install plceye
 # Analyze a single file
 plceye project.L5X
 
+# Analyze PLCopen XML file
+plceye project.xml
+
 # Analyze multiple files
 plceye *.L5X
 
 # Use custom configuration
 plceye --config plceye.toml project.L5X
+
+# Set minimum severity level
+plceye --severity warning project.L5X
 
 # Generate default configuration
 plceye init
@@ -36,41 +47,58 @@ plceye init
 Create a `plceye.toml` file to customize detection:
 
 ```toml
+[general]
+# Minimum severity to report: "info", "warning", "error"
+min_severity = "info"
+
 [unused_tags]
 enabled = true
-severity = "info"
-# Ignore tags matching these patterns
-ignore = ["zz*", "Spare_*", "_*"]
+# Ignore tags matching these patterns (glob-style)
+ignore_patterns = ["_*", "HMI_*"]
+# Ignore tags in these scopes
+ignore_scopes = []
 
 [undefined_tags]
 enabled = true
-severity = "warning"
-# Known valid references (aliases, I/O modules)
-ignore = ["Local:*", "S:*"]
+# Ignore undefined tags matching these patterns
+ignore_patterns = ["Local:*"]
 
 [empty_routines]
 enabled = true
-severity = "info"
-ignore = ["*_Template"]
+ignore_patterns = []
 ```
 
 ## Output
 
 ```
 === project.L5X ===
-[info] unused-tag: Controller - Tag 'Spare_01' is defined but never used
-[warning] undefined-tag: Program:Main - Tag 'Unknown' is referenced but not defined
+[info] P00001: Controller - Tag 'Spare_01' is defined but never used (Spare_01)
+[warning] P00002: Program:Main - Tag 'Unknown' is referenced but not defined (Unknown)
 
 Found 2 issue(s) in 1 file(s).
 ```
 
-## Detected Issues
+## Rule Codes
 
-| Issue | Description | Default Severity |
-|-------|-------------|------------------|
-| `unused-tag` | Tag defined but never referenced | info |
-| `undefined-tag` | Tag referenced but not defined | warning |
-| `empty-routine` | Routine with no executable logic | info |
+| Code | Name | Description | Default Severity |
+|------|------|-------------|------------------|
+| P00001 | unused-tag | Tag/variable defined but never referenced | info |
+| P00002 | undefined-tag | Tag referenced but not defined | warning |
+| P00003 | empty-block | Routine/POU with no executable logic | info |
+
+## Library Usage
+
+```rust
+use plceye::{SmellDetector, LoadedProject};
+
+let project = LoadedProject::from_file("project.L5X")?;
+let detector = SmellDetector::new();
+let report = detector.analyze(&project)?;
+
+for smell in report.smells() {
+    println!("{}", smell);
+}
+```
 
 ## Disclaimer
 

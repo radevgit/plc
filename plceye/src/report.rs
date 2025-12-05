@@ -44,6 +44,10 @@ pub enum SmellKind {
     UndefinedTag,
     /// P00003: Empty routine or POU
     EmptyBlock,
+    /// P00004: AOI is defined but never called
+    UnusedAoi,
+    /// P00005: DataType is defined but never used
+    UnusedDataType,
 }
 
 impl SmellKind {
@@ -53,6 +57,8 @@ impl SmellKind {
             SmellKind::UnusedTag => "P00001",
             SmellKind::UndefinedTag => "P00002",
             SmellKind::EmptyBlock => "P00003",
+            SmellKind::UnusedAoi => "P00004",
+            SmellKind::UnusedDataType => "P00005",
         }
     }
     
@@ -62,6 +68,8 @@ impl SmellKind {
             SmellKind::UnusedTag => "unused-tag",
             SmellKind::UndefinedTag => "undefined-tag",
             SmellKind::EmptyBlock => "empty-block",
+            SmellKind::UnusedAoi => "unused-aoi",
+            SmellKind::UnusedDataType => "unused-datatype",
         }
     }
 }

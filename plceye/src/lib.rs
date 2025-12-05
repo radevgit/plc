@@ -14,19 +14,6 @@
 //! - **undefined_tags** - Tags referenced but not defined
 //! - **empty_routines** - Routines with no logic
 //!
-//! ## Library Usage
-//!
-//! ```rust,ignore
-//! use plceye::{SmellDetector, LoadedProject};
-//!
-//! let project = LoadedProject::from_file("project.L5X")?;
-//! let detector = SmellDetector::new();
-//! let report = detector.analyze(&project)?;
-//!
-//! for smell in report.smells() {
-//!     println!("{}", smell);
-//! }
-//! ```
 //!
 //! ## CLI Usage
 //!
@@ -47,7 +34,7 @@ mod report;
 mod smells;
 
 // Core types
-pub use config::SmellConfig;
+pub use config::{SmellConfig, GeneralConfig, UnusedTagsConfig, UndefinedTagsConfig, EmptyRoutinesConfig};
 pub use detector::SmellDetector;
 pub use error::{Error, Result, L5xParseErrorKind, ConfigErrorKind};
 pub use loader::{LoadedProject, FileFormat};
