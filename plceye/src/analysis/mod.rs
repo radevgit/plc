@@ -1,11 +1,13 @@
-//! L5X project analysis module.
+//! Project analysis module.
 //!
-//! This module provides utilities to analyze L5X project structures,
-//! parse RLL rungs and ST routines, and build cross-reference indices.
+//! This module provides utilities to analyze PLC projects,
+//! parse code, and build cross-reference indices.
 //!
-//! This is the core analysis engine used by smell detectors.
+//! - `l5x_analysis` - L5X-specific detailed analysis
+//! - `model_analysis` - Format-independent analysis using plcmodel
 
 mod l5x_analysis;
+mod model_analysis;
 mod rll_parsing;
 mod st_parsing;
 
@@ -16,6 +18,8 @@ pub use l5x_analysis::{
     AoiReference, AoiCallSource,
     analyze_controller,
 };
+
+pub use model_analysis::{ModelAnalysis, ModelStats, VariableDef};
 
 pub use rll_parsing::{
     parse_routine, parse_rung_collection, extract_rung_text, extract_text_content,

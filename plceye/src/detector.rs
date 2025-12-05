@@ -4,11 +4,14 @@ use std::path::Path;
 
 use l5x::Controller;
 
-use crate::analysis::{analyze_controller, ParseStats};
+use crate::analysis::{analyze_controller, ModelAnalysis, ParseStats};
 use crate::config::SmellConfig;
 use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
-use crate::smells::{EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector};
+use crate::smells::{
+    EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector,
+    ModelUnusedTagsDetector, ModelUndefinedTagsDetector, ModelEmptyRoutinesDetector,
+};
 use crate::Result;
 
 /// Main smell detector that runs all enabled detectors.
@@ -67,10 +70,20 @@ impl SmellDetector {
     /// Analyze using plcmodel (format-independent).
     fn analyze_model(&self, project: &LoadedProject) -> Result<Report> {
         let mut report = Report::new();
-        
-        // TODO: Implement plcmodel-based analysis
-        // For now, just return basic info
         report.source_file = project.source_path.clone();
+        
+        // Run model-based analysis
+        let analysis = ModelAnalysis::analyze(&project.model);
+        
+        // Run model-based detectors
+        let unused_tags_detector = ModelUnusedTagsDetector::new(&self.config.unused_tags);
+        unused_tags_detector.detect(&analysis, &mut report);
+        
+        let undefined_tags_detector = ModelUndefinedTagsDetector::new(&self.config.undefined_tags);
+        undefined_tags_detector.detect(&analysis, &mut report);
+        
+        let empty_routines_detector = ModelEmptyRoutinesDetector::new(&self.config.empty_routines);
+        empty_routines_detector.detect(&analysis, &mut report);
         
         Ok(report)
     }
@@ -129,6 +142,7 @@ impl Default for SmellDetector {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::report::SmellKind;
 
     #[test]
     fn test_detector_default() {
@@ -193,7 +207,7 @@ mod tests {
         let detector = SmellDetector::new();
         let report = detector.analyze(&project).expect("Should analyze");
         
-        // PLCopen analysis is basic for now
-        assert!(report.smells.is_empty());
+        // Should detect empty POU (Main has no body)
+        assert!(report.smells.iter().any(|s| s.identifier == "Main" && s.kind == SmellKind::EmptyBlock));
     }
 }
