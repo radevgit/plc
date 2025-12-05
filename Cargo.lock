@@ -142,6 +142,10 @@ dependencies = [
 ]
 
 [[package]]
+name = "iectypes"
+version = "0.1.0"
+
+[[package]]
 name = "indexmap"
 version = "2.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -215,6 +219,13 @@ dependencies = [
  "serde_json",
  "thiserror",
  "toml",
+]
+
+[[package]]
+name = "plcmodel"
+version = "0.1.0"
+dependencies = [
+ "iectypes",
 ]
 
 [[package]]

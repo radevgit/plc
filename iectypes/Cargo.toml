@@ -1,0 +1,14 @@
+[package]
+name = "iectypes"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+description = "IEC 61131-3 data types and literals"
+repository = "https://github.com/radevgit/plc"
+keywords = ["plc", "iec61131", "automation", "industrial"]
+categories = ["parsing", "development-tools"]
+
+[dependencies]
+
+[dev-dependencies]
