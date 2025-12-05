@@ -17,7 +17,6 @@ rust-version = "1.70"
 # Format parsers
 l5x = { path = "../l5x" }
 plcopen = { path = "../plcopen" }
-iectypes = { path = "../iectypes" }
 
 # ST parsing
 iecst = { path = "../iecst" }
