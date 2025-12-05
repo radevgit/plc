@@ -3,43 +3,43 @@
 
 use serde::{Serialize, Deserialize};
 
+#[path = "generated_pou.rs"]
+mod pou;
+#[path = "generated_graphics.rs"]
+mod graphics;
+#[path = "generated_ladder.rs"]
+mod ladder;
+#[path = "generated_addons.rs"]
+mod addons;
 #[path = "generated_sfc.rs"]
 mod sfc;
 #[path = "generated_variables.rs"]
 mod variables;
 #[path = "generated_body.rs"]
 mod body;
-#[path = "generated_config.rs"]
-mod config;
-#[path = "generated_misc.rs"]
-mod misc;
-#[path = "generated_ladder.rs"]
-mod ladder;
 #[path = "generated_fbd.rs"]
 mod fbd;
-#[path = "generated_datatypes.rs"]
-mod datatypes;
 #[path = "generated_inline.rs"]
 mod inline;
-#[path = "generated_pou.rs"]
-mod pou;
-#[path = "generated_graphics.rs"]
-mod graphics;
-#[path = "generated_addons.rs"]
-mod addons;
+#[path = "generated_misc.rs"]
+mod misc;
+#[path = "generated_datatypes.rs"]
+mod datatypes;
+#[path = "generated_config.rs"]
+mod config;
 pub use self::{
+    pou::*,
+    graphics::*,
+    ladder::*,
+    addons::*,
     sfc::*,
     variables::*,
     body::*,
-    config::*,
-    misc::*,
-    ladder::*,
     fbd::*,
-    datatypes::*,
     inline::*,
-    pou::*,
-    graphics::*,
-    addons::*
+    misc::*,
+    datatypes::*,
+    config::*
 };
 
 /// Placeholder for xs:any wildcard elements

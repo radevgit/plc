@@ -68,6 +68,8 @@ pub struct Root_project_InlineType_instances_InlineType_configurations_InlineTyp
 }
 
 /// Root_project_InlineType_instances_InlineType_configurations_InlineType_configuration_InlineType_resource_InlineType_task_InlineType element
+///
+/// Extends: integer
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_instances_InlineType_configurations_InlineType_configuration_InlineType_resource_InlineType_task_Inline {
     /// name attribute

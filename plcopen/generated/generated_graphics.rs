@@ -73,21 +73,66 @@ pub struct ConnectionPointOut {
 }
 
 /// ldObjects_leftPowerRail_InlineType_connectionPointOut_InlineType element
+///
+/// Extends: connectionPointOut
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct LdObjects_leftPowerRail_InlineType_connectionPointOut_Inline {
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// relPosition element
+    #[serde(rename = "relPosition", default)]
+    pub rel_position: Option<Position>,
+    /// expression element
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
     /// formalParameter attribute
     #[serde(rename = "@formalParameter", default)]
     pub formal_parameter: String,
 }
 
 /// sfcObjects_selectionConvergence_InlineType_connectionPointIn_InlineType element
+///
+/// Extends: connectionPointIn
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SfcObjects_selectionConvergence_InlineType_connectionPointIn_Inline {
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// relPosition element
+    #[serde(rename = "relPosition", default)]
+    pub rel_position: Option<Position>,
+    /// connection element
+    #[serde(rename = "connection", default)]
+    pub connection: Vec<Connection>,
+    /// expression element
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
 }
 
 /// sfcObjects_simultaneousDivergence_InlineType_connectionPointOut_InlineType element
+///
+/// Extends: connectionPointOut
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SfcObjects_simultaneousDivergence_InlineType_connectionPointOut_Inline {
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// relPosition element
+    #[serde(rename = "relPosition", default)]
+    pub rel_position: Option<Position>,
+    /// expression element
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
     /// formalParameter attribute
     #[serde(rename = "@formalParameter", default)]
     pub formal_parameter: String,

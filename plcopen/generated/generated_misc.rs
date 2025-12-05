@@ -41,8 +41,19 @@ pub struct Value {
 }
 
 /// varList element
+///
+/// Extends: varListPlain
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct VarList {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
     /// name attribute
     #[serde(rename = "@name", default)]
     pub name: Option<String>,

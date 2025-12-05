@@ -4,10 +4,11 @@ Open source tools for parsing and analyzing L5X files exported from PLC programm
 
 ## Crates
 
-- **l5x** - L5X file parser library
-- **iecst** - IEC 61131-3 Structured Text parser
 - **plceye** - PLC code smell detector CLI
 - **plcviz** - PLC code visualization (SVG graph generator)
+- **l5x** - L5X file parser library
+- **iecst** - IEC 61131-3 Structured Text parser
+
 
 ## Detected Issues
 

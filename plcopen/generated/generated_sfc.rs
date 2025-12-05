@@ -43,6 +43,8 @@ pub struct CommonObjects_actionBlock_Inline {
 }
 
 /// commonObjects_actionBlock_InlineType_action_InlineType element
+///
+/// Extends: NMTOKEN
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct CommonObjects_actionBlock_InlineType_action_Inline {
     /// localId attribute
@@ -145,16 +147,44 @@ pub struct SfcObjects_step_Inline {
 }
 
 /// sfcObjects_step_InlineType_connectionPointOut_InlineType element
+///
+/// Extends: connectionPointOut
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SfcObjects_step_InlineType_connectionPointOut_Inline {
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// relPosition element
+    #[serde(rename = "relPosition", default)]
+    pub rel_position: Option<Position>,
+    /// expression element
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
     /// formalParameter attribute
     #[serde(rename = "@formalParameter", default)]
     pub formal_parameter: String,
 }
 
 /// sfcObjects_step_InlineType_connectionPointOutAction_InlineType element
+///
+/// Extends: connectionPointOut
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SfcObjects_step_InlineType_connectionPointOutAction_Inline {
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// relPosition element
+    #[serde(rename = "relPosition", default)]
+    pub rel_position: Option<Position>,
+    /// expression element
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
     /// formalParameter attribute
     #[serde(rename = "@formalParameter", default)]
     pub formal_parameter: String,
@@ -227,8 +257,37 @@ pub struct SfcObjects_transition_InlineType_condition_InlineType_reference_Inlin
 }
 
 /// sfcObjects_transition_InlineType_condition_InlineType_inline_InlineType element
+///
+/// Extends: body
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SfcObjects_transition_InlineType_condition_InlineType_inline_Inline {
+    /// WorksheetName attribute
+    #[serde(rename = "@WorksheetName", default)]
+    pub worksheet_name: Option<String>,
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// IL element
+    #[serde(rename = "IL", default)]
+    pub il: Option<FormattedText>,
+    /// ST element
+    #[serde(rename = "ST", default)]
+    pub st: Option<FormattedText>,
+    /// FBD element
+    #[serde(rename = "FBD", default)]
+    pub fbd: Option<Body_FBD_Inline>,
+    /// LD element
+    #[serde(rename = "LD", default)]
+    pub ld: Option<Body_LD_Inline>,
+    /// SFC element
+    #[serde(rename = "SFC", default)]
+    pub sfc: Option<Body_SFC_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
     /// name attribute
     #[serde(rename = "@name", default)]
     pub name: String,
@@ -267,8 +326,22 @@ pub struct SfcObjects_selectionDivergence_Inline {
 }
 
 /// sfcObjects_selectionDivergence_InlineType_connectionPointOut_InlineType element
+///
+/// Extends: connectionPointOut
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SfcObjects_selectionDivergence_InlineType_connectionPointOut_Inline {
+    /// globalId attribute
+    #[serde(rename = "@globalId", default)]
+    pub global_id: Option<String>,
+    /// relPosition element
+    #[serde(rename = "relPosition", default)]
+    pub rel_position: Option<Position>,
+    /// expression element
+    #[serde(rename = "expression", default)]
+    pub expression: Option<String>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
     /// formalParameter attribute
     #[serde(rename = "@formalParameter", default)]
     pub formal_parameter: String,

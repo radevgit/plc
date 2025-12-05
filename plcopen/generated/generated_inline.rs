@@ -210,8 +210,19 @@ pub struct Value_arrayValue_Inline {
 }
 
 /// value_arrayValue_InlineType_value_InlineType element
+///
+/// Extends: value
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Value_arrayValue_InlineType_value_Inline {
+    /// simpleValue element
+    #[serde(rename = "simpleValue", default)]
+    pub simple_value: Option<Value_simpleValue_Inline>,
+    /// arrayValue element
+    #[serde(rename = "arrayValue", default)]
+    pub array_value: Option<Value_arrayValue_Inline>,
+    /// structValue element
+    #[serde(rename = "structValue", default)]
+    pub struct_value: Option<Value_structValue_Inline>,
     /// repetitionValue attribute
     #[serde(rename = "@repetitionValue", default)]
     pub repetition_value: Option<String>,
@@ -226,8 +237,19 @@ pub struct Value_structValue_Inline {
 }
 
 /// value_structValue_InlineType_value_InlineType element
+///
+/// Extends: value
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Value_structValue_InlineType_value_Inline {
+    /// simpleValue element
+    #[serde(rename = "simpleValue", default)]
+    pub simple_value: Option<Value_simpleValue_Inline>,
+    /// arrayValue element
+    #[serde(rename = "arrayValue", default)]
+    pub array_value: Option<Value_arrayValue_Inline>,
+    /// structValue element
+    #[serde(rename = "structValue", default)]
+    pub struct_value: Option<Value_structValue_Inline>,
     /// member attribute
     #[serde(rename = "@member", default)]
     pub member: String,

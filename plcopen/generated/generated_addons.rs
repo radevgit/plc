@@ -13,6 +13,8 @@ pub struct AddData {
 }
 
 /// addData_data_InlineType element
+///
+/// Extends: NMTOKEN
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AddData_data_Inline {
     /// name attribute

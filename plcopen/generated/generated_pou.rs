@@ -83,38 +83,241 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_localVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_localVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_tempVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_tempVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_inputVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_inputVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_outputVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_outputVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_inOutVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_inOutVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_externalVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_externalVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_globalVars_InlineType element
+///
+/// Extends: varList
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_globalVars_Inline {
+    /// variable element
+    #[serde(rename = "variable", default)]
+    pub variable: Vec<VarListPlain_variable_Inline>,
+    /// addData element
+    #[serde(rename = "addData", default)]
+    pub add_data: Option<AddData>,
+    /// documentation element
+    #[serde(rename = "documentation", default)]
+    pub documentation: Option<FormattedText>,
+    /// name attribute
+    #[serde(rename = "@name", default)]
+    pub name: Option<String>,
+    /// constant attribute
+    #[serde(rename = "@constant", default)]
+    pub constant: Option<String>,
+    /// retain attribute
+    #[serde(rename = "@retain", default)]
+    pub retain: Option<String>,
+    /// nonretain attribute
+    #[serde(rename = "@nonretain", default)]
+    pub nonretain: Option<String>,
+    /// persistent attribute
+    #[serde(rename = "@persistent", default)]
+    pub persistent: Option<String>,
+    /// nonpersistent attribute
+    #[serde(rename = "@nonpersistent", default)]
+    pub nonpersistent: Option<String>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_InlineType element
