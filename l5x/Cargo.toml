@@ -1,6 +1,6 @@
 [package]
 name = "l5x"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 description = "Parser for Rockwell Automation L5X files (Studio 5000 Logix Designer)"
 license = "MIT"
@@ -13,8 +13,17 @@ categories = ["parsing", "development-tools"]
 authors = ["radevgit"]
 rust-version = "1.70"
 
+[features]
+default = []
+# Enable conversion to plcmodel
+model = ["dep:plcmodel", "dep:iectypes"]
+
 [dependencies]
 quick-xml = { version = "0.37", features = ["serialize", "overlapped-lists"] }
 serde = { version = "1.0", features = ["derive"] }
 winnow = "0.6"
 iecst = "0.1"
+
+# Optional deps for model feature
+plcmodel = { version = "0.1", optional = true }
+iectypes = { version = "0.1", optional = true }

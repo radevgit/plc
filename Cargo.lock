@@ -176,6 +176,8 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 [[package]]
 name = "l5x"
 version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0c5e7bdbdf0361c05147df04c8ed5a10f3160d0d4004e5652600a8071b2110ae"
 dependencies = [
  "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-xml",
@@ -185,11 +187,11 @@ dependencies = [
 
 [[package]]
 name = "l5x"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c5e7bdbdf0361c05147df04c8ed5a10f3160d0d4004e5652600a8071b2110ae"
+version = "0.3.1"
 dependencies = [
  "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iectypes 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "plcmodel 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -219,7 +221,7 @@ version = "0.2.0"
 dependencies = [
  "clap",
  "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "l5x 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "l5x 0.3.0",
  "quick-xml",
  "serde",
  "serde_json",
@@ -259,7 +261,7 @@ name = "plcviz"
 version = "0.2.1"
 dependencies = [
  "clap",
- "l5x 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "l5x 0.3.0",
  "layout-rs",
  "regex",
 ]
