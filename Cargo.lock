@@ -229,6 +229,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "plcopen"
+version = "0.1.0"
+dependencies = [
+ "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "quick-xml",
+ "serde",
+]
+
+[[package]]
 name = "plcviz"
 version = "0.2.1"
 dependencies = [
