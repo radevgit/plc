@@ -8,6 +8,7 @@
 //! - Fast, type-safe parsing using quick-xml and serde
 //! - Generated types from the official PLCopen TC6 XML schema (v2.01)
 //! - Support for all IEC 61131-3 languages (ST, IL, LD, FBD, SFC)
+//! - ST code extraction and parsing via `iecst`
 //!
 //! # Example
 //!
@@ -18,6 +19,18 @@
 //! let xml = std::fs::read_to_string("project.xml")?;
 //! let project: Project = plcopen::from_str(&xml)?;
 //! println!("Project: {:?}", project);
+//! ```
+//!
+//! # ST Code Extraction
+//!
+//! ```ignore
+//! use plcopen::st::{extract_st_from_xml, parse_st};
+//!
+//! let xml = std::fs::read_to_string("project.xml")?;
+//! for (pou_name, st_code) in plcopen::st::extract_all_st_from_xml(&xml) {
+//!     let statements = parse_st(&st_code)?;
+//!     println!("{}: {} statements", pou_name, statements.len());
+//! }
 //! ```
 
 #![allow(dead_code)]
@@ -31,6 +44,9 @@ use serde::{Deserialize, Serialize};
 #[path = "../generated/generated.rs"]
 mod generated;
 pub use generated::*;
+
+// ST extraction and parsing
+pub mod st;
 
 /// Type alias for the root project element
 pub type Project = Root_project_Inline;
@@ -210,5 +226,46 @@ mod tests {
 
         assert!(failed.is_empty(), "Failed to parse {} examples: {:?}", failed.len(), failed);
         eprintln!("Successfully parsed {} example files", parsed);
+    }
+
+    #[test]
+    fn test_extract_st_from_real_files() {
+        let base = std::path::Path::new(env!("HOME"))
+            .join("devpublic/dataplc/plcopen/bbr/exemples");
+        
+        if !base.exists() {
+            eprintln!("Skipping test: examples not found");
+            return;
+        }
+
+        let path = base.join("first_steps/plc.xml");
+        if !path.exists() {
+            eprintln!("Skipping test: first_steps not found");
+            return;
+        }
+
+        let xml = std::fs::read_to_string(&path).expect("Failed to read file");
+        let st_blocks = crate::st::extract_all_st_from_xml(&xml);
+        
+        assert!(!st_blocks.is_empty(), "Expected ST code in first_steps");
+        
+        let mut parsed_count = 0;
+        eprintln!("Found {} POUs with ST code:", st_blocks.len());
+        for (name, code) in &st_blocks {
+            eprintln!("  {}: {} chars", name, code.len());
+            
+            // Skip very short code (likely SFC conditions like "TRUE")
+            if code.len() < 10 {
+                eprintln!("    (skipped - too short, likely SFC condition)");
+                continue;
+            }
+            
+            // Parse each ST block
+            let result = crate::st::parse_st(code);
+            assert!(result.is_ok(), "Failed to parse ST in {}: {:?}\nCode: {}", name, result.err(), code);
+            parsed_count += 1;
+        }
+        
+        assert!(parsed_count > 0, "Expected at least one parseable ST block");
     }
 }
