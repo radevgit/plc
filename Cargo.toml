@@ -4,6 +4,7 @@ members = [
     "iectypes",
     "plcmodel",
     "l5x",
+    "plcopen",
     "iecst",
     "plceye",
     "plcviz",
