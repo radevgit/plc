@@ -175,7 +175,7 @@ fn looks_like_expression(s: &str) -> bool {
     // Track if we've seen a non-whitespace char to detect subtraction vs negative
     let mut seen_term = false;
     
-    for (_i, &c) in chars.iter().enumerate() {
+    for &c in chars.iter() {
         match c {
             '(' => paren_depth += 1,
             ')' => paren_depth -= 1,

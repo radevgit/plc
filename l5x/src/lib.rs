@@ -35,10 +35,6 @@ use serde::{Deserialize, Serialize};
 // RLL (Relay Ladder Logic) parser
 pub mod rll;
 
-// Conversion to plcmodel (when feature enabled)
-#[cfg(feature = "model")]
-pub mod to_model;
-
 // Include pre-generated types (no build.rs needed)
 #[path = "../generated/generated.rs"]
 mod generated;

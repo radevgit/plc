@@ -208,9 +208,10 @@ pub fn extract_st_call_names(pou: &Pou) -> Vec<String> {
                 for s in body { visit_stmt(s, calls); }
                 visit_expr(until, calls);
             }
-            StmtKind::Return { value } => {
-                if let Some(v) = value { visit_expr(v, calls); }
+            StmtKind::Return { value: Some(v) } => {
+                visit_expr(v, calls);
             }
+            StmtKind::Return { value: None } => {}
             StmtKind::Call { name, args } => {
                 calls.push(name.clone());
                 for arg in args {

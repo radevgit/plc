@@ -89,7 +89,7 @@ impl LoadedProject {
         let format = path
             .and_then(|p| FileFormat::detect(p, content))
             .or_else(|| FileFormat::from_content(content))
-            .ok_or_else(|| Error::L5xParse {
+            .ok_or(Error::L5xParse {
                 kind: L5xParseErrorKind::XmlDeserialize,
             })?;
         

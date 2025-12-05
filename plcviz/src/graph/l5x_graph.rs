@@ -200,7 +200,7 @@ impl L5xGraph {
             
             // Calculate width based on text length (approx 9px per char + padding)
             let text_width = (node.label.len() as f64) * 9.0 + 40.0;
-            let width = text_width.max(80.0).min(350.0); // min 80, max 350
+            let width = text_width.clamp(80.0, 350.0); // min 80, max 350
             let sz = Point::new(width, 40.);
 
             let element = Element::create(shape, look, Orientation::LeftToRight, sz);

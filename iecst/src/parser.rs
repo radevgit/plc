@@ -884,7 +884,7 @@ impl<'a> Parser<'a> {
         }
 
         // Parse body
-        let body = self.parse_statements_until(&[end_token.clone()])?;
+        let body = self.parse_statements_until(std::slice::from_ref(&end_token))?;
 
         let end = self.expect(&end_token, "END_*")?.span;
 

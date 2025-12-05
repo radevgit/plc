@@ -142,10 +142,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "iectypes"
-version = "0.1.0"
-
-[[package]]
 name = "indexmap"
 version = "2.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -184,8 +180,6 @@ name = "l5x"
 version = "0.3.1"
 dependencies = [
  "iecst 0.1.0",
- "iectypes",
- "plcmodel",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -225,26 +219,17 @@ dependencies = [
 ]
 
 [[package]]
-name = "plcmodel"
-version = "0.1.0"
-dependencies = [
- "iectypes",
-]
-
-[[package]]
 name = "plcopen"
 version = "0.1.1"
 dependencies = [
  "iecst 0.1.0",
- "iectypes",
- "plcmodel",
  "quick-xml",
  "serde",
 ]
 
 [[package]]
 name = "plcviz"
-version = "0.2.1"
+version = "0.3.0"
 dependencies = [
  "clap",
  "l5x 0.3.0",

@@ -1,6 +1,8 @@
 // Auto-generated L5X types from XSD schema
 // DO NOT EDIT MANUALLY
 
+#![allow(clippy::large_enum_variant)]
+
 use serde::{Deserialize, Serialize};
 
 #[path = "generated_programs.rs"]

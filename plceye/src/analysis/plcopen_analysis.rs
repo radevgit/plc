@@ -193,7 +193,7 @@ fn analyze_pou(pou: &Pou, analysis: &mut PlcopenAnalysis) {
 fn add_variable(var: &Variable, pou_name: &str, var_class: VarClass, analysis: &mut PlcopenAnalysis) {
     analysis.stats.variables += 1;
     
-    let data_type = var.r#type.as_ref().and_then(|t| extract_type_name(t));
+    let data_type = var.r#type.as_ref().and_then(extract_type_name);
     
     let def = VariableDef {
         name: var.name.clone(),

@@ -1,8 +1,6 @@
 [workspace]
 resolver = "2"
 members = [
-    "iectypes",
-    "plcmodel",
     "l5x",
     "plcopen",
     "iecst",
