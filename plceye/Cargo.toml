@@ -15,11 +15,11 @@ rust-version = "1.70"
 
 [dependencies]
 # Format parsers
-l5x = { path = "../l5x" }
-plcopen = { path = "../plcopen" }
+l5x = { version = "0.3", path = "../l5x" }
+plcopen = { version = "0.1", path = "../plcopen" }
 
 # ST parsing
-iecst = { path = "../iecst" }
+iecst = { version = "0.1", path = "../iecst" }
 
 # Serialization
 quick-xml = { version = "0.37", features = ["serialize"] }
