@@ -1,43 +1,36 @@
-//! Model-based smell detectors.
-//!
-//! These detectors work on plcmodel::Project for format-independent analysis.
+//! PLCopen-specific smell detectors.
 
-use crate::analysis::ModelAnalysis;
-use crate::config::{UnusedTagsConfig, UndefinedTagsConfig, EmptyRoutinesConfig};
+use crate::analysis::PlcopenAnalysis;
+use crate::config::{EmptyRoutinesConfig, UndefinedTagsConfig, UnusedTagsConfig};
 use crate::report::{Report, Severity, Smell, SmellKind};
 
-/// Detect unused tags using model analysis.
-pub struct ModelUnusedTagsDetector<'a> {
+/// Detect unused variables in PLCopen projects.
+pub struct PlcopenUnusedVarsDetector<'a> {
     config: &'a UnusedTagsConfig,
 }
 
-impl<'a> ModelUnusedTagsDetector<'a> {
+impl<'a> PlcopenUnusedVarsDetector<'a> {
     pub fn new(config: &'a UnusedTagsConfig) -> Self {
         Self { config }
     }
 
-    pub fn detect(&self, analysis: &ModelAnalysis, report: &mut Report) {
+    pub fn detect(&self, analysis: &PlcopenAnalysis, report: &mut Report) {
         if !self.config.enabled {
             return;
         }
 
-        for var_def in analysis.unused_tags() {
+        for var in analysis.unused_variables() {
             // Skip if matches ignore pattern
-            if self.matches_ignore_pattern(&var_def.name) {
-                continue;
-            }
-
-            // Skip if in ignored scope
-            if self.matches_ignore_scope(&var_def.scope) {
+            if self.matches_ignore_pattern(&var.name) {
                 continue;
             }
 
             report.add(Smell::new(
                 SmellKind::UnusedTag,
-                Severity::Info,
-                var_def.scope.clone(),
-                var_def.name.clone(),
-                format!("Tag '{}' is defined but never used", var_def.name),
+                Severity::Warning,
+                var.pou_name.clone(),
+                var.name.clone(),
+                format!("Variable '{}' is defined but never used", var.name),
             ));
         }
     }
@@ -50,82 +43,51 @@ impl<'a> ModelUnusedTagsDetector<'a> {
         }
         false
     }
-
-    fn matches_ignore_scope(&self, scope: &str) -> bool {
-        self.config.ignore_scopes.iter().any(|s| s == scope)
-    }
 }
 
-/// Detect undefined tags using model analysis.
-pub struct ModelUndefinedTagsDetector<'a> {
+/// Detect undefined variables in PLCopen projects.
+pub struct PlcopenUndefinedVarsDetector<'a> {
     config: &'a UndefinedTagsConfig,
 }
 
-impl<'a> ModelUndefinedTagsDetector<'a> {
+impl<'a> PlcopenUndefinedVarsDetector<'a> {
     pub fn new(config: &'a UndefinedTagsConfig) -> Self {
         Self { config }
     }
 
-    pub fn detect(&self, analysis: &ModelAnalysis, report: &mut Report) {
+    pub fn detect(&self, analysis: &PlcopenAnalysis, report: &mut Report) {
         if !self.config.enabled {
             return;
         }
 
-        for tag_name in analysis.undefined_tags() {
-            // Skip builtins
-            if self.is_builtin(tag_name) {
-                continue;
-            }
-
-            // Skip if matches ignore pattern
-            if self.matches_ignore_pattern(tag_name) {
+        for var_name in analysis.undefined_variables() {
+            // Skip if it's a POU name (function/FB call)
+            if analysis.pou_names.contains(var_name) {
                 continue;
             }
 
             report.add(Smell::new(
                 SmellKind::UndefinedTag,
-                Severity::Warning,
-                "Project".to_string(),
-                tag_name.clone(),
-                format!("Tag '{}' is used but not defined", tag_name),
+                Severity::Info,
+                "project".to_string(),
+                var_name.clone(),
+                format!("Variable '{}' is used but not defined (may be external)", var_name),
             ));
         }
     }
-
-    fn is_builtin(&self, name: &str) -> bool {
-        // Common builtin names
-        matches!(name.to_uppercase().as_str(),
-            "S:FS" | "S:Z" | "S:N" | "S:C" | "S:V" | "AFI" | "NOP" |
-            "XIC" | "XIO" | "OTE" | "OTL" | "OTU" | "ONS" | "OSR" | "OSF" |
-            "TON" | "TOF" | "RTO" | "CTU" | "CTD" | "RES" |
-            "ADD" | "SUB" | "MUL" | "DIV" | "MOD" | "NEG" | "ABS" | "SQRT" |
-            "MOV" | "COP" | "CPS" | "FLL" | "CLR" |
-            "EQU" | "NEQ" | "LES" | "LEQ" | "GRT" | "GEQ" | "CMP" | "LIM" |
-            "JSR" | "JMP" | "LBL" | "RET" | "SBR" | "TND" | "MCR" | "END"
-        )
-    }
-
-    fn matches_ignore_pattern(&self, name: &str) -> bool {
-        for pattern in &self.config.ignore_patterns {
-            if glob_match(pattern, name) {
-                return true;
-            }
-        }
-        false
-    }
 }
 
-/// Detect empty POUs using model analysis.
-pub struct ModelEmptyRoutinesDetector<'a> {
+/// Detect empty POUs in PLCopen projects.
+pub struct PlcopenEmptyPousDetector<'a> {
     config: &'a EmptyRoutinesConfig,
 }
 
-impl<'a> ModelEmptyRoutinesDetector<'a> {
+impl<'a> PlcopenEmptyPousDetector<'a> {
     pub fn new(config: &'a EmptyRoutinesConfig) -> Self {
         Self { config }
     }
 
-    pub fn detect(&self, analysis: &ModelAnalysis, report: &mut Report) {
+    pub fn detect(&self, analysis: &PlcopenAnalysis, report: &mut Report) {
         if !self.config.enabled {
             return;
         }
@@ -141,7 +103,7 @@ impl<'a> ModelEmptyRoutinesDetector<'a> {
                 Severity::Info,
                 pou_name.clone(),
                 pou_name.clone(),
-                format!("POU '{}' has no code", pou_name),
+                format!("POU '{}' has no implementation", pou_name),
             ));
         }
     }
@@ -164,14 +126,11 @@ fn glob_match(pattern: &str, text: &str) -> bool {
     while let Some(p) = pattern_chars.next() {
         match p {
             '*' => {
-                // * matches any sequence
                 if pattern_chars.peek().is_none() {
-                    return true; // trailing * matches everything
+                    return true;
                 }
-                // Try matching rest of pattern at each position in remaining text
                 let rest_pattern: String = pattern_chars.collect();
                 let rest_text: String = text_chars.collect();
-                // Try matching from each position
                 for i in 0..=rest_text.len() {
                     if glob_match(&rest_pattern, &rest_text[i..]) {
                         return true;
@@ -180,13 +139,11 @@ fn glob_match(pattern: &str, text: &str) -> bool {
                 return false;
             }
             '?' => {
-                // ? matches any single character
                 if text_chars.next().is_none() {
                     return false;
                 }
             }
             c => {
-                // Literal character must match
                 if text_chars.next() != Some(c) {
                     return false;
                 }

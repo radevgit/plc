@@ -14,12 +14,9 @@ authors = ["radevgit"]
 rust-version = "1.70"
 
 [dependencies]
-# Format parsers with plcmodel conversion
-l5x = { path = "../l5x", features = ["model"] }
-plcopen = { path = "../plcopen", features = ["model"] }
-
-# Core model
-plcmodel = { path = "../plcmodel" }
+# Format parsers
+l5x = { path = "../l5x" }
+plcopen = { path = "../plcopen" }
 iectypes = { path = "../iectypes" }
 
 # ST parsing

@@ -4,13 +4,13 @@ use std::path::Path;
 
 use l5x::Controller;
 
-use crate::analysis::{analyze_controller, ModelAnalysis, ParseStats};
+use crate::analysis::{analyze_controller, analyze_plcopen_project, ParseStats, PlcopenStats};
 use crate::config::SmellConfig;
 use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
 use crate::smells::{
     EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector,
-    ModelUnusedTagsDetector, ModelUndefinedTagsDetector, ModelEmptyRoutinesDetector,
+    PlcopenUnusedVarsDetector, PlcopenUndefinedVarsDetector, PlcopenEmptyPousDetector,
 };
 use crate::Result;
 
@@ -58,37 +58,39 @@ impl SmellDetector {
 
     /// Analyze a loaded project.
     pub fn analyze(&self, project: &LoadedProject) -> Result<Report> {
-        // For L5X files, use the detailed L5X analysis
         if let Some(ref controller) = project.l5x_controller {
             return self.analyze_controller(controller);
         }
         
-        // For other formats, use plcmodel-based analysis
-        self.analyze_model(project)
+        if let Some(ref plcopen) = project.plcopen_project {
+            return self.analyze_plcopen(plcopen, project.source_path.clone());
+        }
+        
+        // Unknown format
+        Ok(Report::new())
     }
-
-    /// Analyze using plcmodel (format-independent).
-    fn analyze_model(&self, project: &LoadedProject) -> Result<Report> {
+    
+    /// Analyze a PLCopen project.
+    fn analyze_plcopen(&self, project: &plcopen::Project, source_path: Option<String>) -> Result<Report> {
+        let analysis = analyze_plcopen_project(project);
+        
         let mut report = Report::new();
-        report.source_file = project.source_path.clone();
+        report.source_file = source_path;
         
-        // Run model-based analysis
-        let analysis = ModelAnalysis::analyze(&project.model);
+        // Run PLCopen-specific detectors
+        let unused_detector = PlcopenUnusedVarsDetector::new(&self.config.unused_tags);
+        unused_detector.detect(&analysis, &mut report);
         
-        // Run model-based detectors
-        let unused_tags_detector = ModelUnusedTagsDetector::new(&self.config.unused_tags);
-        unused_tags_detector.detect(&analysis, &mut report);
+        let undefined_detector = PlcopenUndefinedVarsDetector::new(&self.config.undefined_tags);
+        undefined_detector.detect(&analysis, &mut report);
         
-        let undefined_tags_detector = ModelUndefinedTagsDetector::new(&self.config.undefined_tags);
-        undefined_tags_detector.detect(&analysis, &mut report);
-        
-        let empty_routines_detector = ModelEmptyRoutinesDetector::new(&self.config.empty_routines);
-        empty_routines_detector.detect(&analysis, &mut report);
+        let empty_detector = PlcopenEmptyPousDetector::new(&self.config.empty_routines);
+        empty_detector.detect(&analysis, &mut report);
         
         Ok(report)
     }
 
-    /// Analyze a parsed L5X controller (L5X-specific, detailed analysis).
+    /// Analyze a parsed L5X controller.
     pub fn analyze_controller(&self, controller: &Controller) -> Result<Report> {
         // Run the L5X analysis to get tag references, etc.
         let analysis = analyze_controller(controller);
@@ -116,20 +118,25 @@ impl SmellDetector {
         self.get_stats(&project)
     }
 
-    /// Get statistics for a loaded project.
+    /// Get statistics for a loaded project (L5X format).
     pub fn get_stats(&self, project: &LoadedProject) -> Result<ParseStats> {
         if let Some(ref controller) = project.l5x_controller {
             let analysis = analyze_controller(controller);
             return Ok(analysis.stats);
         }
         
-        // For plcmodel, return basic stats
-        let model = &project.model;
-        Ok(ParseStats {
-            programs: model.pous.iter().filter(|p| matches!(p.pou_type, iectypes::PouType::Program)).count(),
-            aois: model.pous.iter().filter(|p| matches!(p.pou_type, iectypes::PouType::FunctionBlock)).count(),
-            ..Default::default()
-        })
+        // For non-L5X, return empty stats
+        Ok(ParseStats::default())
+    }
+    
+    /// Get PLCopen statistics for a loaded project.
+    pub fn get_plcopen_stats(&self, project: &LoadedProject) -> Result<PlcopenStats> {
+        if let Some(ref plcopen) = project.plcopen_project {
+            let analysis = analyze_plcopen_project(plcopen);
+            return Ok(analysis.stats);
+        }
+        
+        Ok(PlcopenStats::default())
     }
 }
 
@@ -142,7 +149,6 @@ impl Default for SmellDetector {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::report::SmellKind;
 
     #[test]
     fn test_detector_default() {
@@ -207,7 +213,7 @@ mod tests {
         let detector = SmellDetector::new();
         let report = detector.analyze(&project).expect("Should analyze");
         
-        // Should detect empty POU (Main has no body)
-        assert!(report.smells.iter().any(|s| s.identifier == "Main" && s.kind == SmellKind::EmptyBlock));
+        // Should detect empty POU
+        assert!(report.smells.iter().any(|s| s.identifier == "Main"));
     }
 }

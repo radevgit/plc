@@ -1,11 +1,8 @@
 //! Unified project loading from multiple formats.
 //!
-//! This module provides format detection and loading for L5X and PLCopen files,
-//! converting them to the common plcmodel representation.
+//! This module provides format detection and loading for L5X and PLCopen files.
 
 use std::path::Path;
-
-use plcmodel::{Project as PlcProject, ToPlcModel};
 
 use crate::error::{Error, L5xParseErrorKind, Result};
 
@@ -59,13 +56,13 @@ impl FileFormat {
     }
 }
 
-/// A loaded project with its original format data.
+/// A loaded project with its format-specific data.
 pub struct LoadedProject {
-    /// The original L5X controller (for L5X-specific analysis)
+    /// The L5X controller (for L5X files)
     pub l5x_controller: Option<l5x::Controller>,
     
-    /// The plcmodel representation (for format-independent analysis)
-    pub model: PlcProject,
+    /// The PLCopen project (for PLCopen files)
+    pub plcopen_project: Option<plcopen::Project>,
     
     /// Detected format
     pub format: FileFormat,
@@ -108,12 +105,9 @@ impl LoadedProject {
                 kind: L5xParseErrorKind::XmlDeserialize,
             })?;
         
-        let controller = project.controller.clone();
-        let model = project.to_plc_model();
-        
         Ok(LoadedProject {
-            l5x_controller: controller,
-            model,
+            l5x_controller: project.controller,
+            plcopen_project: None,
             format: FileFormat::L5x,
             source_path: None,
         })
@@ -125,24 +119,35 @@ impl LoadedProject {
                 kind: L5xParseErrorKind::XmlDeserialize,
             })?;
         
-        let model = project.to_plc_model();
-        
         Ok(LoadedProject {
             l5x_controller: None,
-            model,
+            plcopen_project: Some(project),
             format: FileFormat::PlcOpen,
             source_path: None,
         })
     }
     
-    /// Check if this is an L5X file (enables L5X-specific analysis).
+    /// Check if this is an L5X file.
     pub fn is_l5x(&self) -> bool {
         self.l5x_controller.is_some()
     }
     
+    /// Check if this is a PLCopen file.
+    pub fn is_plcopen(&self) -> bool {
+        self.plcopen_project.is_some()
+    }
+    
     /// Get the project name.
-    pub fn name(&self) -> &str {
-        &self.model.name
+    pub fn name(&self) -> String {
+        if let Some(ref c) = self.l5x_controller {
+            return c.name.clone();
+        }
+        if let Some(ref p) = self.plcopen_project {
+            if let Some(ref header) = p.content_header {
+                return header.name.clone();
+            }
+        }
+        "Unknown".to_string()
     }
 }
 
@@ -210,7 +215,8 @@ mod tests {
         
         let loaded = LoadedProject::from_str(xml, None).expect("Should parse");
         assert!(!loaded.is_l5x());
+        assert!(loaded.is_plcopen());
         assert_eq!(loaded.format, FileFormat::PlcOpen);
-        assert_eq!(loaded.name(), "TestProject");
+        assert_eq!(loaded.name(), "Test");
     }
 }

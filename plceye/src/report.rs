@@ -38,21 +38,37 @@ impl Severity {
 /// Kind of code smell detected.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SmellKind {
-    /// Tag is defined but never used
+    /// P00001: Tag is defined but never used
     UnusedTag,
-    /// Tag is used but never defined (might be external/aliased)
+    /// P00002: Tag is used but never defined (might be external/aliased)
     UndefinedTag,
-    /// Empty routine or rung
+    /// P00003: Empty routine or POU
     EmptyBlock,
+}
+
+impl SmellKind {
+    /// Get the rule code (e.g., "P00001").
+    pub fn code(&self) -> &'static str {
+        match self {
+            SmellKind::UnusedTag => "P00001",
+            SmellKind::UndefinedTag => "P00002",
+            SmellKind::EmptyBlock => "P00003",
+        }
+    }
+    
+    /// Get the rule name (e.g., "unused-tag").
+    pub fn name(&self) -> &'static str {
+        match self {
+            SmellKind::UnusedTag => "unused-tag",
+            SmellKind::UndefinedTag => "undefined-tag",
+            SmellKind::EmptyBlock => "empty-block",
+        }
+    }
 }
 
 impl fmt::Display for SmellKind {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            SmellKind::UnusedTag => write!(f, "unused-tag"),
-            SmellKind::UndefinedTag => write!(f, "undefined-tag"),
-            SmellKind::EmptyBlock => write!(f, "empty-block"),
-        }
+        write!(f, "{}", self.code())
     }
 }
 
