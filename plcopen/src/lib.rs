@@ -48,6 +48,13 @@ pub use generated::*;
 // ST extraction and parsing
 pub mod st;
 
+// Conversion to plcmodel (requires model feature)
+#[cfg(feature = "model")]
+pub mod to_model;
+
+#[cfg(feature = "model")]
+pub use plcmodel::ToPlcModel;
+
 /// Type alias for the root project element
 pub type Project = Root_project_Inline;
 
