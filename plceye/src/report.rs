@@ -38,27 +38,27 @@ impl Severity {
 /// Kind of code smell detected.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SmellKind {
-    /// P00001: Tag is defined but never used
+    /// C0001: Tag is defined but never used
     UnusedTag,
-    /// P00002: Tag is used but never defined (might be external/aliased)
+    /// C0002: Tag is used but never defined (might be external/aliased)
     UndefinedTag,
-    /// P00003: Empty routine or POU
+    /// C0003: Empty routine or POU
     EmptyBlock,
-    /// P00004: AOI is defined but never called
+    /// C0004: AOI is defined but never called
     UnusedAoi,
-    /// P00005: DataType is defined but never used
+    /// C0005: DataType is defined but never used
     UnusedDataType,
 }
 
 impl SmellKind {
-    /// Get the rule code (e.g., "P00001").
+    /// Get the rule code (e.g., "C0001").
     pub fn code(&self) -> &'static str {
         match self {
-            SmellKind::UnusedTag => "P00001",
-            SmellKind::UndefinedTag => "P00002",
-            SmellKind::EmptyBlock => "P00003",
-            SmellKind::UnusedAoi => "P00004",
-            SmellKind::UnusedDataType => "P00005",
+            SmellKind::UnusedTag => "C0001",
+            SmellKind::UndefinedTag => "C0002",
+            SmellKind::EmptyBlock => "C0003",
+            SmellKind::UnusedAoi => "C0004",
+            SmellKind::UnusedDataType => "C0005",
         }
     }
     
