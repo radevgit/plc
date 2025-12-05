@@ -146,12 +146,6 @@ name = "iectypes"
 version = "0.1.0"
 
 [[package]]
-name = "iectypes"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b4c00406c90e9286796e39b14d5a1d767cdcfa3cdcc6e5d5fc47de9f82eca77b"
-
-[[package]]
 name = "indexmap"
 version = "2.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -189,9 +183,9 @@ dependencies = [
 name = "l5x"
 version = "0.3.1"
 dependencies = [
- "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "iectypes 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "plcmodel 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iecst 0.1.0",
+ "iectypes",
+ "plcmodel",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -217,11 +211,14 @@ checksum = "384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe"
 
 [[package]]
 name = "plceye"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "clap",
- "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "l5x 0.3.0",
+ "iecst 0.1.0",
+ "iectypes",
+ "l5x 0.3.1",
+ "plcmodel",
+ "plcopen",
  "quick-xml",
  "serde",
  "serde_json",
@@ -233,25 +230,16 @@ dependencies = [
 name = "plcmodel"
 version = "0.1.0"
 dependencies = [
- "iectypes 0.1.0",
-]
-
-[[package]]
-name = "plcmodel"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71f1bec5510bc6835136cdba0ecc87a33ac7ba53635ab0cdab1d0363c02e84d1"
-dependencies = [
- "iectypes 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iectypes",
 ]
 
 [[package]]
 name = "plcopen"
 version = "0.1.1"
 dependencies = [
- "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "iectypes 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "plcmodel 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iecst 0.1.0",
+ "iectypes",
+ "plcmodel",
  "quick-xml",
  "serde",
 ]

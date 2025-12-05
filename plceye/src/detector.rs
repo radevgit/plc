@@ -6,7 +6,7 @@ use l5x::Controller;
 
 use crate::analysis::{analyze_controller, ParseStats};
 use crate::config::SmellConfig;
-use crate::error::{Error, L5xParseErrorKind};
+use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
 use crate::smells::{EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector};
 use crate::Result;
@@ -45,34 +45,37 @@ impl SmellDetector {
         Severity::parse(&self.config.general.min_severity).unwrap_or(Severity::Info)
     }
 
-    /// Analyze an L5X file and return a report.
+    /// Analyze a file (L5X or PLCopen) and return a report.
     pub fn analyze_file(&self, path: &Path) -> Result<Report> {
-        let content = std::fs::read_to_string(path).map_err(|e| Error::FileRead {
-            path: path.display().to_string(),
-            source: e,
-        })?;
-
-        let mut report = self.analyze_str(&content)?;
-        report.source_file = Some(path.display().to_string());
+        let project = LoadedProject::from_file(path)?;
+        let mut report = self.analyze(&project)?;
+        report.source_file = project.source_path;
         Ok(report)
     }
 
-    /// Analyze L5X content from a string.
-    pub fn analyze_str(&self, content: &str) -> Result<Report> {
-        // Parse the L5X file
-        let project: l5x::Project = quick_xml::de::from_str(content)
-            .map_err(|_| Error::L5xParse {
-                kind: L5xParseErrorKind::XmlDeserialize,
-            })?;
-
-        let controller = project.controller.ok_or(Error::L5xParse {
-            kind: L5xParseErrorKind::MissingElement("Controller"),
-        })?;
-
-        self.analyze_controller(&controller)
+    /// Analyze a loaded project.
+    pub fn analyze(&self, project: &LoadedProject) -> Result<Report> {
+        // For L5X files, use the detailed L5X analysis
+        if let Some(ref controller) = project.l5x_controller {
+            return self.analyze_controller(controller);
+        }
+        
+        // For other formats, use plcmodel-based analysis
+        self.analyze_model(project)
     }
 
-    /// Analyze a parsed controller.
+    /// Analyze using plcmodel (format-independent).
+    fn analyze_model(&self, project: &LoadedProject) -> Result<Report> {
+        let mut report = Report::new();
+        
+        // TODO: Implement plcmodel-based analysis
+        // For now, just return basic info
+        report.source_file = project.source_path.clone();
+        
+        Ok(report)
+    }
+
+    /// Analyze a parsed L5X controller (L5X-specific, detailed analysis).
     pub fn analyze_controller(&self, controller: &Controller) -> Result<Report> {
         // Run the L5X analysis to get tag references, etc.
         let analysis = analyze_controller(controller);
@@ -94,29 +97,26 @@ impl SmellDetector {
         Ok(report)
     }
 
-    /// Get statistics for an L5X file without running smell detection.
+    /// Get statistics for a file without running smell detection.
     pub fn get_stats_file(&self, path: &Path) -> Result<ParseStats> {
-        let content = std::fs::read_to_string(path).map_err(|e| Error::FileRead {
-            path: path.display().to_string(),
-            source: e,
-        })?;
-
-        self.get_stats_str(&content)
+        let project = LoadedProject::from_file(path)?;
+        self.get_stats(&project)
     }
 
-    /// Get statistics for L5X content from a string.
-    pub fn get_stats_str(&self, content: &str) -> Result<ParseStats> {
-        let project: l5x::Project = quick_xml::de::from_str(content)
-            .map_err(|_| Error::L5xParse {
-                kind: L5xParseErrorKind::XmlDeserialize,
-            })?;
-
-        let controller = project.controller.ok_or(Error::L5xParse {
-            kind: L5xParseErrorKind::MissingElement("Controller"),
-        })?;
-
-        let analysis = analyze_controller(&controller);
-        Ok(analysis.stats)
+    /// Get statistics for a loaded project.
+    pub fn get_stats(&self, project: &LoadedProject) -> Result<ParseStats> {
+        if let Some(ref controller) = project.l5x_controller {
+            let analysis = analyze_controller(controller);
+            return Ok(analysis.stats);
+        }
+        
+        // For plcmodel, return basic stats
+        let model = &project.model;
+        Ok(ParseStats {
+            programs: model.pous.iter().filter(|p| matches!(p.pou_type, iectypes::PouType::Program)).count(),
+            aois: model.pous.iter().filter(|p| matches!(p.pou_type, iectypes::PouType::FunctionBlock)).count(),
+            ..Default::default()
+        })
     }
 }
 
@@ -142,5 +142,58 @@ mod tests {
         config.unused_tags.enabled = false;
         let detector = SmellDetector::with_config(config);
         assert!(!detector.config().unused_tags.enabled);
+    }
+
+    #[test]
+    fn test_analyze_l5x() {
+        let xml = r#"<?xml version="1.0"?>
+        <RSLogix5000Content SchemaRevision="1.0" SoftwareRevision="32.00">
+            <Controller Name="TestController">
+                <Tags>
+                    <Tag Name="Unused" DataType="BOOL"/>
+                </Tags>
+                <Programs>
+                    <Program Name="MainProgram">
+                        <Routines>
+                            <Routine Name="MainRoutine" Type="RLL">
+                                <RLLContent>
+                                    <Rung Number="0">
+                                        <Text>NOP();</Text>
+                                    </Rung>
+                                </RLLContent>
+                            </Routine>
+                        </Routines>
+                    </Program>
+                </Programs>
+            </Controller>
+        </RSLogix5000Content>"#;
+        
+        let project = LoadedProject::from_str(xml, None).expect("Should parse");
+        let detector = SmellDetector::new();
+        let report = detector.analyze(&project).expect("Should analyze");
+        
+        // Should detect unused tag
+        assert!(!report.smells.is_empty());
+    }
+
+    #[test]
+    fn test_analyze_plcopen() {
+        let xml = r#"<?xml version="1.0"?>
+        <project xmlns="http://www.plcopen.org/xml/tc6_0200">
+            <fileHeader companyName="Test" productName="TestProject" productVersion="1.0" creationDateTime="2024-01-01T00:00:00"/>
+            <contentHeader name="Test"/>
+            <types>
+                <pous>
+                    <pou name="Main" pouType="program"/>
+                </pous>
+            </types>
+        </project>"#;
+        
+        let project = LoadedProject::from_str(xml, None).expect("Should parse");
+        let detector = SmellDetector::new();
+        let report = detector.analyze(&project).expect("Should analyze");
+        
+        // PLCopen analysis is basic for now
+        assert!(report.smells.is_empty());
     }
 }
