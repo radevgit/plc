@@ -3,9 +3,7 @@
 //! This module provides the [`ToPlcModel`] implementation for PLCopen projects,
 //! converting parsed XML into the vendor-neutral `plcmodel` representation.
 
-use plcmodel::{
-    DataTypeDef, Pou, PouInterface, Project, ToPlcModel, Variable,
-};
+use plcmodel::{Pou, PouInterface, Project, ToPlcModel, Variable};
 use iectypes::{PouType, VarClass};
 
 use crate::{
