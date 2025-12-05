@@ -10,17 +10,31 @@
 //! - **CallGraph**: Execution flow (Routine → Routine via JSR/AOI calls)
 //! - **Combined**: Both structure and calls
 //!
-//! # Example
+//! # CLI Usage
+//!
+//! ```text
+//! plcviz [OPTIONS] <FILE>
+//!
+//! Arguments:
+//!   <FILE>  L5X file to visualize
+//!
+//! Options:
+//!   -t, --type <TYPE>  Graph type: structure, call, dataflow, combined [default: structure]
+//!   -o, --output <FILE>  Output file (default: stdout)
+//!   -h, --help         Print help
 //! ```
-//! use plcviz::L5xGraph;
 //!
-//! let mut graph = L5xGraph::new();
-//! graph.add_program("MainProgram");
-//! graph.add_routine("MainProgram", "MainRoutine");
-//! graph.add_call("MainRoutine", "SubRoutine");
+//! # Examples
 //!
-//! let svg = graph.render_svg();
-//! assert!(svg.contains("<svg"));
+//! ```bash
+//! # Generate structure graph
+//! plcviz project.L5X > graph.svg
+//!
+//! # Generate call graph
+//! plcviz -t call project.L5X > calls.svg
+//!
+//! # Generate combined graph to file
+//! plcviz -t combined -o combined.svg project.L5X
 //! ```
 
 pub mod config;
