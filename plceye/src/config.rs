@@ -24,6 +24,12 @@ pub struct RuleConfig {
     /// Empty routine detection settings
     pub empty_routines: EmptyRoutinesConfig,
 
+    /// Unused AOI detection settings
+    pub unused_aois: UnusedAoisConfig,
+
+    /// Unused DataType detection settings
+    pub unused_datatypes: UnusedDataTypesConfig,
+
     /// Cyclomatic complexity detection settings
     pub complexity: ComplexityConfig,
 
@@ -88,6 +94,40 @@ enabled = true
 ignore_patterns = [
     # "Unused_*",    # Example: ignore placeholder routines
 ]
+
+[unused_aois]
+# Enable unused AOI detection
+enabled = true
+
+# Ignore AOIs matching these patterns
+ignore_patterns = []
+
+[unused_datatypes]
+# Enable unused DataType detection
+enabled = true
+
+# Ignore DataTypes matching these patterns
+ignore_patterns = []
+
+[complexity]
+# Enable cyclomatic complexity detection for ST routines
+enabled = true
+
+# Maximum allowed cyclomatic complexity
+max_complexity = 10
+
+# Ignore routines matching these patterns
+ignore_patterns = []
+
+[nesting]
+# Enable deep nesting detection for ST routines
+enabled = true
+
+# Maximum allowed nesting depth
+max_depth = 4
+
+# Ignore routines matching these patterns
+ignore_patterns = []
 "#
         .to_string()
     }
@@ -165,6 +205,46 @@ pub struct EmptyRoutinesConfig {
 }
 
 impl Default for EmptyRoutinesConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            ignore_patterns: vec![],
+        }
+    }
+}
+
+/// Configuration for unused AOI detection.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct UnusedAoisConfig {
+    /// Whether this detector is enabled.
+    pub enabled: bool,
+
+    /// Glob patterns for AOIs to ignore.
+    pub ignore_patterns: Vec<String>,
+}
+
+impl Default for UnusedAoisConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            ignore_patterns: vec![],
+        }
+    }
+}
+
+/// Configuration for unused DataType detection.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct UnusedDataTypesConfig {
+    /// Whether this detector is enabled.
+    pub enabled: bool,
+
+    /// Glob patterns for DataTypes to ignore.
+    pub ignore_patterns: Vec<String>,
+}
+
+impl Default for UnusedDataTypesConfig {
     fn default() -> Self {
         Self {
             enabled: true,

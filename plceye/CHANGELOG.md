@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.6.0 (2025-12-06)
+
+### Added
+- S0004: Unused AOI detection
+- S0005: Unused DataType detection
+
 ## 0.5.0 (2025-12-06)
 
 ### Added

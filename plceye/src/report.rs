@@ -102,6 +102,14 @@ pub enum RuleKind {
     NameTooShort,
     /// N0007: Name length > 30 characters
     NameTooLong,
+    /// N0008: Inconsistent naming pattern (not following conventions)
+    InconsistentNaming,
+
+    // --- Code Quality (Q) ---
+    /// Q0001: Duplicate logic that should be refactored into AOI
+    DuplicateLogic,
+    /// Q0002: Unreachable code path detected
+    UnreachableCode,
 
     // --- Vendor-Specific L5X (X) ---
     /// X0001: AOI without description
@@ -154,6 +162,10 @@ impl RuleKind {
             // Pro: Naming
             RuleKind::NameTooShort => "N0006",
             RuleKind::NameTooLong => "N0007",
+            RuleKind::InconsistentNaming => "N0008",
+            // Pro: Code Quality
+            RuleKind::DuplicateLogic => "Q0001",
+            RuleKind::UnreachableCode => "Q0002",
             // Pro: Vendor-Specific L5X
             RuleKind::AoiNoDescription => "X0001",
             RuleKind::TagNoDescription => "X0002",
@@ -196,6 +208,10 @@ impl RuleKind {
             // Naming
             RuleKind::NameTooShort => "name-too-short",
             RuleKind::NameTooLong => "name-too-long",
+            RuleKind::InconsistentNaming => "inconsistent-naming",
+            // Code Quality
+            RuleKind::DuplicateLogic => "duplicate-logic",
+            RuleKind::UnreachableCode => "unreachable-code",
             // Vendor-Specific L5X
             RuleKind::AoiNoDescription => "aoi-no-description",
             RuleKind::TagNoDescription => "tag-no-description",

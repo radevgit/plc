@@ -10,7 +10,7 @@ use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
 use crate::rules::{
     ComplexityDetector, EmptyRoutinesDetector, NestingDetector,
-    UndefinedTagsDetector, UnusedTagsDetector,
+    UndefinedTagsDetector, UnusedAoisDetector, UnusedDataTypesDetector, UnusedTagsDetector,
     PlcopenUnusedVarsDetector, PlcopenUndefinedVarsDetector, PlcopenEmptyPousDetector,
 };
 use crate::Result;
@@ -109,6 +109,14 @@ impl RuleDetector {
         // Run empty routines detector
         let empty_routines_detector = EmptyRoutinesDetector::new(&self.config.empty_routines);
         empty_routines_detector.detect(controller, &analysis, &mut report);
+
+        // Run unused AOIs detector
+        let unused_aois_detector = UnusedAoisDetector::new(&self.config.unused_aois);
+        unused_aois_detector.detect(&analysis, &mut report);
+
+        // Run unused DataTypes detector
+        let unused_datatypes_detector = UnusedDataTypesDetector::new(&self.config.unused_datatypes);
+        unused_datatypes_detector.detect(controller, &mut report);
 
         // Run cyclomatic complexity detector on ST routines
         let complexity_detector = ComplexityDetector::new(&self.config.complexity);
