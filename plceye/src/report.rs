@@ -94,6 +94,8 @@ pub enum RuleKind {
     ReturnInMiddle,
 
     // --- Metrics (M) ---
+    /// M0001: Cyclomatic complexity too high
+    CyclomaticComplexity,
     /// M0003: Deep nesting (> 4 levels)
     DeepNesting,
 
@@ -149,6 +151,7 @@ impl RuleKind {
             RuleKind::CaseWithoutElse => "S0023",
             RuleKind::ReturnInMiddle => "S0025",
             // Pro: Metrics
+            RuleKind::CyclomaticComplexity => "M0001",
             RuleKind::DeepNesting => "M0003",
             // Pro: Naming
             RuleKind::NameTooShort => "N0006",
@@ -190,6 +193,7 @@ impl RuleKind {
             RuleKind::CaseWithoutElse => "case-without-else",
             RuleKind::ReturnInMiddle => "return-in-middle",
             // Metrics
+            RuleKind::CyclomaticComplexity => "cyclomatic-complexity",
             RuleKind::DeepNesting => "deep-nesting",
             // Naming
             RuleKind::NameTooShort => "name-too-short",

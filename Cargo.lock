@@ -128,15 +128,15 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 [[package]]
 name = "iecst"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97185fca4d565a1e1ecbcc4c67bd63961ae873f83115b8b341b7d5f1a5c9b628"
 dependencies = [
  "winnow 0.7.14",
 ]
 
 [[package]]
 name = "iecst"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97185fca4d565a1e1ecbcc4c67bd63961ae873f83115b8b341b7d5f1a5c9b628"
+version = "0.2.0"
 dependencies = [
  "winnow 0.7.14",
 ]
@@ -167,7 +167,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 name = "l5x"
 version = "0.3.1"
 dependencies = [
- "iecst 0.1.0",
+ "iecst 0.2.0",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -179,7 +179,7 @@ version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "43d75945d838e5e579754c54f17dc394260f7695b4157064418e4d515f3dcd7a"
 dependencies = [
- "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iecst 0.1.0",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -208,7 +208,7 @@ name = "plceye"
 version = "0.3.0"
 dependencies = [
  "clap",
- "iecst 0.1.0",
+ "iecst 0.2.0",
  "l5x 0.3.1",
  "plcopen",
  "quick-xml",
@@ -222,7 +222,7 @@ dependencies = [
 name = "plcopen"
 version = "0.1.1"
 dependencies = [
- "iecst 0.1.0",
+ "iecst 0.2.0",
  "quick-xml",
  "serde",
 ]

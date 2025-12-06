@@ -16,7 +16,9 @@ IEC 61131-3 Structured Text parser for Rust.
 - **Minimal dependencies** (`winnow` for parsing)
 - **Detailed error reporting** with source locations
 - **AST output** for further analysis or transformation
-- **Basic static analysis** - type checking, unused variables, code smells
+- **Control Flow Graph (CFG)** - build CFGs from ST code for complexity analysis
+- **Cyclomatic complexity** - calculate code complexity metrics
+- **Basic static analysis** - type checking, unused variables, diagnostics
 
 ## Installation
 
@@ -112,4 +114,41 @@ for diag in diagnostics {
     println!("[{}] {}", diag.severity, diag.message);
 }
 ```
+
+## Control Flow Graph
+
+Build a CFG from ST statements to analyze control flow and calculate complexity:
+
+```rust
+use iecst::{parse_statements, CfgBuilder};
+
+let code = r#"
+    IF x > 0 THEN
+        y := 1;
+    ELSIF x < 0 THEN
+        y := -1;
+    ELSE
+        y := 0;
+    END_IF;
+"#;
+
+let stmts = parse_statements(code).unwrap();
+let cfg = CfgBuilder::new().build(&stmts);
+
+// Calculate cyclomatic complexity
+let complexity = cfg.cyclomatic_complexity();
+println!("Cyclomatic complexity: {}", complexity); // Output: 3
+
+// Export to Graphviz DOT format for visualization
+let dot = cfg.to_dot();
+println!("{}", dot);
+```
+
+### CFG Features
+
+- **Cyclomatic complexity** - `cfg.cyclomatic_complexity()` using edge formula (E - N + 2)
+- **Decision-based complexity** - `cfg.cyclomatic_complexity_decisions()` counting branch points
+- **Unreachable code detection** - `cfg.unreachable_nodes()` finds dead code
+- **Path analysis** - `cfg.has_path(from, to)` checks reachability
+- **DOT export** - `cfg.to_dot()` for Graphviz visualization
 
