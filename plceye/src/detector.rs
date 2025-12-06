@@ -9,7 +9,7 @@ use crate::config::RuleConfig;
 use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
 use crate::rules::{
-    EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector,
+    ComplexityDetector, EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector,
     PlcopenUnusedVarsDetector, PlcopenUndefinedVarsDetector, PlcopenEmptyPousDetector,
 };
 use crate::Result;
@@ -108,6 +108,10 @@ impl RuleDetector {
         // Run empty routines detector
         let empty_routines_detector = EmptyRoutinesDetector::new(&self.config.empty_routines);
         empty_routines_detector.detect(controller, &analysis, &mut report);
+
+        // Run cyclomatic complexity detector on ST routines
+        let complexity_detector = ComplexityDetector::new(&self.config.complexity);
+        complexity_detector.detect(&analysis, &mut report);
 
         Ok(report)
     }

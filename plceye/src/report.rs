@@ -55,6 +55,10 @@ pub enum RuleKind {
     UnusedAoi,
     /// S0005: DataType is defined but never used
     UnusedDataType,
+    /// M0001: Cyclomatic complexity too high
+    CyclomaticComplexity,
+    /// M0003: Deep nesting (> 4 levels)
+    DeepNesting,
 
     // =========================================================================
     // PRO RULES (detected by plceye-pro - commercial license)
@@ -92,12 +96,6 @@ pub enum RuleKind {
     CaseWithoutElse,
     /// S0025: RETURN not at end of POU
     ReturnInMiddle,
-
-    // --- Metrics (M) ---
-    /// M0001: Cyclomatic complexity too high
-    CyclomaticComplexity,
-    /// M0003: Deep nesting (> 4 levels)
-    DeepNesting,
 
     // --- Naming (N) ---
     /// N0006: Name length < 3 characters

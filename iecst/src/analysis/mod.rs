@@ -8,11 +8,13 @@
 //! - Control flow graph (CFG) construction
 
 mod cfg;
+mod nesting;
 mod symbol_table;
 mod type_check;
 mod diagnostics;
 
 pub use cfg::{Cfg, CfgBuilder, CfgNode, CfgEdge, NodeId, NodeKind, EdgeKind, count_expression_decisions};
+pub use nesting::max_nesting_depth;
 pub use symbol_table::{Symbol, SymbolKind, SymbolTable, Scope};
 pub use type_check::{TypeChecker, Type, TypeInfo};
 pub use diagnostics::{Diagnostic, DiagnosticKind, Severity};

@@ -23,6 +23,12 @@ pub struct RuleConfig {
 
     /// Empty routine detection settings
     pub empty_routines: EmptyRoutinesConfig,
+
+    /// Cyclomatic complexity detection settings
+    pub complexity: ComplexityConfig,
+
+    /// Deep nesting detection settings
+    pub nesting: NestingConfig,
 }
 
 impl RuleConfig {
@@ -162,6 +168,54 @@ impl Default for EmptyRoutinesConfig {
     fn default() -> Self {
         Self {
             enabled: true,
+            ignore_patterns: vec![],
+        }
+    }
+}
+
+/// Configuration for cyclomatic complexity detection.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct ComplexityConfig {
+    /// Whether this detector is enabled.
+    pub enabled: bool,
+
+    /// Maximum allowed cyclomatic complexity before reporting.
+    pub max_complexity: usize,
+
+    /// Glob patterns for routines to ignore.
+    pub ignore_patterns: Vec<String>,
+}
+
+impl Default for ComplexityConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            max_complexity: 10,
+            ignore_patterns: vec![],
+        }
+    }
+}
+
+/// Configuration for deep nesting detection.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(default)]
+pub struct NestingConfig {
+    /// Whether this detector is enabled.
+    pub enabled: bool,
+
+    /// Maximum allowed nesting depth before reporting.
+    pub max_depth: usize,
+
+    /// Glob patterns for routines to ignore.
+    pub ignore_patterns: Vec<String>,
+}
+
+impl Default for NestingConfig {
+    fn default() -> Self {
+        Self {
+            enabled: true,
+            max_depth: 4,
             ignore_patterns: vec![],
         }
     }

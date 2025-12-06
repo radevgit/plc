@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.0 (2024-12-06)
+
+### Added
+- **Nesting depth analysis** - new `analysis::nesting` module
+  - `max_nesting_depth()` - calculate maximum nesting depth of control structures
+  - Counts IF, CASE, FOR, WHILE, REPEAT as nesting levels
+  - Useful for detecting overly complex code (M0003 deep nesting rule)
+
+### Changed
+- Re-export `max_nesting_depth` from `iecst`
+
 ## 0.2.0 (2024-12-06)
 
 ### Added

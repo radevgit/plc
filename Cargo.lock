@@ -136,7 +136,7 @@ dependencies = [
 
 [[package]]
 name = "iecst"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "winnow 0.7.14",
 ]
@@ -167,7 +167,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 name = "l5x"
 version = "0.3.1"
 dependencies = [
- "iecst 0.2.0",
+ "iecst 0.3.0",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -205,10 +205,10 @@ checksum = "384b8ab6d37215f3c5301a95a4accb5d64aa607f1fcb26a11b5303878451b4fe"
 
 [[package]]
 name = "plceye"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "clap",
- "iecst 0.2.0",
+ "iecst 0.3.0",
  "l5x 0.3.1",
  "plcopen",
  "quick-xml",
@@ -222,7 +222,7 @@ dependencies = [
 name = "plcopen"
 version = "0.1.1"
 dependencies = [
- "iecst 0.2.0",
+ "iecst 0.3.0",
  "quick-xml",
  "serde",
 ]

@@ -34,7 +34,7 @@ mod report;
 mod rules;
 
 // Core types
-pub use config::{RuleConfig, GeneralConfig, UnusedTagsConfig, UndefinedTagsConfig, EmptyRoutinesConfig};
+pub use config::{RuleConfig, GeneralConfig, UnusedTagsConfig, UndefinedTagsConfig, EmptyRoutinesConfig, ComplexityConfig};
 pub use detector::RuleDetector;
 pub use error::{Error, Result, L5xParseErrorKind, ConfigErrorKind};
 pub use loader::{LoadedProject, FileFormat};

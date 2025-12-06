@@ -18,6 +18,7 @@ IEC 61131-3 Structured Text parser for Rust.
 - **AST output** for further analysis or transformation
 - **Control Flow Graph (CFG)** - build CFGs from ST code for complexity analysis
 - **Cyclomatic complexity** - calculate code complexity metrics
+- **Nesting depth analysis** - detect deeply nested control structures
 - **Basic static analysis** - type checking, unused variables, diagnostics
 
 ## Installation
@@ -142,6 +143,28 @@ println!("Cyclomatic complexity: {}", complexity); // Output: 3
 // Export to Graphviz DOT format for visualization
 let dot = cfg.to_dot();
 println!("{}", dot);
+```
+
+## Nesting Depth Analysis
+
+Detect deeply nested control structures:
+
+```rust
+use iecst::{parse_statements, max_nesting_depth};
+
+let code = r#"
+    IF a THEN
+        FOR i := 1 TO 10 DO
+            WHILE b DO
+                x := x + 1;
+            END_WHILE;
+        END_FOR;
+    END_IF;
+"#;
+
+let stmts = parse_statements(code).unwrap();
+let depth = max_nesting_depth(&stmts);
+println!("Max nesting depth: {}", depth); // Output: 3
 ```
 
 ### CFG Features

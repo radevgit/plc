@@ -58,3 +58,4 @@ pub use span::Span;
 // Re-export key analysis types
 pub use analysis::{analyze_pou, Diagnostic, DiagnosticKind, Severity, Type};
 pub use analysis::{Cfg, CfgBuilder, CfgNode, NodeId, NodeKind};
+pub use analysis::max_nesting_depth;
