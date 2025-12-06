@@ -35,3 +35,24 @@ opt-level = 3
 # Test builds in release mode should also be fast
 [profile.bench]
 inherits = "release"
+
+# Speed up compilation of generated code in l5x and plcopen
+[profile.dev.package.l5x]
+opt-level = 0
+debug = false
+
+[profile.dev.package.plcopen]
+opt-level = 0
+debug = false
+
+[profile.release.package.l5x]
+opt-level = 1  # Lower optimization for faster compile, still decent runtime
+
+[profile.release.package.plcopen]
+opt-level = 1
+
+[profile.release.package.plceye]
+opt-level = 1  # Faster release builds for CLI tool
+
+[profile.release.package.iecst]
+opt-level = 1  # Parser doesn't need heavy optimization

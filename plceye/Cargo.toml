@@ -1,6 +1,6 @@
 [package]
 name = "plceye"
-version = "0.4.0"
+version = "0.5.0"
 edition = "2021"
 description = "PLC code smell detector and static analyzer for L5X and PLCopen files"
 license = "MIT"

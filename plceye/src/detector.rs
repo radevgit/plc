@@ -9,7 +9,8 @@ use crate::config::RuleConfig;
 use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
 use crate::rules::{
-    ComplexityDetector, EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector,
+    ComplexityDetector, EmptyRoutinesDetector, NestingDetector,
+    UndefinedTagsDetector, UnusedTagsDetector,
     PlcopenUnusedVarsDetector, PlcopenUndefinedVarsDetector, PlcopenEmptyPousDetector,
 };
 use crate::Result;
@@ -112,6 +113,10 @@ impl RuleDetector {
         // Run cyclomatic complexity detector on ST routines
         let complexity_detector = ComplexityDetector::new(&self.config.complexity);
         complexity_detector.detect(&analysis, &mut report);
+
+        // Run deep nesting detector on ST routines
+        let nesting_detector = NestingDetector::new(&self.config.nesting);
+        nesting_detector.detect(&analysis, &mut report);
 
         Ok(report)
     }

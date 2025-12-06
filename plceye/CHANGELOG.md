@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.5.0 (2025-12-06)
+
+### Added
+- M0001: Cyclomatic Complexity detection for ST routines (max: 10)
+- M0003: Deep Nesting detection for ST routines (max: 5 levels)
+- Enhanced `--stats` output with ST complexity metrics
+  - Max/Average cyclomatic complexity
+  - Max/Average nesting depth
+- Integration with iecst 0.3.0 for CFG and nesting analysis
+
+### Changed
+- Stats now display complexity metrics when ST routines are present
+- Updated iecst dependency to 0.3.0
+
+## 0.4.0 (2024-12-05)
+
+### Added
+- S0004: Unused AOI detection
+- S0005: Unused DataType detection
+
 ## 0.3.0 (2024-12-05)
 
 ### Added

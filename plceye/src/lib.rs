@@ -8,11 +8,15 @@
 //! - **L5X** - Rockwell Automation Studio 5000
 //! - **PLCopen XML** - IEC 61131-3 standard exchange format
 //!
-//! ## Supported Rules
+//! ## Supported Rules (Open Source)
 //!
-//! - **unused_tags** - Tags defined but never used
-//! - **undefined_tags** - Tags referenced but not defined
-//! - **empty_routines** - Routines with no logic
+//! - **S0001: unused_tags** - Tags defined but never used
+//! - **S0002: undefined_tags** - Tags referenced but not defined
+//! - **S0003: empty_routines** - Routines with no logic
+//! - **S0004: unused_aois** - AOIs defined but never called
+//! - **S0005: unused_datatypes** - User-defined types never used
+//! - **M0001: cyclomatic_complexity** - ST routines with high complexity
+//! - **M0003: deep_nesting** - Control structures nested too deeply
 //!
 //!
 //! ## CLI Usage
@@ -34,7 +38,7 @@ mod report;
 mod rules;
 
 // Core types
-pub use config::{RuleConfig, GeneralConfig, UnusedTagsConfig, UndefinedTagsConfig, EmptyRoutinesConfig, ComplexityConfig};
+pub use config::{RuleConfig, GeneralConfig, UnusedTagsConfig, UndefinedTagsConfig, EmptyRoutinesConfig, ComplexityConfig, NestingConfig};
 pub use detector::RuleDetector;
 pub use error::{Error, Result, L5xParseErrorKind, ConfigErrorKind};
 pub use loader::{LoadedProject, FileFormat};

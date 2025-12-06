@@ -196,6 +196,11 @@ pub struct ParseStats {
     pub st_routines_aois: usize,
     pub st_parsed_ok: usize,
     pub st_parsed_err: usize,
+    // Complexity metrics for ST routines
+    pub st_max_complexity: usize,
+    pub st_avg_complexity: f32,
+    pub st_max_nesting: usize,
+    pub st_avg_nesting: f32,
 }
 
 /// Summary of a single routine.
@@ -441,6 +446,31 @@ pub fn analyze_controller(controller: &Controller) -> ProjectAnalysis {
         }
     }
 
+    // Calculate complexity metrics for ST routines
+    let mut complexities: Vec<usize> = Vec::new();
+    let mut nestings: Vec<usize> = Vec::new();
+    
+    for st_routine in &st_routines {
+        if let Some(ref pou) = st_routine.pou {
+            let cfg = iecst::CfgBuilder::new().build(&pou.body);
+            let complexity = cfg.cyclomatic_complexity();
+            let nesting = iecst::max_nesting_depth(&pou.body);
+            
+            complexities.push(complexity);
+            nestings.push(nesting);
+        }
+    }
+    
+    if !complexities.is_empty() {
+        stats.st_max_complexity = *complexities.iter().max().unwrap_or(&0);
+        stats.st_avg_complexity = complexities.iter().sum::<usize>() as f32 / complexities.len() as f32;
+    }
+    
+    if !nestings.is_empty() {
+        stats.st_max_nesting = *nestings.iter().max().unwrap_or(&0);
+        stats.st_avg_nesting = nestings.iter().sum::<usize>() as f32 / nestings.len() as f32;
+    }
+
     stats.tag_references = all_refs.len();
     stats.unique_tags = tag_xref.len();
 
@@ -471,5 +501,39 @@ mod tests {
     fn test_st_location_path() {
         let loc = STLocation::new("MainProgram", "Logic");
         assert_eq!(loc.path(), "MainProgram/Logic");
+    }
+
+    #[test]
+    fn test_parse_stats_default() {
+        let stats = ParseStats::default();
+        assert_eq!(stats.st_max_complexity, 0);
+        assert_eq!(stats.st_avg_complexity, 0.0);
+        assert_eq!(stats.st_max_nesting, 0);
+        assert_eq!(stats.st_avg_nesting, 0.0);
+    }
+
+    #[test]
+    fn test_complexity_stats_calculation() {
+        // Create a mock ST routine with known complexity
+        let code = r#"
+            IF a THEN
+                IF b THEN
+                    x := 1;
+                ELSIF c THEN
+                    x := 2;
+                END_IF;
+            END_IF;
+        "#;
+        let wrapped = format!("PROGRAM Test\nVAR\nEND_VAR\n{}\nEND_PROGRAM", code);
+        let pou = iecst::parse_pou(&wrapped).unwrap();
+        
+        // Calculate complexity
+        let cfg = iecst::CfgBuilder::new().build(&pou.body);
+        let complexity = cfg.cyclomatic_complexity();
+        let nesting = iecst::max_nesting_depth(&pou.body);
+        
+        // Verify expected values
+        assert!(complexity >= 3, "Expected complexity >= 3, got {}", complexity);
+        assert_eq!(nesting, 2, "Expected nesting depth 2, got {}", nesting);
     }
 }

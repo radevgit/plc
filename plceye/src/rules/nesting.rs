@@ -1,21 +1,21 @@
-//! Cyclomatic complexity detector.
+//! Deep nesting detector.
 //!
-//! Detects ST routines with high cyclomatic complexity (M0001).
+//! Detects ST routines with excessively deep control structure nesting (M0003).
 
-use iecst::CfgBuilder;
+use iecst::max_nesting_depth;
 
 use crate::analysis::ProjectAnalysis;
-use crate::config::ComplexityConfig;
+use crate::config::NestingConfig;
 use crate::report::{Report, Rule, RuleKind, Severity};
 
-/// Detector for cyclomatic complexity in ST routines.
-pub struct ComplexityDetector<'a> {
-    config: &'a ComplexityConfig,
+/// Detector for deep nesting in ST routines.
+pub struct NestingDetector<'a> {
+    config: &'a NestingConfig,
 }
 
-impl<'a> ComplexityDetector<'a> {
-    /// Create a new complexity detector with the given configuration.
-    pub fn new(config: &'a ComplexityConfig) -> Self {
+impl<'a> NestingDetector<'a> {
+    /// Create a new nesting detector with the given configuration.
+    pub fn new(config: &'a NestingConfig) -> Self {
         Self { config }
     }
 
@@ -36,35 +36,34 @@ impl<'a> ComplexityDetector<'a> {
                 continue;
             };
 
-            // Build CFG from POU body and calculate complexity
-            let cfg = CfgBuilder::new().build(&pou.body);
-            let complexity = cfg.cyclomatic_complexity();
+            // Calculate maximum nesting depth
+            let depth = max_nesting_depth(&pou.body);
 
-            if complexity > self.config.max_complexity {
+            if depth > self.config.max_depth {
                 report.add(Rule::new(
-                    RuleKind::CyclomaticComplexity,
-                    self.severity_for_complexity(complexity),
+                    RuleKind::DeepNesting,
+                    self.severity_for_depth(depth),
                     format!("Program:{}", st_routine.location.program),
                     st_routine.location.routine.clone(),
                     format!(
-                        "Routine '{}' has cyclomatic complexity of {} (max: {})",
+                        "Routine '{}' has nesting depth of {} (max: {})",
                         st_routine.location.routine,
-                        complexity,
-                        self.config.max_complexity
+                        depth,
+                        self.config.max_depth
                     ),
                 ));
             }
         }
     }
 
-    /// Determine severity based on how much complexity exceeds threshold.
-    fn severity_for_complexity(&self, complexity: usize) -> Severity {
-        let threshold = self.config.max_complexity;
+    /// Determine severity based on how much depth exceeds threshold.
+    fn severity_for_depth(&self, depth: usize) -> Severity {
+        let threshold = self.config.max_depth;
         // Severe: more than 2x the threshold
-        if complexity > threshold * 2 {
+        if depth > threshold * 2 {
             Severity::Error
         // Moderate: more than 50% over threshold
-        } else if complexity > threshold + threshold / 2 {
+        } else if depth > threshold + threshold / 2 {
             Severity::Warning
         } else {
             Severity::Info
@@ -160,41 +159,41 @@ mod tests {
     }
 
     #[test]
-    fn test_simple_routine_no_violation() {
-        let config = ComplexityConfig {
+    fn test_shallow_routine_no_violation() {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 10,
+            max_depth: 4,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        // Simple routine with complexity 1
-        let analysis = create_test_analysis("x := 1;");
+        // Simple routine with depth 1
+        let analysis = create_test_analysis("IF a THEN x := 1; END_IF;");
         let mut report = Report::new();
 
         detector.detect(&analysis, &mut report);
 
-        assert!(report.rules.is_empty(), "Simple routine should not trigger complexity rule");
+        assert!(report.rules.is_empty(), "Shallow routine should not trigger nesting rule");
     }
 
     #[test]
-    fn test_complex_routine_violation() {
-        let config = ComplexityConfig {
+    fn test_deep_routine_violation() {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 2,  // Very low threshold for testing
+            max_depth: 2,  // Low threshold for testing
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        // Routine with multiple branches (complexity > 2)
+        // Routine with depth 3
         let analysis = create_test_analysis(
             r#"
             IF a THEN
-                x := 1;
-            ELSIF b THEN
-                x := 2;
-            ELSIF c THEN
-                x := 3;
+                IF b THEN
+                    IF c THEN
+                        x := 1;
+                    END_IF;
+                END_IF;
             END_IF;
             "#
         );
@@ -203,20 +202,20 @@ mod tests {
         detector.detect(&analysis, &mut report);
 
         assert_eq!(report.rules.len(), 1);
-        assert_eq!(report.rules[0].kind, RuleKind::CyclomaticComplexity);
-        assert!(report.rules[0].message.contains("cyclomatic complexity"));
+        assert_eq!(report.rules[0].kind, RuleKind::DeepNesting);
+        assert!(report.rules[0].message.contains("nesting depth of 3"));
     }
 
     #[test]
     fn test_disabled_detector() {
-        let config = ComplexityConfig {
+        let config = NestingConfig {
             enabled: false,
-            max_complexity: 1,
+            max_depth: 1,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        let analysis = create_test_analysis("IF a THEN x := 1; END_IF;");
+        let analysis = create_test_analysis("IF a THEN IF b THEN x := 1; END_IF; END_IF;");
         let mut report = Report::new();
 
         detector.detect(&analysis, &mut report);
@@ -226,14 +225,14 @@ mod tests {
 
     #[test]
     fn test_ignore_pattern() {
-        let config = ComplexityConfig {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 1,
+            max_depth: 1,
             ignore_patterns: vec!["Test*".to_string()],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        let analysis = create_test_analysis("IF a THEN x := 1; END_IF;");
+        let analysis = create_test_analysis("IF a THEN IF b THEN x := 1; END_IF; END_IF;");
         let mut report = Report::new();
 
         detector.detect(&analysis, &mut report);
@@ -243,42 +242,43 @@ mod tests {
 
     #[test]
     fn test_severity_escalation() {
-        let config = ComplexityConfig {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 10,
+            max_depth: 4,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        // With threshold 10:
-        // - Info: complexity <= 15 (10 + 10/2)
-        // - Warning: 15 < complexity <= 20 (10 * 2)
-        // - Error: complexity > 20
+        // With threshold 4:
+        // - Info: depth <= 6 (4 + 4/2)
+        // - Warning: 6 < depth <= 8 (4 * 2)
+        // - Error: depth > 8
         
         // Mild violation: Info
-        assert_eq!(detector.severity_for_complexity(12), Severity::Info);
+        assert_eq!(detector.severity_for_depth(5), Severity::Info);
 
         // Moderate violation: Warning
-        assert_eq!(detector.severity_for_complexity(18), Severity::Warning);
+        assert_eq!(detector.severity_for_depth(7), Severity::Warning);
 
         // Severe violation (>2x threshold): Error
-        assert_eq!(detector.severity_for_complexity(25), Severity::Error);
+        assert_eq!(detector.severity_for_depth(10), Severity::Error);
     }
 
     #[test]
-    fn test_loop_adds_complexity() {
-        let config = ComplexityConfig {
+    fn test_for_loop_nesting() {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 1,
+            max_depth: 1,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        // FOR loop adds complexity
         let analysis = create_test_analysis(
             r#"
             FOR i := 1 TO 10 DO
-                x := x + 1;
+                FOR j := 1 TO 10 DO
+                    x := i + j;
+                END_FOR;
             END_FOR;
             "#
         );
@@ -286,40 +286,54 @@ mod tests {
         detector.detect(&analysis, &mut report);
 
         assert_eq!(report.rules.len(), 1);
-        assert_eq!(report.rules[0].kind, RuleKind::CyclomaticComplexity);
+        assert_eq!(report.rules[0].kind, RuleKind::DeepNesting);
+        assert!(report.rules[0].message.contains("nesting depth of 2"));
     }
 
     #[test]
-    fn test_while_adds_complexity() {
-        let config = ComplexityConfig {
+    fn test_mixed_control_structures() {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 1,
+            max_depth: 2,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
-        let analysis = create_test_analysis("WHILE a DO x := x + 1; END_WHILE;");
+        // Mix of IF, FOR, WHILE at depth 3
+        let analysis = create_test_analysis(
+            r#"
+            IF a THEN
+                FOR i := 1 TO 10 DO
+                    WHILE b DO
+                        x := 1;
+                    END_WHILE;
+                END_FOR;
+            END_IF;
+            "#
+        );
         let mut report = Report::new();
         detector.detect(&analysis, &mut report);
 
         assert_eq!(report.rules.len(), 1);
+        assert!(report.rules[0].message.contains("nesting depth of 3"));
     }
 
     #[test]
-    fn test_case_adds_complexity() {
-        let config = ComplexityConfig {
+    fn test_case_nesting() {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 1,
+            max_depth: 1,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
         let analysis = create_test_analysis(
             r#"
             CASE x OF
-                1: y := 1;
-                2: y := 2;
-                3: y := 3;
+                1:
+                    IF a THEN
+                        y := 1;
+                    END_IF;
             END_CASE;
             "#
         );
@@ -327,21 +341,22 @@ mod tests {
         detector.detect(&analysis, &mut report);
 
         assert_eq!(report.rules.len(), 1);
+        assert!(report.rules[0].message.contains("nesting depth of 2"));
     }
 
     #[test]
     fn test_unparseable_routine_skipped() {
-        let config = ComplexityConfig {
+        let config = NestingConfig {
             enabled: true,
-            max_complexity: 1,
+            max_depth: 1,
             ignore_patterns: vec![],
         };
-        let detector = ComplexityDetector::new(&config);
+        let detector = NestingDetector::new(&config);
 
         // Create analysis with unparseable routine (pou = None)
         let st_routine = ParsedSTRoutine {
             location: STLocation::new("MainProgram", "BadRoutine"),
-            source: "this is not valid ST {{{{".to_string(),
+            source: "not valid ST {{{{".to_string(),
             pou: None,
             parse_error: None,
         };

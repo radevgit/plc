@@ -198,4 +198,14 @@ fn print_stats(stats: &ParseStats) {
     println!();
     println!("Tag references:     {:>6}", stats.tag_references);
     println!("Unique tags:        {:>6}", stats.unique_tags);
+    
+    // Only show complexity stats if there are ST routines
+    if stats.st_parsed_ok > 0 {
+        println!();
+        println!("ST Complexity:");
+        println!("  Max complexity:   {:>6}", stats.st_max_complexity);
+        println!("  Avg complexity:   {:>6.1}", stats.st_avg_complexity);
+        println!("  Max nesting:      {:>6}", stats.st_max_nesting);
+        println!("  Avg nesting:      {:>6.1}", stats.st_avg_nesting);
+    }
 }
