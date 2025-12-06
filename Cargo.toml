@@ -6,6 +6,7 @@ members = [
     "iecst",
     "plceye",
     "plcviz",
+    "plcscl",
 ]
 
 [profile.dev]

@@ -1,0 +1,13 @@
+[package]
+name = "plcscl"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Parser and AST for Siemens SCL (Structured Control Language)"
+repository = "https://github.com/radevgit/plc"
+keywords = ["plc", "scl", "siemens", "parser", "iec61131"]
+categories = ["parser-implementations", "parsing"]
+
+[dependencies]
+
+[dev-dependencies]
