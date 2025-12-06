@@ -1,8 +1,8 @@
-//! PLCopen-specific smell detectors.
+//! PLCopen-specific rule detectors.
 
 use crate::analysis::PlcopenAnalysis;
 use crate::config::{EmptyRoutinesConfig, UndefinedTagsConfig, UnusedTagsConfig};
-use crate::report::{Report, Severity, Smell, SmellKind};
+use crate::report::{Report, Severity, Rule, RuleKind};
 
 /// Detect unused variables in PLCopen projects.
 pub struct PlcopenUnusedVarsDetector<'a> {
@@ -25,8 +25,8 @@ impl<'a> PlcopenUnusedVarsDetector<'a> {
                 continue;
             }
 
-            report.add(Smell::new(
-                SmellKind::UnusedTag,
+            report.add(Rule::new(
+                RuleKind::UnusedTag,
                 Severity::Warning,
                 var.pou_name.clone(),
                 var.name.clone(),
@@ -66,8 +66,8 @@ impl<'a> PlcopenUndefinedVarsDetector<'a> {
                 continue;
             }
 
-            report.add(Smell::new(
-                SmellKind::UndefinedTag,
+            report.add(Rule::new(
+                RuleKind::UndefinedTag,
                 Severity::Info,
                 "project".to_string(),
                 var_name.clone(),
@@ -98,8 +98,8 @@ impl<'a> PlcopenEmptyPousDetector<'a> {
                 continue;
             }
 
-            report.add(Smell::new(
-                SmellKind::EmptyBlock,
+            report.add(Rule::new(
+                RuleKind::EmptyBlock,
                 Severity::Info,
                 pou_name.clone(),
                 pou_name.clone(),

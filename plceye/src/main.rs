@@ -1,14 +1,14 @@
-//! plceye - PLC Code Smell Detector CLI
+//! plceye - PLC Code Rule Detector CLI
 
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 use clap::{Parser, Subcommand};
-use plceye::{SmellConfig, SmellDetector, Report, ParseStats};
+use plceye::{RuleConfig, RuleDetector, Report, ParseStats};
 
 #[derive(Parser)]
 #[command(name = "plceye")]
-#[command(version, about = "PLC code smell detector for L5X files", long_about = None)]
+#[command(version, about = "PLC code rule detector for L5X files", long_about = None)]
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
@@ -25,7 +25,7 @@ struct Cli {
     #[arg(short, long, value_name = "LEVEL", default_value = "info")]
     severity: String,
 
-    /// Show file statistics only (no smell detection)
+    /// Show file statistics only (no rule detection)
     #[arg(long)]
     stats: bool,
 }
@@ -59,7 +59,7 @@ fn main() -> ExitCode {
 
     // Load or create configuration
     let mut config = if let Some(ref path) = cli.config {
-        match SmellConfig::from_file(path) {
+        match RuleConfig::from_file(path) {
             Ok(c) => c,
             Err(e) => {
                 eprintln!("Error loading config: {}", e);
@@ -67,21 +67,21 @@ fn main() -> ExitCode {
             }
         }
     } else if Path::new("plceye.toml").exists() {
-        match SmellConfig::from_file(Path::new("plceye.toml")) {
+        match RuleConfig::from_file(Path::new("plceye.toml")) {
             Ok(c) => c,
             Err(e) => {
                 eprintln!("Warning: Failed to load plceye.toml: {}", e);
-                SmellConfig::default()
+                RuleConfig::default()
             }
         }
     } else {
-        SmellConfig::default()
+        RuleConfig::default()
     };
 
     // Apply severity from CLI
     config.general.min_severity = cli.severity.clone();
 
-    let detector = SmellDetector::with_config(config);
+    let detector = RuleDetector::with_config(config);
     let min_severity = detector.min_severity();
 
     // Collect all results
@@ -111,8 +111,8 @@ fn main() -> ExitCode {
         let filtered = report.filter_by_severity(min_severity);
         if !filtered.is_empty() {
             println!("\n=== {} ===", file);
-            for smell in filtered {
-                println!("{}", smell);
+            for rule in filtered {
+                println!("{}", rule);
             }
         }
     }
@@ -140,7 +140,7 @@ fn init_config() -> ExitCode {
         return ExitCode::from(1);
     }
 
-    let content = SmellConfig::default_toml();
+    let content = RuleConfig::default_toml();
     match std::fs::write(path, content) {
         Ok(_) => {
             println!("Created plceye.toml with default configuration");
@@ -154,7 +154,7 @@ fn init_config() -> ExitCode {
 }
 
 fn show_stats(files: &[PathBuf]) -> ExitCode {
-    let detector = SmellDetector::new();
+    let detector = RuleDetector::new();
     let mut has_errors = false;
 
     for file in files {

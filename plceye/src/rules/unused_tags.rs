@@ -9,7 +9,7 @@ use l5x::Controller;
 use crate::analysis::ProjectAnalysis;
 
 use crate::config::UnusedTagsConfig;
-use crate::report::{Report, Severity, Smell, SmellKind};
+use crate::report::{Report, Severity, Rule, RuleKind};
 
 /// Detector for unused tags.
 pub struct UnusedTagsDetector<'a> {
@@ -55,8 +55,8 @@ impl<'a> UnusedTagsDetector<'a> {
                 continue;
             }
 
-            report.add(Smell::new(
-                SmellKind::UnusedTag,
+            report.add(Rule::new(
+                RuleKind::UnusedTag,
                 Severity::Info,
                 scope.clone(),
                 tag_name.clone(),

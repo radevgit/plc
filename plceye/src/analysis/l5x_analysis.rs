@@ -1,7 +1,7 @@
 //! L5X project-wide analysis.
 //!
 //! This module provides the core analysis engine that walks L5X project
-//! structures and builds cross-reference indices for smell detection.
+//! structures and builds cross-reference indices for rule detection.
 
 use std::collections::{HashMap, HashSet};
 

@@ -1,7 +1,7 @@
-//! Individual smell detectors.
+//! Individual rule detectors.
 
 mod empty_routines;
-mod plcopen_smells;
+mod plcopen_rules;
 mod undefined_tags;
 mod unused_tags;
 
@@ -11,7 +11,7 @@ pub use undefined_tags::UndefinedTagsDetector;
 pub use unused_tags::UnusedTagsDetector;
 
 // PLCopen-specific detectors
-pub use plcopen_smells::{
+pub use plcopen_rules::{
     PlcopenUnusedVarsDetector,
     PlcopenUndefinedVarsDetector,
     PlcopenEmptyPousDetector,

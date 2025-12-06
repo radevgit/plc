@@ -165,11 +165,9 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 
 [[package]]
 name = "l5x"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0c5e7bdbdf0361c05147df04c8ed5a10f3160d0d4004e5652600a8071b2110ae"
+version = "0.3.1"
 dependencies = [
- "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iecst 0.1.0",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -178,8 +176,10 @@ dependencies = [
 [[package]]
 name = "l5x"
 version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43d75945d838e5e579754c54f17dc394260f7695b4157064418e4d515f3dcd7a"
 dependencies = [
- "iecst 0.1.0",
+ "iecst 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "quick-xml",
  "serde",
  "winnow 0.6.26",
@@ -232,7 +232,7 @@ name = "plcviz"
 version = "0.3.0"
 dependencies = [
  "clap",
- "l5x 0.3.0",
+ "l5x 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "layout-rs",
  "regex",
 ]

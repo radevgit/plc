@@ -10,7 +10,7 @@ use l5x::{Controller, UDIDefinitionContent};
 use crate::analysis::ProjectAnalysis;
 
 use crate::config::UndefinedTagsConfig;
-use crate::report::{Report, Severity, Smell, SmellKind};
+use crate::report::{Report, Severity, Rule, RuleKind};
 
 /// Detector for undefined tags.
 pub struct UndefinedTagsDetector<'a> {
@@ -63,8 +63,8 @@ impl<'a> UndefinedTagsDetector<'a> {
                 continue;
             }
 
-            report.add(Smell::new(
-                SmellKind::UndefinedTag,
+            report.add(Rule::new(
+                RuleKind::UndefinedTag,
                 Severity::Warning,
                 "Controller".to_string(),
                 base_name.to_string(),

@@ -1,4 +1,4 @@
-//! Configuration for the smell detector.
+//! Configuration for the rule detector.
 //!
 //! Configuration can be loaded from a `plceye.toml` file.
 
@@ -8,10 +8,10 @@ use std::path::Path;
 use crate::{Error, Result};
 use crate::error::ConfigErrorKind;
 
-/// Main configuration for the smell detector.
+/// Main configuration for the rule detector.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[serde(default)]
-pub struct SmellConfig {
+pub struct RuleConfig {
     /// Global settings
     pub general: GeneralConfig,
 
@@ -25,7 +25,7 @@ pub struct SmellConfig {
     pub empty_routines: EmptyRoutinesConfig,
 }
 
-impl SmellConfig {
+impl RuleConfig {
     /// Load configuration from a TOML file.
     pub fn from_file(path: &Path) -> Result<Self> {
         let content = std::fs::read_to_string(path).map_err(|e| Error::FileRead {
@@ -44,7 +44,7 @@ impl SmellConfig {
 
     /// Generate a default configuration file as a string.
     pub fn default_toml() -> String {
-        r#"# plceye.toml - PLC Code Smell Detector Configuration
+        r#"# plceye.toml - PLC Code Rule Detector Configuration
 
 [general]
 # Minimum severity to report: "info", "warning", "error"
@@ -173,7 +173,7 @@ mod tests {
 
     #[test]
     fn test_default_config() {
-        let config = SmellConfig::default();
+        let config = RuleConfig::default();
         assert!(config.unused_tags.enabled);
         assert_eq!(config.general.min_severity, "info");
     }
@@ -189,7 +189,7 @@ enabled = true
 ignore_patterns = ["Test_*", "Debug_*"]
 ignore_scopes = ["Program:Debug"]
 "#;
-        let config = SmellConfig::parse(toml).unwrap();
+        let config = RuleConfig::parse(toml).unwrap();
         assert_eq!(config.general.min_severity, "warning");
         assert!(config.unused_tags.enabled);
         assert_eq!(config.unused_tags.ignore_patterns.len(), 2);
@@ -197,8 +197,8 @@ ignore_scopes = ["Program:Debug"]
 
     #[test]
     fn test_default_toml_parses() {
-        let toml = SmellConfig::default_toml();
-        let config = SmellConfig::parse(&toml).unwrap();
+        let toml = RuleConfig::default_toml();
+        let config = RuleConfig::parse(&toml).unwrap();
         assert!(config.unused_tags.enabled);
     }
 }

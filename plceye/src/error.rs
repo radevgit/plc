@@ -1,11 +1,11 @@
-//! Error types for the smell detector.
+//! Error types for the rule detector.
 
 use thiserror::Error;
 
-/// Result type alias for smell operations.
+/// Result type alias for rule operations.
 pub type Result<T> = std::result::Result<T, Error>;
 
-/// Error types for the smell detector.
+/// Error types for the rule detector.
 #[derive(Debug, Error)]
 pub enum Error {
     /// Failed to read file

@@ -1,45 +1,45 @@
-//! Main smell detector that coordinates all individual detectors.
+//! Main rule detector that coordinates all individual detectors.
 
 use std::path::Path;
 
 use l5x::Controller;
 
 use crate::analysis::{analyze_controller, analyze_plcopen_project, ParseStats, PlcopenStats};
-use crate::config::SmellConfig;
+use crate::config::RuleConfig;
 use crate::loader::LoadedProject;
 use crate::report::{Report, Severity};
-use crate::smells::{
+use crate::rules::{
     EmptyRoutinesDetector, UndefinedTagsDetector, UnusedTagsDetector,
     PlcopenUnusedVarsDetector, PlcopenUndefinedVarsDetector, PlcopenEmptyPousDetector,
 };
 use crate::Result;
 
-/// Main smell detector that runs all enabled detectors.
-pub struct SmellDetector {
-    config: SmellConfig,
+/// Main rule detector that runs all enabled detectors.
+pub struct RuleDetector {
+    config: RuleConfig,
 }
 
-impl SmellDetector {
-    /// Create a new smell detector with default configuration.
+impl RuleDetector {
+    /// Create a new rule detector with default configuration.
     pub fn new() -> Self {
         Self {
-            config: SmellConfig::default(),
+            config: RuleConfig::default(),
         }
     }
 
-    /// Create a new smell detector with the given configuration.
-    pub fn with_config(config: SmellConfig) -> Self {
+    /// Create a new rule detector with the given configuration.
+    pub fn with_config(config: RuleConfig) -> Self {
         Self { config }
     }
 
     /// Load configuration from a file.
     pub fn from_config_file(path: &Path) -> Result<Self> {
-        let config = SmellConfig::from_file(path)?;
+        let config = RuleConfig::from_file(path)?;
         Ok(Self { config })
     }
 
     /// Get the current configuration.
-    pub fn config(&self) -> &SmellConfig {
+    pub fn config(&self) -> &RuleConfig {
         &self.config
     }
 
@@ -112,7 +112,7 @@ impl SmellDetector {
         Ok(report)
     }
 
-    /// Get statistics for a file without running smell detection.
+    /// Get statistics for a file without running rule detection.
     pub fn get_stats_file(&self, path: &Path) -> Result<ParseStats> {
         let project = LoadedProject::from_file(path)?;
         self.get_stats(&project)
@@ -140,7 +140,7 @@ impl SmellDetector {
     }
 }
 
-impl Default for SmellDetector {
+impl Default for RuleDetector {
     fn default() -> Self {
         Self::new()
     }
@@ -152,15 +152,15 @@ mod tests {
 
     #[test]
     fn test_detector_default() {
-        let detector = SmellDetector::new();
+        let detector = RuleDetector::new();
         assert!(detector.config().unused_tags.enabled);
     }
 
     #[test]
     fn test_detector_with_config() {
-        let mut config = SmellConfig::default();
+        let mut config = RuleConfig::default();
         config.unused_tags.enabled = false;
-        let detector = SmellDetector::with_config(config);
+        let detector = RuleDetector::with_config(config);
         assert!(!detector.config().unused_tags.enabled);
     }
 
@@ -189,11 +189,11 @@ mod tests {
         </RSLogix5000Content>"#;
         
         let project = LoadedProject::from_str(xml, None).expect("Should parse");
-        let detector = SmellDetector::new();
+        let detector = RuleDetector::new();
         let report = detector.analyze(&project).expect("Should analyze");
         
         // Should detect unused tag
-        assert!(!report.smells.is_empty());
+        assert!(!report.rules.is_empty());
     }
 
     #[test]
@@ -210,10 +210,10 @@ mod tests {
         </project>"#;
         
         let project = LoadedProject::from_str(xml, None).expect("Should parse");
-        let detector = SmellDetector::new();
+        let detector = RuleDetector::new();
         let report = detector.analyze(&project).expect("Should analyze");
         
         // Should detect empty POU
-        assert!(report.smells.iter().any(|s| s.identifier == "Main"));
+        assert!(report.rules.iter().any(|s| s.identifier == "Main"));
     }
 }

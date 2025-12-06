@@ -7,7 +7,7 @@ use l5x::Controller;
 use crate::analysis::ProjectAnalysis;
 
 use crate::config::EmptyRoutinesConfig;
-use crate::report::{Report, Severity, Smell, SmellKind};
+use crate::report::{Report, Severity, Rule, RuleKind};
 
 /// Detector for empty routines.
 pub struct EmptyRoutinesDetector<'a> {
@@ -40,8 +40,8 @@ impl<'a> EmptyRoutinesDetector<'a> {
             };
 
             if is_empty {
-                report.add(Smell::new(
-                    SmellKind::EmptyBlock,
+                report.add(Rule::new(
+                    RuleKind::EmptyBlock,
                     Severity::Info,
                     format!("Program:{}", routine.program),
                     routine.routine.clone(),
