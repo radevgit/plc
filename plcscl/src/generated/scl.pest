@@ -1,0 +1,488 @@
+// SCL (Structured Control Language) Grammar
+// Based on IEC 61131-3 and Siemens SCL specification
+
+// ============================================================================
+// PROGRAM STRUCTURE
+// ============================================================================
+
+program = { SOI ~ block* ~ EOI }
+
+block = {
+    function_block_decl
+  | function_decl
+  | data_block_decl
+  | organization_block_decl
+  | type_decl
+}
+
+// ============================================================================
+// BLOCK DECLARATIONS
+// ============================================================================
+
+function_block_decl = {
+    pragma* ~ "FUNCTION_BLOCK" ~ identifier ~
+    var_sections* ~
+    "BEGIN" ~ statement_list? ~ "END_FUNCTION_BLOCK"
+}
+
+function_decl = {
+    pragma* ~ "FUNCTION" ~ identifier ~ ":" ~ type_ref ~
+    var_sections* ~
+    "BEGIN" ~ statement_list? ~ "END_FUNCTION"
+}
+
+data_block_decl = {
+    pragma* ~ "DATA_BLOCK" ~ identifier ~
+    var_sections* ~
+    "BEGIN" ~ statement_list? ~ "END_DATA_BLOCK"
+}
+
+organization_block_decl = {
+    pragma* ~ "ORGANIZATION_BLOCK" ~ identifier ~
+    var_sections* ~
+    "BEGIN" ~ statement_list? ~ "END_ORGANIZATION_BLOCK"
+}
+
+type_decl = {
+    pragma* ~ "TYPE" ~ identifier ~ ":" ~ type_spec ~ "END_TYPE"
+}
+
+// ============================================================================
+// VARIABLE SECTIONS
+// ============================================================================
+
+var_sections = {
+    var_input
+  | var_output
+  | var_inout
+  | var_temp
+  | var
+  | var_constant
+  | var_stat
+}
+
+var_input = { 
+    "VAR_INPUT" ~ var_decl_list ~ "END_VAR" 
+}
+
+var_output = { 
+    "VAR_OUTPUT" ~ var_decl_list ~ "END_VAR" 
+}
+
+var_inout = { 
+    "VAR_IN_OUT" ~ var_decl_list ~ "END_VAR" 
+}
+
+var_temp = { 
+    "VAR_TEMP" ~ var_decl_list ~ "END_VAR" 
+}
+
+var = { 
+    "VAR" ~ var_decl_list ~ "END_VAR" 
+}
+
+var_constant = { 
+    "VAR" ~ "CONSTANT" ~ var_decl_list ~ "END_VAR" 
+}
+
+var_stat = { 
+    "VAR_STAT" ~ var_decl_list ~ "END_VAR" 
+}
+
+var_decl_list = { var_decl* }
+
+var_decl = {
+    pragma* ~ identifier ~ ("," ~ identifier)* ~ ":" ~ type_ref ~ 
+    var_attributes? ~ (":" ~ "=" ~ expression)? ~ ";"
+}
+
+var_attributes = {
+    "{" ~ var_attribute ~ (";" ~ var_attribute)* ~ "}"
+}
+
+var_attribute = {
+    identifier ~ ":" ~ "=" ~ expression
+}
+
+// ============================================================================
+// TYPE SYSTEM
+// ============================================================================
+
+type_ref = {
+    array_type
+  | struct_type  
+  | pointer_type
+  | type_name
+}
+
+type_spec = {
+    array_type
+  | struct_type
+  | enum_type
+  | type_name
+}
+
+type_name = @{ identifier }
+
+array_type = {
+    "ARRAY" ~ "[" ~ array_range ~ ("," ~ array_range)* ~ "]" ~ "OF" ~ type_ref
+}
+
+array_range = {
+    expression ~ ".." ~ expression
+}
+
+struct_type = {
+    "STRUCT" ~ struct_field* ~ "END_STRUCT"
+}
+
+struct_field = {
+    identifier ~ ("," ~ identifier)* ~ ":" ~ type_ref ~ (":" ~ "=" ~ expression)? ~ ";"
+}
+
+enum_type = {
+    "(" ~ identifier ~ ("," ~ identifier)* ~ ")" ~ (":" ~ type_name)?
+}
+
+pointer_type = {
+    "POINTER" ~ "TO" ~ type_ref
+}
+
+// ============================================================================
+// STATEMENTS
+// ============================================================================
+
+statement_list = { statement* }
+
+statement = {
+    pragma* ~ (
+        if_statement
+      | case_statement
+      | for_statement
+      | while_statement
+      | repeat_statement
+      | goto_statement
+      | label_statement
+      | return_statement
+      | exit_statement
+      | continue_statement
+      | region_statement
+      | assignment
+      | function_call_stmt
+      | ";"  // empty statement
+    )
+}
+
+if_statement = {
+    "IF" ~ expression ~ "THEN" ~ statement_list ~
+    elsif_clause* ~
+    else_clause? ~
+    "END_IF" ~ ";"
+}
+
+elsif_clause = {
+    "ELSIF" ~ expression ~ "THEN" ~ statement_list
+}
+
+else_clause = {
+    "ELSE" ~ statement_list
+}
+
+case_statement = {
+    "CASE" ~ expression ~ "OF" ~
+    case_clause+ ~
+    else_clause? ~
+    "END_CASE" ~ ";"
+}
+
+case_clause = {
+    case_label ~ ("," ~ case_label)* ~ ":" ~ statement_list
+}
+
+case_label = {
+    expression ~ (".." ~ expression)?
+}
+
+for_statement = {
+    "FOR" ~ identifier ~ ":=" ~ expression ~ "TO" ~ expression ~ 
+    ("BY" ~ expression)? ~ "DO" ~
+    statement_list ~
+    "END_FOR" ~ ";"
+}
+
+while_statement = {
+    "WHILE" ~ expression ~ "DO" ~
+    statement_list ~
+    "END_WHILE" ~ ";"
+}
+
+repeat_statement = {
+    "REPEAT" ~
+    statement_list ~
+    "UNTIL" ~ expression ~
+    "END_REPEAT" ~ ";"
+}
+
+goto_statement = {
+    "GOTO" ~ identifier ~ ";"
+}
+
+label_statement = {
+    identifier ~ ":" ~ statement
+}
+
+return_statement = {
+    "RETURN" ~ ";"
+}
+
+exit_statement = {
+    "EXIT" ~ ";"
+}
+
+continue_statement = {
+    "CONTINUE" ~ ";"
+}
+
+region_statement = {
+    "REGION" ~ region_name ~
+    statement_list ~
+    "END_REGION"
+}
+
+region_name = { (!NEWLINE ~ ANY)* }
+
+assignment = {
+    lvalue ~ assignment_op ~ expression ~ ";"
+}
+
+assignment_op = {
+    ":=" | "+=" | "-=" | "*=" | "/=" | "?="
+}
+
+function_call_stmt = {
+    identifier ~ "(" ~ argument_list? ~ ")" ~ ";"
+}
+
+// ============================================================================
+// EXPRESSIONS
+// ============================================================================
+
+expression = {
+    logical_or_expr
+}
+
+logical_or_expr = {
+    logical_xor_expr ~ ("OR" ~ logical_xor_expr)*
+}
+
+logical_xor_expr = {
+    logical_and_expr ~ ("XOR" ~ logical_and_expr)*
+}
+
+logical_and_expr = {
+    equality_expr ~ (("AND" | "&") ~ equality_expr)*
+}
+
+equality_expr = {
+    comparison_expr ~ (("=" | "<>") ~ comparison_expr)*
+}
+
+comparison_expr = {
+    additive_expr ~ (("<" | ">" | "<=" | ">=") ~ additive_expr)*
+}
+
+additive_expr = {
+    multiplicative_expr ~ (("+" | "-") ~ multiplicative_expr)*
+}
+
+multiplicative_expr = {
+    power_expr ~ (("*" | "/" | "MOD") ~ power_expr)*
+}
+
+power_expr = {
+    unary_expr ~ ("**" ~ unary_expr)*
+}
+
+unary_expr = {
+    ("+" | "-" | "NOT") ~ unary_expr
+  | postfix_expr
+}
+
+postfix_expr = {
+    primary_expr ~ (
+        array_access
+      | struct_access
+      | pointer_deref
+    )*
+}
+
+array_access = {
+    "[" ~ expression ~ ("," ~ expression)* ~ "]"
+}
+
+struct_access = {
+    "." ~ identifier
+}
+
+pointer_deref = {
+    "^"
+}
+
+primary_expr = {
+    literal
+  | function_call
+  | lvalue
+  | "(" ~ expression ~ ")"
+}
+
+function_call = {
+    identifier ~ "(" ~ argument_list? ~ ")"
+}
+
+argument_list = {
+    argument ~ ("," ~ argument)*
+}
+
+argument = {
+    (identifier ~ ":")? ~ expression
+  | (identifier ~ "=>" ~ lvalue)  // output parameter
+}
+
+lvalue = {
+    identifier ~ (array_access | struct_access | pointer_deref)*
+}
+
+// ============================================================================
+// LITERALS
+// ============================================================================
+
+literal = {
+    boolean_literal
+  | numeric_literal
+  | time_literal
+  | string_literal
+  | typed_literal
+}
+
+boolean_literal = { "TRUE" | "FALSE" }
+
+numeric_literal = {
+    hex_literal
+  | binary_literal
+  | real_literal
+  | integer_literal
+}
+
+integer_literal = @{
+    "-"? ~ ASCII_DIGIT ~ (ASCII_DIGIT | "_")*
+}
+
+real_literal = @{
+    "-"? ~ ASCII_DIGIT+ ~ "." ~ ASCII_DIGIT+ ~ (("e" | "E") ~ ("+" | "-")? ~ ASCII_DIGIT+)?
+}
+
+hex_literal = @{
+    "16#" ~ ASCII_HEX_DIGIT ~ (ASCII_HEX_DIGIT | "_")*
+}
+
+binary_literal = @{
+    "2#" ~ ("0" | "1" | "_")+
+}
+
+time_literal = {
+    time_value | date_value | tod_value | dt_value
+}
+
+time_value = @{
+    ("T#" | "TIME#") ~ time_components
+}
+
+date_value = @{
+    ("D#" | "DATE#") ~ ASCII_DIGIT{4} ~ "-" ~ ASCII_DIGIT{2} ~ "-" ~ ASCII_DIGIT{2}
+}
+
+tod_value = @{
+    ("TOD#" | "TIME_OF_DAY#") ~ ASCII_DIGIT{1,2} ~ ":" ~ ASCII_DIGIT{2} ~ ":" ~ ASCII_DIGIT{2} ~ ("." ~ ASCII_DIGIT+)?
+}
+
+dt_value = @{
+    ("DT#" | "DATE_AND_TIME#") ~ ASCII_DIGIT{4} ~ "-" ~ ASCII_DIGIT{2} ~ "-" ~ ASCII_DIGIT{2} ~ 
+    "-" ~ ASCII_DIGIT{1,2} ~ ":" ~ ASCII_DIGIT{2} ~ ":" ~ ASCII_DIGIT{2} ~ ("." ~ ASCII_DIGIT+)?
+}
+
+time_components = @{
+    (ASCII_DIGIT+ ~ ("d" | "h" | "m" | "s" | "ms" | "us" | "ns"))+
+}
+
+string_literal = @{
+    "'" ~ (!"'" ~ ANY)* ~ "'"
+}
+
+typed_literal = {
+    type_name ~ "#" ~ (numeric_literal | string_literal)
+}
+
+// ============================================================================
+// IDENTIFIERS AND KEYWORDS
+// ============================================================================
+
+identifier = @{
+    quoted_identifier | plain_identifier
+}
+
+quoted_identifier = @{
+    "\"" ~ (!"\"" ~ ANY)+ ~ "\""
+}
+
+plain_identifier = @{
+    !keyword ~ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")*
+}
+
+keyword = {
+    "FUNCTION_BLOCK" | "END_FUNCTION_BLOCK"
+  | "FUNCTION" | "END_FUNCTION"
+  | "DATA_BLOCK" | "END_DATA_BLOCK"
+  | "ORGANIZATION_BLOCK" | "END_ORGANIZATION_BLOCK"
+  | "TYPE" | "END_TYPE"
+  | "VAR_INPUT" | "VAR_OUTPUT" | "VAR_IN_OUT" | "VAR_TEMP" | "VAR_STAT"
+  | "VAR" | "END_VAR"
+  | "CONSTANT" | "RETAIN"
+  | "ARRAY" | "OF" | "STRUCT" | "END_STRUCT" | "POINTER" | "TO"
+  | "IF" | "THEN" | "ELSIF" | "ELSE" | "END_IF"
+  | "CASE" | "END_CASE"
+  | "FOR" | "TO" | "BY" | "DO" | "END_FOR"
+  | "WHILE" | "END_WHILE"
+  | "REPEAT" | "UNTIL" | "END_REPEAT"
+  | "GOTO" | "RETURN" | "EXIT" | "CONTINUE"
+  | "REGION" | "END_REGION"
+  | "BEGIN"
+  | "TRUE" | "FALSE"
+  | "AND" | "OR" | "XOR" | "NOT" | "MOD"
+}
+
+// ============================================================================
+// PRAGMAS AND COMMENTS
+// ============================================================================
+
+pragma = {
+    "{" ~ pragma_content ~ "}"
+}
+
+pragma_content = @{
+    (!("}" | "{") ~ ANY)*
+}
+
+COMMENT = _{
+    line_comment | block_comment
+}
+
+line_comment = {
+    "//" ~ (!NEWLINE ~ ANY)*
+}
+
+block_comment = {
+    "(*" ~ (!"*)" ~ ANY)* ~ "*)"
+  | "/*" ~ (!"*/" ~ ANY)* ~ "*/"
+}
+
+WHITESPACE = _{ " " | "\t" | "\r" | "\n" }

@@ -143,6 +143,9 @@ pub enum TokenKind {
     // Operators - Bitwise
     BitwiseAnd,     // &
     
+    // Operators - Other
+    Arrow,          // => (named parameter syntax)
+    
     // Delimiters
     LeftParen,      // (
     RightParen,     // )
@@ -703,7 +706,14 @@ impl Lexer {
                     TokenKind::Slash
                 }
             }
-            '=' => TokenKind::Equal,
+            '=' => {
+                if !self.is_eof() && self.current_char() == '>' {
+                    self.advance();
+                    TokenKind::Arrow
+                } else {
+                    TokenKind::Equal
+                }
+            }
             '<' => {
                 if !self.is_eof() && self.current_char() == '=' {
                     self.advance();

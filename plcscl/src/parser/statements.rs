@@ -10,10 +10,20 @@ use super::Parser;
 impl Parser {
     /// Parse a statement (returns None for empty statements).
     pub(super) fn parse_statement(&mut self) -> Result<Option<Statement>> {
-        // Skip comments
-        if matches!(self.current.kind, TokenKind::Comment(_)) {
+        // Skip all leading comments
+        while matches!(self.current.kind, TokenKind::Comment(_)) {
             self.advance()?;
-            return Ok(None);
+        }
+        
+        // Return None for block-ending tokens (caller should handle these)
+        match &self.current.kind {
+            TokenKind::EndRegion | TokenKind::EndIf | TokenKind::EndCase |
+            TokenKind::EndFor | TokenKind::EndWhile | TokenKind::EndRepeat |
+            TokenKind::EndFunction | TokenKind::EndFunctionBlock | 
+            TokenKind::EndDataBlock | TokenKind::EndOrganization |
+            TokenKind::Elsif | TokenKind::Else | TokenKind::Until |
+            TokenKind::Eof => return Ok(None),
+            _ => {}
         }
 
         let start = self.current.span.start;
@@ -64,21 +74,52 @@ impl Parser {
             TokenKind::Region => {
                 self.advance()?;
                 
-                // Region name can be multiple words until end of line or statement
-                // Read all tokens until we hit a statement or END_REGION
+                // Region name can be multiple words/tokens until end of line
+                // Collect all tokens except structural ones (semicolons, BEGIN, etc.)
                 let mut name_parts = Vec::new();
                 while !self.is_at_end() && !self.check(&TokenKind::EndRegion) {
                     match &self.current.kind {
+                        // Identifiers
                         TokenKind::Identifier(id) => {
                             name_parts.push(id.clone());
                             self.advance()?;
                         }
+                        // Comments mark end of line
                         TokenKind::Comment(_) => {
-                            // End of region name line
                             self.advance()?;
                             break;
                         }
-                        _ => break, // Start of actual statement
+                        // Structural tokens mark end of name - start of body statements
+                        TokenKind::Semicolon | TokenKind::Begin | TokenKind::Hash => break,
+                        
+                        // Allow operators and punctuation in names (e.g., "Anti-integral")
+                        TokenKind::Minus => { name_parts.push("-".to_string()); self.advance()?; }
+                        TokenKind::Plus => { name_parts.push("+".to_string()); self.advance()?; }
+                        TokenKind::Slash => { name_parts.push("/".to_string()); self.advance()?; }
+                        TokenKind::Star => { name_parts.push("*".to_string()); self.advance()?; }
+                        
+                        // Allow common keywords in region names (ALL keywords that might appear)
+                        TokenKind::And => { name_parts.push("and".to_string()); self.advance()?; }
+                        TokenKind::Or => { name_parts.push("or".to_string()); self.advance()?; }
+                        TokenKind::Of => { name_parts.push("of".to_string()); self.advance()?; }
+                        TokenKind::To => { name_parts.push("to".to_string()); self.advance()?; }
+                        TokenKind::For => { name_parts.push("for".to_string()); self.advance()?; }
+                        TokenKind::If => { name_parts.push("if".to_string()); self.advance()?; }
+                        TokenKind::Not => { name_parts.push("not".to_string()); self.advance()?; }
+                        
+                        // Data type keywords can appear in region names too
+                        TokenKind::Time => { name_parts.push("time".to_string()); self.advance()?; }
+                        TokenKind::LTime => { name_parts.push("ltime".to_string()); self.advance()?; }
+                        TokenKind::Date => { name_parts.push("date".to_string()); self.advance()?; }
+                        TokenKind::Int => { name_parts.push("int".to_string()); self.advance()?; }
+                        TokenKind::Real => { name_parts.push("real".to_string()); self.advance()?; }
+                        TokenKind::Bool => { name_parts.push("bool".to_string()); self.advance()?; }
+                        TokenKind::String => { name_parts.push("string".to_string()); self.advance()?; }
+                        TokenKind::Array => { name_parts.push("array".to_string()); self.advance()?; }
+                        TokenKind::Struct => { name_parts.push("struct".to_string()); self.advance()?; }
+                        
+                        // Everything else ends the name
+                        _ => break,
                     }
                 }
                 let name = name_parts.join(" ");
@@ -88,6 +129,9 @@ impl Parser {
                     if let Some(stmt) = self.parse_statement_recovering() {
                         body.push(stmt);
                     }
+                    // Skip trivia (comments/pragmas) to avoid infinite loop
+                    // when parse_statement returns None
+                    self.skip_trivia();
                 }
                 self.expect(TokenKind::EndRegion)?;
                 
@@ -225,6 +269,7 @@ impl Parser {
             if let Some(stmt) = self.parse_statement_recovering() {
                 then_branch.push(stmt);
             }
+            self.skip_trivia();
         }
 
         let mut elsif_branches = Vec::new();
@@ -241,6 +286,7 @@ impl Parser {
                 if let Some(stmt) = self.parse_statement_recovering() {
                     elsif_body.push(stmt);
                 }
+                self.skip_trivia();
             }
             elsif_branches.push((elsif_cond, elsif_body));
         }
@@ -251,6 +297,7 @@ impl Parser {
                 if let Some(stmt) = self.parse_statement_recovering() {
                     else_body.push(stmt);
                 }
+                self.skip_trivia();
             }
             Some(else_body)
         } else {
@@ -305,6 +352,7 @@ impl Parser {
                 if let Some(stmt) = self.parse_statement_recovering() {
                     body.push(stmt);
                 }
+                self.skip_trivia();
             }
             
             branches.push(CaseBranch {
@@ -320,6 +368,7 @@ impl Parser {
                 if let Some(stmt) = self.parse_statement_recovering() {
                     else_body.push(stmt);
                 }
+                self.skip_trivia();
             }
             Some(else_body)
         } else {
@@ -378,6 +427,7 @@ impl Parser {
             if let Some(stmt) = self.parse_statement_recovering() {
                 body.push(stmt);
             }
+            self.skip_trivia();
         }
 
         self.expect(TokenKind::EndFor)?;
@@ -404,6 +454,7 @@ impl Parser {
             if let Some(stmt) = self.parse_statement_recovering() {
                 body.push(stmt);
             }
+            self.skip_trivia();
         }
 
         self.expect(TokenKind::EndWhile)?;
@@ -425,6 +476,7 @@ impl Parser {
             if let Some(stmt) = self.parse_statement_recovering() {
                 body.push(stmt);
             }
+            self.skip_trivia();
         }
 
         self.expect(TokenKind::Until)?;

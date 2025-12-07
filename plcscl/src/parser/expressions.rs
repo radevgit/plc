@@ -268,24 +268,27 @@ impl Parser {
         while !self.check(&TokenKind::RightParen) && !self.is_at_end() {
             let arg_start = self.current.span.start;
             
-            // Check for named argument (name := value)
-            let name = if matches!(self.current.kind, TokenKind::Identifier(_)) {
+            // Check for named argument with := or =>
+            let (name, is_output) = if matches!(self.current.kind, TokenKind::Identifier(_)) {
                 let peek_ahead = self.peek()?.kind.clone();
                 if matches!(peek_ahead, TokenKind::Assign) {
+                    // Input parameter: name := value
                     let n = self.parse_identifier()?;
                     self.expect(TokenKind::Assign)?;
-                    Some(n)
+                    (Some(n), false)
+                } else if matches!(peek_ahead, TokenKind::Arrow) {
+                    // Output parameter: name => variable
+                    let n = self.parse_identifier()?;
+                    self.expect(TokenKind::Arrow)?;
+                    (Some(n), true)
                 } else {
-                    None
+                    (None, false)
                 }
             } else {
-                None
+                (None, false)
             };
 
             let value = self.parse_expression()?;
-            
-            // Check for output assignment (=>)
-            let is_output = false; // TODO: Handle => for outputs
 
             arguments.push(Argument {
                 name,
