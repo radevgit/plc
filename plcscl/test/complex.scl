@@ -1,0 +1,35 @@
+FUNCTION_BLOCK Test_Complex
+VAR_INPUT
+    a : INT;
+    b : INT;
+    c : INT;
+END_VAR
+VAR_OUTPUT
+    result : INT;
+END_VAR
+VAR_TEMP
+    temp : INT;
+END_VAR
+BEGIN
+    result := a;
+    
+    FOR temp := a TO b BY c DO
+        result := result;
+    END_FOR;
+    
+    WHILE a DO
+        result := result;
+    END_WHILE;
+    
+    REPEAT
+        result := result;
+    UNTIL a
+    END_REPEAT;
+    
+    CASE a OF
+        a : result := a;
+        b : result := b;
+    ELSE
+        result := c;
+    END_CASE;
+END_FUNCTION_BLOCK

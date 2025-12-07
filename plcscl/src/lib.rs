@@ -5,25 +5,13 @@
 //! SCL is Siemens' implementation of IEC 61131-3 Structured Text (ST) with
 //! proprietary extensions for S7-300/400/1200/1500 PLCs.
 //!
-//! ## Features
-//!
-//! - Lexer for SCL tokens
-//! - Parser for SCL programs
-//! - AST representation
-//! - Support for Siemens-specific extensions:
-//!   - Pragmas (`{S7_Optimized_Access := 'TRUE'}`)
-//!   - Absolute addressing (`%I0.0`, `DB10.DBW0`)
-//!   - Regions (`REGION..END_REGION`)
-//!   - Data blocks (DB, FB, FC)
-//!
 //! ## Example
 //!
 //! ```ignore
-//! use plcscl::{Lexer, Parser};
+//! use plcscl::parse_scl;
 //!
 //! let source = r#"
-//! FUNCTION_BLOCK "MyFB"
-//! { S7_Optimized_Access := 'TRUE' }
+//! FUNCTION_BLOCK MyFB
 //! VAR_INPUT
 //!     setpoint : REAL;
 //! END_VAR
@@ -35,19 +23,18 @@
 //! END_FUNCTION_BLOCK
 //! "#;
 //!
-//! let lexer = Lexer::new(source);
-//! let parser = Parser::new(lexer);
-//! let ast = parser.parse();
+//! match parse_scl(source) {
+//!     Ok(program) => println!("Parsed successfully!"),
+//!     Err(e) => eprintln!("Parse error: {}", e.message),
+//! }
 //! ```
 
-pub mod ast;
-pub mod error;
-pub mod lexer;
-pub mod parser;
-pub mod span;
+pub mod generated;
 
-pub use ast::*;
-pub use error::{Error, Result};
-pub use lexer::Lexer;
-pub use parser::Parser;
-pub use span::Span;
+pub use generated::*;
+
+/// Parse SCL source code into an AST
+pub fn parse_scl(input: &str) -> Result<Program, ParseError> {
+    let mut parser = Parser::new(input);
+    parser.parse_program()
+}
