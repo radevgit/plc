@@ -1,6 +1,6 @@
 # l5x
 
-A Rust library for parsing Rockwell Automation L5X files exported from Studio 5000 Logix Designer.
+A Rust library for parsing L5X files exported from Studio 5000 Logix Designer.
 
 ## Features
 
@@ -116,6 +116,4 @@ The RLL parser handles standard ladder logic syntax:
 ## Disclaimer
 
 This is an independent open-source project and is not affiliated with, endorsed by, sponsored by, or associated with Rockwell Automation, Inc. or any of its subsidiaries or affiliates.
-
-"Rockwell Automation", "Allen-Bradley", "Studio 5000", "Logix Designer", "ControlLogix", and "CompactLogix" are trademarks of Rockwell Automation, Inc.
 

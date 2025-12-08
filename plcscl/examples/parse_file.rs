@@ -1,4 +1,4 @@
-use plcscl::{Lexer, Parser};
+use plcscl::parse_scl;
 use std::fs;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -18,53 +18,34 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Source size: {} bytes", source.len());
     println!();
 
-    let lexer = Lexer::new(&source);
-    let mut parser = Parser::new(lexer)?.with_error_recovery();
-    
-    match parser.parse() {
-        Ok(ast) => {
-            // Check if there were any errors during parsing
-            if !parser.errors.is_empty() {
-                println!("⚠ Parsed with {} error(s):", parser.errors.len());
-                for (i, err) in parser.errors.iter().enumerate() {
-                    println!("  {}. {}", i + 1, err);
-                }
-                println!();
-            } else {
-                println!("✓ Parse successful!");
-                println!();
-            }
+    match parse_scl(&source) {
+        Ok(program) => {
+            println!("✓ Successfully parsed!");
+            println!("  Blocks: {}", program.blocks.len());
             
-            println!("Blocks found: {}", ast.blocks.len());
-            
-            for (i, block) in ast.blocks.iter().enumerate() {
-                println!("\nBlock #{}: {:?} '{}'", i + 1, block.kind, block.name);
-                println!("  Pragmas: {}", block.pragmas.len());
-                println!("  Variable sections: {}", block.variables.len());
-                
-                let total_vars: usize = block.variables.iter()
-                    .map(|s| s.variables.len())
-                    .sum();
-                println!("  Total variables: {}", total_vars);
-                println!("  Statements: {}", block.body.len());
-                
-                if let Some(ret) = &block.return_type {
-                    println!("  Return type: {:?}", ret);
+            for block in &program.blocks {
+                match block {
+                    plcscl::Block::FunctionBlock(fb) => {
+                        println!("  FUNCTION_BLOCK '{}'", fb.name);
+                        println!("    VAR sections: {}", fb.var_sections.len());
+                        println!("    Statements: {}", fb.statements.len());
+                    }
+                    plcscl::Block::Function(f) => {
+                        println!("  FUNCTION '{}'", f.name);
+                        println!("    Statements: {}", f.statements.len());
+                    }
+                    _ => {
+                        println!("  Other block type");
+                    }
                 }
             }
-            
-            println!("\n✓ Successfully parsed {} blocks", ast.blocks.len());
-            
-            if !parser.errors.is_empty() {
-                println!("⚠ {} error(s) encountered during parsing", parser.errors.len());
-                std::process::exit(2); // Exit with different code to indicate partial success
-            }
+            Ok(())
         }
         Err(e) => {
-            eprintln!("✗ Parse error: {}", e);
+            eprintln!("✗ Parse error:");
+            eprintln!("  {}", e.message());
+            eprintln!("  At position: {:?}", e.span);
             std::process::exit(1);
         }
     }
-
-    Ok(())
 }

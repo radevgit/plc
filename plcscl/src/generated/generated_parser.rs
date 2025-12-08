@@ -179,6 +179,7 @@ impl ParseError {
     }
 }
 
+#[allow(dead_code)]
 pub struct Parser {
     tokens: Vec<Token>,
     pos: usize,
@@ -282,6 +283,7 @@ impl Parser {
         ParseError::new(kind, span).with_source(&self.source)
     }
     
+    #[allow(dead_code)]
     fn record_error(&mut self, error: ParseError) {
         self.errors.push(error);
     }

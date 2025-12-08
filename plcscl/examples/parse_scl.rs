@@ -1,5 +1,4 @@
-use plcscl::parse::{SclParser, Rule};
-use pest::Parser;
+use plcscl::parse_scl;
 use std::fs;
 
 fn main() {
@@ -16,12 +15,13 @@ fn main() {
             std::process::exit(1);
         });
 
-    match SclParser::parse(Rule::program, &content) {
-        Ok(_pairs) => {
+    match parse_scl(&content) {
+        Ok(program) => {
             println!("✓ Successfully parsed {}", filename);
+            println!("  Blocks: {}", program.blocks.len());
         }
         Err(e) => {
-            eprintln!("✗ Parse error in {}:\n{}", filename, e);
+            eprintln!("✗ Parse error in {}:\n{}", filename, e.message());
             std::process::exit(1);
         }
     }

@@ -55,7 +55,58 @@ Precedence levels (11 = highest):
 ## Example
 
 ```rust
-use plcscl::{Lexer, Parser};
+use plcscl::parse_scl;
+
+let source = r#"
+FUNCTION_BLOCK PID_Controller
+VAR_INPUT
+    Setpoint : REAL;
+    ProcessValue : REAL;
+END_VAR
+
+VAR_OUTPUT
+    Output : REAL;
+END_VAR
+
+BEGIN
+    Output := Setpoint - ProcessValue;
+END_FUNCTION_BLOCK
+"#;
+
+match parse_scl(source) {
+    Ok(program) => {
+        println!("Parsed successfully!");
+        println!("Found {} blocks", program.blocks.len());
+    }
+    Err(e) => eprintln!("Parse error: {}", e.message()),
+}
+```
+
+### Security
+
+**v0.1.0 Note**: Currently enforces input size validation only. Runtime depth/iteration tracking is planned for v0.2.0.
+
+For untrusted input, use `parse_scl_secure` with appropriate limits:
+
+```rust
+use plcscl::{parse_scl_secure, security::ParserLimits};
+
+let source = get_untrusted_input();
+match parse_scl_secure(source, ParserLimits::strict()) {
+    Ok(program) => println!("Parsed successfully!"),
+    Err(e) => eprintln!("Parse error: {}", e),
+}
+```
+
+Available limit presets:
+- `ParserLimits::strict()` - For untrusted/external input (10 MB max, 64 depth)
+- `ParserLimits::balanced()` - Default for most use cases (100 MB max, 256 depth)
+- `ParserLimits::relaxed()` - For trusted internal code (1 GB max, 1024 depth)
+
+## Example (Extended)
+
+```rust
+use plcscl::parse_scl;
 
 let source = r#"
 FUNCTION_BLOCK "PID_Controller"
@@ -101,11 +152,21 @@ BEGIN
 END_FUNCTION_BLOCK
 "#;
 
-let lexer = Lexer::new(source);
-let mut parser = Parser::new(lexer)?;
-let ast = parser.parse()?;
-
-println!("Parsed {} blocks", ast.blocks.len());
+match parse_scl(source) {
+    Ok(program) => {
+        println!("Parsed {} blocks", program.blocks.len());
+        for block in &program.blocks {
+            match block {
+                plcscl::Block::FunctionBlock(fb) => {
+                    println!("Function Block: {}", fb.name);
+                    println!("  Statements: {}", fb.statements.len());
+                }
+                _ => {}
+            }
+        }
+    }
+    Err(e) => eprintln!("Parse error: {}", e.message()),
+}
 ```
 
 

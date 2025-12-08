@@ -30,7 +30,7 @@ END_FUNCTION_BLOCK
             }
         }
         Err(e) => {
-            eprintln!("✗ Parse error: {}", e.message);
+            eprintln!("✗ Parse error: {}", e.message());
             eprintln!("  At position: {:?}", e.span);
         }
     }

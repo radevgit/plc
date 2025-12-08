@@ -1,13 +1,19 @@
 //! Security limits for SCL parser to prevent DoS attacks
+//!
+//! Provides protection against:
+//! - Input size bombs (huge source files)
+//! - Deep nesting attacks (excessive control structure nesting)
+//! - Complexity attacks (too many statements/expressions)
+//! - Memory exhaustion attacks
 
-/// Parser security limits to prevent denial-of-service attacks
+/// Security limits for parsing SCL code
 #[derive(Debug, Clone)]
 pub struct ParserLimits {
     /// Maximum input size in bytes
     pub max_input_size: usize,
-    /// Maximum loop iterations (for any single loop)
+    /// Maximum loop iterations (for any single loop during parsing)
     pub max_iterations: usize,
-    /// Maximum recursion/nesting depth
+    /// Maximum recursion/nesting depth for control structures
     pub max_depth: usize,
     /// Maximum items in any collection (Vec, etc)
     pub max_collection_size: usize,
@@ -24,7 +30,7 @@ impl Default for ParserLimits {
 }
 
 impl ParserLimits {
-    /// Balanced limits suitable for most use cases
+    /// Balanced limits suitable for most industrial SCL programs
     pub fn balanced() -> Self {
         ParserLimits {
             max_input_size: 100 * 1024 * 1024,      // 100 MB
@@ -61,7 +67,7 @@ impl ParserLimits {
     }
 }
 
-/// Runtime state for tracking parser limits
+/// Runtime state for tracking parser security limits
 #[derive(Debug)]
 pub struct ParserState {
     limits: ParserLimits,
@@ -81,7 +87,7 @@ impl ParserState {
         }
     }
 
-    /// Enter a new depth level (e.g., nested block)
+    /// Enter a new depth level (e.g., nested IF/FOR/WHILE block)
     pub fn enter_depth(&mut self) -> Result<(), SecurityError> {
         self.current_depth += 1;
         if self.current_depth > self.limits.max_depth {
@@ -112,7 +118,7 @@ impl ParserState {
         Ok(())
     }
 
-    /// Record an iteration
+    /// Record an iteration (for parsing loops, not runtime loops)
     pub fn record_iteration(&mut self) -> Result<(), SecurityError> {
         self.iteration_count += 1;
         if self.iteration_count > self.limits.max_iterations {
@@ -124,7 +130,7 @@ impl ParserState {
         Ok(())
     }
 
-    /// Check collection size
+    /// Check collection size before adding items
     pub fn check_collection_size(&self, size: usize) -> Result<(), SecurityError> {
         if size > self.limits.max_collection_size {
             return Err(SecurityError::CollectionTooLarge {
