@@ -186,7 +186,7 @@ dependencies = [
  "serde",
  "thiserror 1.0.69",
  "walkdir",
- "winnow 0.6.26",
+ "winnow 0.7.14",
 ]
 
 [[package]]
