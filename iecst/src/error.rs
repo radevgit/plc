@@ -40,6 +40,8 @@ pub enum ParseErrorKind {
     DuplicateIdentifier,
     /// Invalid direct address format
     InvalidDirectAddress,
+    /// Security limit exceeded (e.g., max depth, max statements)
+    Security(String),
 }
 
 impl fmt::Display for ParseErrorKind {
@@ -66,6 +68,7 @@ impl fmt::Display for ParseErrorKind {
             ParseErrorKind::InvalidType => write!(f, "invalid type specification"),
             ParseErrorKind::DuplicateIdentifier => write!(f, "duplicate identifier"),
             ParseErrorKind::InvalidDirectAddress => write!(f, "invalid direct address format"),
+            ParseErrorKind::Security(msg) => write!(f, "security limit exceeded: {}", msg),
         }
     }
 }

@@ -32,6 +32,17 @@
 //!     println!("{}: {} statements", pou_name, statements.len());
 //! }
 //! ```
+//!
+//! # Security
+//!
+//! For untrusted XML files, use the secure parsing function:
+//!
+//! ```ignore
+//! use plcopen::{from_str_secure, security::SecurityLimits};
+//!
+//! let xml = std::fs::read_to_string("untrusted.xml")?;
+//! let project = from_str_secure::<Project>(&xml, SecurityLimits::strict())?;
+//! ```
 
 #![allow(dead_code)]
 #![allow(non_camel_case_types)]
@@ -48,6 +59,10 @@ pub use generated::*;
 // ST extraction and parsing
 pub mod st;
 
+// Security limits and validation
+pub mod security;
+pub use security::{SecurityError, SecurityLimits, validate_xml};
+
 /// Type alias for the root project element
 pub type Project = Root_project_Inline;
 
@@ -56,6 +71,49 @@ pub type Project = Root_project_Inline;
 /// Uses quick-xml with serde for fast, type-safe parsing.
 pub fn from_str<'a, T: Deserialize<'a>>(xml: &'a str) -> Result<T, quick_xml::DeError> {
     xml_from_str(xml)
+}
+
+/// Parse PLCopen XML string with security limits.
+///
+/// This function validates the XML against security limits before parsing
+/// to prevent denial-of-service attacks via malicious XML.
+///
+/// # Arguments
+///
+/// * `xml` - The XML content to parse
+/// * `limits` - Security limits to enforce
+///
+/// # Returns
+///
+/// Returns the parsed structure or an error if validation fails or parsing fails.
+///
+/// # Example
+///
+/// ```ignore
+/// use plcopen::{Project, from_str_secure, security::SecurityLimits};
+///
+/// let xml = std::fs::read_to_string("untrusted.xml")?;
+/// let project = from_str_secure::<Project>(&xml, SecurityLimits::strict())?;
+/// ```
+pub fn from_str_secure<'a, T: Deserialize<'a>>(
+    xml: &'a str,
+    limits: SecurityLimits,
+) -> Result<T, SecureParseError> {
+    // Validate XML against security limits
+    validate_xml(xml, &limits)?;
+    
+    // Parse with quick-xml
+    xml_from_str(xml).map_err(SecureParseError::Parse)
+}
+
+/// Error type for secure parsing
+#[derive(Debug, thiserror::Error)]
+pub enum SecureParseError {
+    #[error("Parse error: {0}")]
+    Parse(#[from] quick_xml::DeError),
+    
+    #[error("Security limit exceeded: {0}")]
+    Security(#[from] SecurityError),
 }
 
 /// Serialize a structure to PLCopen XML string.

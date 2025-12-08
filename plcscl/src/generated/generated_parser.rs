@@ -69,15 +69,21 @@ pub enum ParseErrorKind {
 pub struct ParseError {
     pub kind: ParseErrorKind,
     pub span: (usize, usize),
+    pub source: Option<String>,
 }
 
 impl ParseError {
     pub fn new(kind: ParseErrorKind, span: (usize, usize)) -> Self {
-        ParseError { kind, span }
+        ParseError { kind, span, source: None }
+    }
+    
+    pub fn with_source(mut self, source: &str) -> Self {
+        self.source = Some(source.to_string());
+        self
     }
     
     pub fn message(&self) -> String {
-        match &self.kind {
+        let base_msg = match &self.kind {
             ParseErrorKind::UnexpectedToken { expected, found } => 
                 format!("Expected {}, found {}", expected, found),
             ParseErrorKind::UnexpectedEof => 
@@ -94,13 +100,90 @@ impl ParseError {
                 "Too many statements in block".to_string(),
             ParseErrorKind::TooManyNodes => 
                 "Too many AST nodes (possible complexity attack)".to_string(),
+        };
+        
+        if let Some(source) = &self.source {
+            format!("{}\n{}", base_msg, self.format_source_context(source))
+        } else {
+            base_msg
         }
+    }
+    
+    pub fn suggestion(&self) -> Option<String> {
+        match &self.kind {
+            ParseErrorKind::UnexpectedToken { expected, found } => {
+                // Provide helpful suggestions for common mistakes
+                if expected.contains(";") && !found.contains(";") {
+                    Some("Did you forget a semicolon?".to_string())
+                } else if expected.contains("END_") {
+                    Some(format!("Missing closing keyword {}", expected))
+                } else if expected.contains("identifier") && found.contains("Operator") {
+                    Some("Expected a name here".to_string())
+                } else if expected.contains("Begin") {
+                    Some("Block body must start with BEGIN".to_string())
+                } else {
+                    None
+                }
+            }
+            ParseErrorKind::UnexpectedEof => {
+                Some("File ended unexpectedly. Did you forget an END_FUNCTION_BLOCK or similar closing keyword?".to_string())
+            }
+            _ => None,
+        }
+    }
+    
+    fn format_source_context(&self, source: &str) -> String {
+        let lines: Vec<&str> = source.lines().collect();
+        let (start, end) = self.span;
+        
+        // Find line and column
+        let mut current_pos = 0;
+        let mut line_num = 0;
+        let mut col_num = 0;
+        
+        for (i, line) in lines.iter().enumerate() {
+            let line_end = current_pos + line.len() + 1; // +1 for newline
+            if start < line_end {
+                line_num = i;
+                col_num = start - current_pos;
+                break;
+            }
+            current_pos = line_end;
+        }
+        
+        let mut output = String::new();
+        output.push_str(&format!("\n  --> line {}:{}\n", line_num + 1, col_num + 1));
+        
+        // Show context: previous line, error line, next line
+        let start_line = if line_num > 0 { line_num - 1 } else { 0 };
+        let end_line = (line_num + 2).min(lines.len());
+        
+        for i in start_line..end_line {
+            let marker = if i == line_num { ">" } else { " " };
+            output.push_str(&format!("   {} | {}\n", marker, lines[i]));
+            
+            if i == line_num {
+                // Add error indicator
+                let padding = " ".repeat(col_num + 6); // 6 = " > | ".len()
+                let indicator_len = (end - start).max(1).min(lines[i].len() - col_num);
+                let indicator = "^".repeat(indicator_len);
+                output.push_str(&format!("{}{}\n", padding, indicator));
+            }
+        }
+        
+        if let Some(suggestion) = self.suggestion() {
+            output.push_str(&format!("\n  help: {}\n", suggestion));
+        }
+        
+        output
     }
 }
 
 pub struct Parser {
     tokens: Vec<Token>,
     pos: usize,
+    source: String,              // Source code for error context
+    errors: Vec<ParseError>,     // Collected errors
     // Security limits
     max_tokens: usize,           // Limit total tokens to prevent memory bombs
     max_iterations: usize,       // Limit loop iterations
@@ -144,6 +227,8 @@ impl Parser {
         Parser { 
             tokens, 
             pos: 0,
+            source: input.to_string(),
+            errors: Vec::new(),
             max_tokens: limits.max_tokens,
             max_iterations: limits.max_iterations,
             recursion_depth: 0,
@@ -158,7 +243,7 @@ impl Parser {
     fn check_complexity(&mut self) -> Result<(), ParseError> {
         self.nodes_parsed += 1;
         if self.nodes_parsed > self.max_nodes {
-            return Err(ParseError::new(
+            return Err(self.make_error(
                 ParseErrorKind::TooManyNodes,
                 self.current().span,
             ));
@@ -168,7 +253,7 @@ impl Parser {
     
     fn check_collection_size(&self, size: usize, collection_name: &str) -> Result<(), ParseError> {
         if size >= self.max_collection_size {
-            return Err(ParseError::new(
+            return Err(self.make_error(
                 ParseErrorKind::CollectionSizeExceeded { collection: collection_name.to_string() },
                 self.current().span,
             ));
@@ -179,7 +264,7 @@ impl Parser {
     fn check_recursion(&mut self) -> Result<(), ParseError> {
         self.recursion_depth += 1;
         if self.recursion_depth > self.max_recursion_depth {
-            return Err(ParseError::new(
+            return Err(self.make_error(
                 ParseErrorKind::RecursionLimitExceeded,
                 self.current().span,
             ));
@@ -191,6 +276,22 @@ impl Parser {
         if self.recursion_depth > 0 {
             self.recursion_depth -= 1;
         }
+    }
+    
+    fn make_error(&self, kind: ParseErrorKind, span: (usize, usize)) -> ParseError {
+        ParseError::new(kind, span).with_source(&self.source)
+    }
+    
+    fn record_error(&mut self, error: ParseError) {
+        self.errors.push(error);
+    }
+    
+    pub fn get_errors(&self) -> &[ParseError] {
+        &self.errors
+    }
+    
+    pub fn has_errors(&self) -> bool {
+        !self.errors.is_empty()
     }
     
     fn current(&self) -> &Token {
@@ -210,7 +311,7 @@ impl Parser {
     fn expect(&mut self, expected: TokenKind) -> Result<Token, ParseError> {
         let token = self.current().clone();
         if std::mem::discriminant(&token.kind) != std::mem::discriminant(&expected) {
-            return Err(ParseError::new(
+            return Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
                     expected: format!("{:?}", expected), 
                     found: format!("{:?}", token.kind) 
@@ -229,7 +330,7 @@ impl Parser {
                 self.advance();
                 Ok(name.clone())
             }
-            _ => Err(ParseError::new(
+            _ => Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
                     expected: "identifier".to_string(), 
                     found: format!("{:?}", token.kind) 
@@ -250,7 +351,7 @@ impl Parser {
             
             iterations += 1;
             if iterations > self.max_iterations {
-                return Err(ParseError::new(
+                return Err(self.make_error(
                     ParseErrorKind::TooManyIterations,
                     self.current().span,
                 ));
@@ -269,9 +370,13 @@ impl Parser {
             TokenKind::Function => Ok(Block::Function(self.parse_function()?)),
             TokenKind::DataBlock => Ok(Block::DataBlock(self.parse_data_block()?)),
             TokenKind::Type => Ok(Block::TypeDecl(self.parse_type_decl()?)),
-            kind => Err(ParseError::new(
+            TokenKind::OrganizationBlock => Ok(Block::OrganizationBlock(self.parse_organization_block()?)),
+            TokenKind::Program => Ok(Block::ProgramBlock(self.parse_program_block()?)),
+            TokenKind::Class => Ok(Block::Class(self.parse_class_decl()?)),
+            TokenKind::Interface => Ok(Block::Interface(self.parse_interface_decl()?)),
+            kind => Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
-                    expected: "block declaration (FUNCTION_BLOCK/FUNCTION/DATA_BLOCK/TYPE)".to_string(), 
+                    expected: "block declaration".to_string(), 
                     found: format!("{:?}", kind) 
                 },
                 self.current().span,
@@ -286,19 +391,55 @@ impl Parser {
         self.expect(TokenKind::FunctionBlock)?;
         let name = self.expect_identifier()?;
         
-        let mut var_sections = Vec::new();
-        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var) {
-            var_sections.push(self.parse_var_section()?);
+        // Skip TIA Portal metadata and attributes (TITLE, AUTHOR, { attrs }, etc.)
+        self.skip_tia_metadata();
+        
+        // Parse optional extends clause
+        let extends = if matches!(self.peek(), TokenKind::Extends) {
+            self.advance();
+            Some(self.expect_identifier()?)
+        } else {
+            None
+        };
+        
+        // Parse optional implements clause
+        let mut implements = Vec::new();
+        if matches!(self.peek(), TokenKind::Implements) {
+            self.advance();
+            implements.push(self.expect_identifier()?);
+            while matches!(self.peek(), TokenKind::Operator(op) if op == ",") {
+                self.advance();
+                implements.push(self.expect_identifier()?);
+            }
         }
         
-        self.expect(TokenKind::Begin)?;
+        let mut var_sections = Vec::new();
+        let mut methods = Vec::new();
+        
+        // Parse var sections and methods
+        loop {
+            match self.peek() {
+                TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var => {
+                    var_sections.push(self.parse_var_section()?);
+                }
+                TokenKind::Method => {
+                    methods.push(self.parse_method_decl()?);
+                }
+                _ => break,
+            }
+        }
+        
+        // BEGIN is optional for TIA Portal compatibility
+        if matches!(self.peek(), TokenKind::Begin) {
+            self.advance();
+        }
         
         let mut statements = Vec::new();
         let mut iterations = 0;
         while !matches!(self.peek(), TokenKind::EndFunctionBlock) {
             iterations += 1;
             if iterations > self.max_iterations {
-                return Err(ParseError::new(ParseErrorKind::TooManyStatements, self.current().span));
+                return Err(self.make_error(ParseErrorKind::TooManyStatements, self.current().span));
             }
             statements.push(self.parse_statement()?);
         }
@@ -306,7 +447,7 @@ impl Parser {
         self.expect(TokenKind::EndFunctionBlock)?;
         
         self.uncheck_recursion();
-        Ok(FunctionBlock { name, var_sections, statements })
+        Ok(FunctionBlock { name, extends, implements, var_sections, methods, statements })
     }
     
     fn parse_var_section(&mut self) -> Result<VarSection, ParseError> {
@@ -319,7 +460,7 @@ impl Parser {
                 while !matches!(self.peek(), TokenKind::EndVar) {
                     iterations += 1;
                     if iterations > self.max_iterations {
-                        return Err(ParseError::new(ParseErrorKind::TooManyIterations, self.current().span));
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
                     }
                     declarations.push(self.parse_var_declaration()?);
                 }
@@ -333,7 +474,7 @@ impl Parser {
                 while !matches!(self.peek(), TokenKind::EndVar) {
                     iterations += 1;
                     if iterations > self.max_iterations {
-                        return Err(ParseError::new(ParseErrorKind::TooManyIterations, self.current().span));
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
                     }
                     declarations.push(self.parse_var_declaration()?);
                 }
@@ -347,7 +488,7 @@ impl Parser {
                 while !matches!(self.peek(), TokenKind::EndVar) {
                     iterations += 1;
                     if iterations > self.max_iterations {
-                        return Err(ParseError::new(ParseErrorKind::TooManyIterations, self.current().span));
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
                     }
                     declarations.push(self.parse_var_declaration()?);
                 }
@@ -361,7 +502,7 @@ impl Parser {
                 while !matches!(self.peek(), TokenKind::EndVar) {
                     iterations += 1;
                     if iterations > self.max_iterations {
-                        return Err(ParseError::new(ParseErrorKind::TooManyIterations, self.current().span));
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
                     }
                     declarations.push(self.parse_var_declaration()?);
                 }
@@ -370,21 +511,70 @@ impl Parser {
             }
             TokenKind::Var => {
                 self.advance();
+                
+                // Check for VAR CONSTANT / VAR RETAIN / VAR NON_RETAIN
+                let var_type = if matches!(self.peek(), TokenKind::Constant) {
+                    self.advance();
+                    "CONSTANT"
+                } else if matches!(self.peek(), TokenKind::Retain) {
+                    self.advance();
+                    "RETAIN"
+                } else if matches!(self.peek(), TokenKind::NonRetain) {
+                    self.advance();
+                    "NON_RETAIN"
+                } else {
+                    "VAR"
+                };
+                
                 let mut declarations = Vec::new();
                 let mut iterations = 0;
                 while !matches!(self.peek(), TokenKind::EndVar) {
                     iterations += 1;
                     if iterations > self.max_iterations {
-                        return Err(ParseError::new(ParseErrorKind::TooManyIterations, self.current().span));
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
                     }
                     declarations.push(self.parse_var_declaration()?);
                 }
                 self.expect(TokenKind::EndVar)?;
-                Ok(VarSection::Var(VarDecl { declarations }))
+                
+                match var_type {
+                    "CONSTANT" => Ok(VarSection::Constant(VarDecl { declarations })),
+                    "RETAIN" | "NON_RETAIN" | "VAR" => Ok(VarSection::Var(VarDecl { declarations })),
+                    _ => Ok(VarSection::Var(VarDecl { declarations })),
+                }
             }
-            kind => Err(ParseError::new(
+            TokenKind::VarAccess => {
+                self.advance();
+                let mut declarations = Vec::new();
+                let mut iterations = 0;
+                while !matches!(self.peek(), TokenKind::EndVar) {
+                    iterations += 1;
+                    if iterations > self.max_iterations {
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
+                    }
+                    // VAR_ACCESS uses access_declaration format: name : path : type ;
+                    declarations.push(self.parse_var_declaration()?);
+                }
+                self.expect(TokenKind::EndVar)?;
+                Ok(VarSection::Var(VarDecl { declarations }))  // Treat as regular VAR for now
+            }
+            TokenKind::VarExternal => {
+                self.advance();
+                let mut declarations = Vec::new();
+                let mut iterations = 0;
+                while !matches!(self.peek(), TokenKind::EndVar) {
+                    iterations += 1;
+                    if iterations > self.max_iterations {
+                        return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
+                    }
+                    declarations.push(self.parse_var_declaration()?);
+                }
+                self.expect(TokenKind::EndVar)?;
+                Ok(VarSection::Var(VarDecl { declarations }))  // Treat as regular VAR for now
+            }
+            kind => Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
-                    expected: "VAR section (VAR_INPUT/VAR_OUTPUT/VAR_INOUT/VAR_TEMP/VAR)".to_string(), 
+                    expected: "VAR section (VAR_INPUT/VAR_OUTPUT/VAR_INOUT/VAR_TEMP/VAR/VAR_ACCESS/VAR_EXTERNAL)".to_string(), 
                     found: format!("{:?}", kind) 
                 },
                 self.current().span,
@@ -402,19 +592,64 @@ impl Parser {
             TokenKind::While => Ok(Statement::While(self.parse_while_stmt()?)),
             TokenKind::Repeat => Ok(Statement::Repeat(self.parse_repeat_stmt()?)),
             TokenKind::Return => Ok(Statement::Return(self.parse_return_stmt()?)),
+            TokenKind::Exit => {
+                self.advance();
+                self.expect(TokenKind::Operator(";".to_string()))?;
+                Ok(Statement::Exit)
+            }
+            TokenKind::Continue => {
+                self.advance();
+                self.expect(TokenKind::Operator(";".to_string()))?;
+                Ok(Statement::Continue)
+            }
+            TokenKind::Region => Ok(Statement::Region(self.parse_region()?)),
+            TokenKind::Operator(op) if op == "%" => {
+                // Absolute address assignment like %MW504 := value;
+                Ok(Statement::Assignment(self.parse_assignment()?))
+            }
             TokenKind::Identifier(_) => {
                 // Could be assignment or function call
+                // Look ahead past member access (.field) and array indexing ([...])
                 let checkpoint = self.pos;
-                let name = self.expect_identifier()?;
+                let _name = self.expect_identifier()?;
+                
+                // Skip member access and array indexing
+                while matches!(self.peek(), TokenKind::Operator(op) if op == "." || op == "[") {
+                    match self.peek() {
+                        TokenKind::Operator(op) if op == "." => {
+                            self.advance();
+                            let _ = self.expect_identifier()?;
+                        }
+                        TokenKind::Operator(op) if op == "[" => {
+                            self.advance();
+                            let mut depth = 1;
+                            while depth > 0 && !matches!(self.peek(), TokenKind::Eof) {
+                                match self.peek() {
+                                    TokenKind::Operator(op) if op == "[" => depth += 1,
+                                    TokenKind::Operator(op) if op == "]" => depth -= 1,
+                                    _ => {}
+                                }
+                                if depth > 0 {
+                                    self.advance();
+                                }
+                            }
+                            self.expect(TokenKind::Operator("]".to_string()))?;
+                        }
+                        _ => break,
+                    }
+                }
                 
                 if matches!(self.peek(), TokenKind::Operator(op) if op == ":=") {
                     self.pos = checkpoint;
                     Ok(Statement::Assignment(self.parse_assignment()?))
+                } else if matches!(self.peek(), TokenKind::Operator(op) if op == "?=") {
+                    self.pos = checkpoint;
+                    Ok(Statement::NullableAssignment(self.parse_nullable_assignment()?))
                 } else if matches!(self.peek(), TokenKind::Operator(op) if op == "(") {
                     self.pos = checkpoint;
                     Ok(Statement::FunctionCall(self.parse_function_call_stmt()?))
                 } else {
-                    Err(ParseError::new(
+                    Err(self.make_error(
                         ParseErrorKind::UnexpectedToken { 
                             expected: ":= or ( after identifier".to_string(), 
                             found: format!("{:?}", self.peek()) 
@@ -423,7 +658,7 @@ impl Parser {
                     ))
                 }
             }
-            kind => Err(ParseError::new(
+            kind => Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
                     expected: "statement".to_string(), 
                     found: format!("{:?}", kind) 
@@ -440,12 +675,18 @@ impl Parser {
         self.expect(TokenKind::Operator(":".to_string()))?;
         let return_type = self.parse_type_ref()?;
         
+        // Skip TIA Portal metadata and attributes
+        self.skip_tia_metadata();
+        
         let mut var_sections = Vec::new();
-        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var) {
+        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var | TokenKind::VarAccess | TokenKind::VarExternal) {
             var_sections.push(self.parse_var_section()?);
         }
         
-        self.expect(TokenKind::Begin)?;
+        // BEGIN is optional for TIA Portal compatibility
+        if matches!(self.peek(), TokenKind::Begin) {
+            self.advance();
+        }
         
         let mut statements = Vec::new();
         while !matches!(self.peek(), TokenKind::EndFunction) {
@@ -461,12 +702,18 @@ impl Parser {
         self.expect(TokenKind::DataBlock)?;
         let name = self.expect_identifier()?;
         
+        // Skip TIA Portal metadata and attributes
+        self.skip_tia_metadata();
+        
         let mut var_sections = Vec::new();
-        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var) {
+        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var | TokenKind::VarAccess | TokenKind::VarExternal) {
             var_sections.push(self.parse_var_section()?);
         }
         
-        self.expect(TokenKind::Begin)?;
+        // BEGIN is optional for TIA Portal compatibility
+        if matches!(self.peek(), TokenKind::Begin) {
+            self.advance();
+        }
         
         let mut statements = Vec::new();
         while !matches!(self.peek(), TokenKind::EndDataBlock) {
@@ -489,14 +736,34 @@ impl Parser {
     
     fn parse_var_declaration(&mut self) -> Result<VarDeclaration, ParseError> { 
         let mut names = vec![self.expect_identifier()?];
+        self.skip_tia_attributes();
         
         while matches!(self.peek(), TokenKind::Operator(op) if op == ",") {
             self.advance();
             names.push(self.expect_identifier()?);
+            self.skip_tia_attributes();
         }
+        
+        // Check for AT clause before colon: name AT %addr : type
+        let at_address_before = if matches!(self.peek(), TokenKind::At) {
+            self.advance();
+            Some(self.expect_absolute_address()?)
+        } else {
+            None
+        };
         
         self.expect(TokenKind::Operator(":".to_string()))?;
         let type_ref = self.parse_type_ref()?;
+        
+        // Parse optional AT clause after type: name : type AT %addr
+        let at_address_after = if at_address_before.is_none() && matches!(self.peek(), TokenKind::At) {
+            self.advance();
+            Some(self.expect_absolute_address()?)
+        } else {
+            None
+        };
+        
+        let at_address = at_address_before.or(at_address_after);
         
         let initializer = if matches!(self.peek(), TokenKind::Operator(op) if op == ":=") {
             self.advance();
@@ -507,7 +774,55 @@ impl Parser {
         
         self.expect(TokenKind::Operator(";".to_string()))?;
         
-        Ok(VarDeclaration { names, type_ref, initializer })
+        Ok(VarDeclaration { names, type_ref, at_address, initializer })
+    }
+    
+    fn expect_absolute_address(&mut self) -> Result<String, ParseError> {
+        // AT addresses are: % followed by location like IW215, QB7, M*, etc.
+        // The lexer splits this into % (operator) and IW215 (identifier/literal)
+        
+        self.expect(TokenKind::Operator("%".to_string()))?;
+        
+        // Next token could be identifier (like IW215, M*) or int literal (like 1, 42)
+        let addr_part = match self.peek() {
+            TokenKind::Identifier(id) => {
+                let result = id.clone();
+                self.advance();
+                result
+            }
+            TokenKind::IntLit(num) => {
+                let result = num.clone();
+                self.advance();
+                result
+            }
+            _ => return Err(self.make_error(
+                ParseErrorKind::UnexpectedToken {
+                    expected: "address location (e.g., IW215, QB7, I1, M*)".to_string(),
+                    found: format!("{:?}", self.peek()),
+                },
+                self.current().span
+            ))
+        };
+        
+        // Handle additional parts like .5 or .7.9 in %QX7.5 or %MW1.7.9
+        let mut full_address = format!("%{}", addr_part);
+        while matches!(self.peek(), TokenKind::Operator(op) if op == ".") {
+            self.advance();
+            full_address.push('.');
+            match self.peek() {
+                TokenKind::IntLit(num) => {
+                    full_address.push_str(&num);
+                    self.advance();
+                }
+                TokenKind::Identifier(id) => {
+                    full_address.push_str(&id);
+                    self.advance();
+                }
+                _ => break,
+            }
+        }
+        
+        Ok(full_address)
     }
     
     fn parse_type_ref(&mut self) -> Result<TypeRef, ParseError> {
@@ -542,12 +857,54 @@ impl Parser {
                 let target_type = self.parse_type_ref()?;
                 Ok(TypeRef::Pointer(Box::new(PointerType { target_type })))
             }
-            TokenKind::Identifier(name) => {
-                let name = name.clone();
+            TokenKind::Variant => {
                 self.advance();
+                Ok(TypeRef::Variant)
+            }
+            TokenKind::Any => {
+                self.advance();
+                Ok(TypeRef::Any)
+            }
+            TokenKind::AnyNum => {
+                self.advance();
+                Ok(TypeRef::Named("ANY_NUM".to_string()))
+            }
+            TokenKind::AnyReal => {
+                self.advance();
+                Ok(TypeRef::Named("ANY_REAL".to_string()))
+            }
+            TokenKind::AnyInt => {
+                self.advance();
+                Ok(TypeRef::Named("ANY_INT".to_string()))
+            }
+            TokenKind::AnyBit => {
+                self.advance();
+                Ok(TypeRef::Named("ANY_BIT".to_string()))
+            }
+            TokenKind::AnyDate => {
+                self.advance();
+                Ok(TypeRef::Named("ANY_DATE".to_string()))
+            }
+            TokenKind::AnyString => {
+                self.advance();
+                Ok(TypeRef::Named("ANY_STRING".to_string()))
+            }
+            TokenKind::Identifier(name) => {
+                let mut name = name.clone();
+                self.advance();
+                
+                // Handle sized types like String[23] or WString[100]
+                if matches!(self.peek(), TokenKind::Operator(op) if op == "[") {
+                    self.advance();
+                    // Parse the size (could be integer or expression)
+                    let _size = self.parse_expression()?;
+                    self.expect(TokenKind::Operator("]".to_string()))?;
+                    name = format!("{}[...]", name); // Simplified representation
+                }
+                
                 Ok(TypeRef::Named(name))
             }
-            kind => Err(ParseError::new(
+            kind => Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
                     expected: "type".to_string(), 
                     found: format!("{:?}", kind) 
@@ -610,8 +967,34 @@ impl Parser {
             }
             self.expect(TokenKind::Operator(":".to_string()))?;
             
+            // Parse statements until we hit the next case element or ELSE/END_CASE
+            // A new case element starts with Integer/Identifier followed by : or ,
             let mut body = Vec::new();
-            while !matches!(self.peek(), TokenKind::Integer(_) | TokenKind::Identifier(_) | TokenKind::Else | TokenKind::EndCase) {
+            let mut iterations = 0;
+            loop {
+                iterations += 1;
+                if iterations > self.max_iterations {
+                    return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
+                }
+                
+                // Stop if we see ELSE or END_CASE
+                if matches!(self.peek(), TokenKind::Else | TokenKind::EndCase) {
+                    break;
+                }
+                
+                // Stop if we see the start of next case element (number/id followed by : or ,)
+                if matches!(self.peek(), TokenKind::IntLit(_) | TokenKind::Identifier(_)) {
+                    // Look ahead to see if this is a case label (followed by : or ,)
+                    let saved_pos = self.pos;
+                    self.advance();
+                    let is_case_label = matches!(self.peek(), TokenKind::Operator(op) if op == ":" || op == ",");
+                    self.pos = saved_pos;
+                    
+                    if is_case_label {
+                        break;
+                    }
+                }
+                
                 body.push(self.parse_statement()?);
             }
             elements.push(CaseElement { values, body });
@@ -701,11 +1084,57 @@ impl Parser {
     }
     
     fn parse_assignment(&mut self) -> Result<Assignment, ParseError> { 
-        let target = self.expect_identifier()?;
+        // Parse left-hand side (can be identifier or absolute_address)
+        let mut target = if matches!(self.peek(), TokenKind::Operator(op) if op == "%") {
+            // Absolute address like %MW504
+            self.expect_absolute_address()?
+        } else {
+            self.expect_identifier()?
+        };
+        
+        // Handle member access and array indexing (only for identifiers)
+        if !target.starts_with('%') {
+            while matches!(self.peek(), TokenKind::Operator(op) if op == "." || op == "[") {
+            match self.peek() {
+                TokenKind::Operator(op) if op == "." => {
+                    self.advance();
+                    let field = self.expect_identifier()?;
+                    target = format!("{}.{}", target, field);
+                }
+                TokenKind::Operator(op) if op == "[" => {
+                    self.advance();
+                    // Skip the array index expression (we'll parse it properly later)
+                    let mut depth = 1;
+                    while depth > 0 && !matches!(self.peek(), TokenKind::Eof) {
+                        match self.peek() {
+                            TokenKind::Operator(op) if op == "[" => depth += 1,
+                            TokenKind::Operator(op) if op == "]" => depth -= 1,
+                            _ => {}
+                        }
+                        if depth > 0 {
+                            self.advance();
+                        }
+                    }
+                    self.expect(TokenKind::Operator("]".to_string()))?;
+                    target = format!("{}[...]", target); // Placeholder
+                }
+                _ => break,
+            }
+            }
+        }
+        
         self.expect(TokenKind::Operator(":=".to_string()))?;
         let value = self.parse_expression()?;
         self.expect(TokenKind::Operator(";".to_string()))?;
         Ok(Assignment { target, value })
+    }
+    
+    fn parse_nullable_assignment(&mut self) -> Result<NullableAssignment, ParseError> { 
+        let target = self.expect_identifier()?;
+        self.expect(TokenKind::Operator("?=".to_string()))?;
+        let value = self.parse_expression()?;
+        self.expect(TokenKind::Operator(";".to_string()))?;
+        Ok(NullableAssignment { target, value })
     }
     
     fn parse_function_call_stmt(&mut self) -> Result<FunctionCallStmt, ParseError> { 
@@ -793,7 +1222,7 @@ impl Parser {
         loop {
             iterations += 1;
             if iterations > self.max_iterations {
-                return Err(ParseError::new(ParseErrorKind::TooManyIterations, self.current().span));
+                return Err(self.make_error(ParseErrorKind::TooManyIterations, self.current().span));
             }
             let is_and = matches!(self.peek(), TokenKind::And);
             let is_ampersand = matches!(self.peek(), TokenKind::Operator(op) if op == "&");
@@ -935,26 +1364,56 @@ impl Parser {
     fn parse_primary(&mut self) -> Result<Primary, ParseError> {
         match self.peek() {
             TokenKind::Identifier(name) => {
-                let name = name.clone();
+                let mut name = name.clone();
                 self.advance();
+                
+                // Handle member access (.field) and array indexing ([index])
+                while matches!(self.peek(), TokenKind::Operator(op) if op == "." || op == "[") {
+                    match self.peek() {
+                        TokenKind::Operator(op) if op == "." => {
+                            self.advance();
+                            let field = self.expect_identifier()?;
+                            name = format!("{}.{}", name, field);
+                        }
+                        TokenKind::Operator(op) if op == "[" => {
+                            self.advance();
+                            let mut depth = 1;
+                            while depth > 0 && !matches!(self.peek(), TokenKind::Eof) {
+                                match self.peek() {
+                                    TokenKind::Operator(op) if op == "[" => depth += 1,
+                                    TokenKind::Operator(op) if op == "]" => depth -= 1,
+                                    _ => {}
+                                }
+                                if depth > 0 {
+                                    self.advance();
+                                }
+                            }
+                            self.expect(TokenKind::Operator("]".to_string()))?;
+                            name = format!("{}[...]", name);
+                        }
+                        _ => break,
+                    }
+                }
                 
                 // Check if it's a function call
                 if matches!(self.peek(), TokenKind::Operator(op) if op == "(") {
+                    // For function calls, we need the base name without member access
+                    // This is a simplification - proper handling would parse the call with the full path
                     self.pos -= 1;  // Backtrack
                     Ok(Primary::FunctionCall(self.parse_function_call()?))
                 } else {
                     Ok(Primary::Identifier(name))
                 }
             }
-            TokenKind::Integer(val) => {
+            TokenKind::IntLit(val) => {
                 let val = val.clone();
                 self.advance();
-                Ok(Primary::Literal(Literal::Integer(val)))
+                Ok(Primary::Literal(Literal::IntLit(val)))
             }
-            TokenKind::Real(val) => {
+            TokenKind::FloatLit(val) => {
                 let val = val.clone();
                 self.advance();
-                Ok(Primary::Literal(Literal::Real(val)))
+                Ok(Primary::Literal(Literal::FloatLit(val)))
             }
             TokenKind::StringLit(val) => {
                 let val = val.clone();
@@ -975,13 +1434,292 @@ impl Parser {
                 self.expect(TokenKind::Operator(")".to_string()))?;
                 Ok(Primary::Parenthesized(Box::new(expr)))
             }
-            kind => Err(ParseError::new(
+            kind => Err(self.make_error(
                 ParseErrorKind::UnexpectedToken { 
                     expected: "primary expression".to_string(), 
                     found: format!("{:?}", kind) 
                 },
                 self.current().span,
             ))
+        }
+    }
+    
+    fn parse_organization_block(&mut self) -> Result<OrganizationBlock, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::OrganizationBlock)?;
+        let name = self.expect_identifier()?;
+        
+        let mut var_sections = Vec::new();
+        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var | TokenKind::VarAccess | TokenKind::VarExternal) {
+            var_sections.push(self.parse_var_section()?);
+        }
+        
+        // BEGIN is optional for TIA Portal compatibility
+        if matches!(self.peek(), TokenKind::Begin) {
+            self.advance();
+        }
+        
+        let mut statements = Vec::new();
+        let mut iterations = 0;
+        while !matches!(self.peek(), TokenKind::EndOrganizationBlock) {
+            iterations += 1;
+            if iterations > self.max_iterations {
+                return Err(self.make_error(ParseErrorKind::TooManyStatements, self.current().span));
+            }
+            statements.push(self.parse_statement()?);
+        }
+        
+        self.expect(TokenKind::EndOrganizationBlock)?;
+        self.uncheck_recursion();
+        Ok(OrganizationBlock { name, var_sections, statements })
+    }
+    
+    fn parse_program_block(&mut self) -> Result<ProgramBlock, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::Program)?;
+        let name = self.expect_identifier()?;
+        
+        // Skip TIA Portal metadata and attributes
+        self.skip_tia_metadata();
+        
+        let mut var_sections = Vec::new();
+        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var | TokenKind::VarAccess | TokenKind::VarExternal) {
+            var_sections.push(self.parse_var_section()?);
+        }
+        
+        // BEGIN is optional for TIA Portal compatibility
+        if matches!(self.peek(), TokenKind::Begin) {
+            self.advance();
+        }
+        
+        let mut statements = Vec::new();
+        let mut iterations = 0;
+        while !matches!(self.peek(), TokenKind::EndProgram) {
+            iterations += 1;
+            if iterations > self.max_iterations {
+                return Err(self.make_error(ParseErrorKind::TooManyStatements, self.current().span));
+            }
+            statements.push(self.parse_statement()?);
+        }
+        
+        self.expect(TokenKind::EndProgram)?;
+        self.uncheck_recursion();
+        Ok(ProgramBlock { name, var_sections, statements })
+    }
+    
+    fn parse_class_decl(&mut self) -> Result<ClassDecl, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::Class)?;
+        let name = self.expect_identifier()?;
+        
+        let extends = if matches!(self.peek(), TokenKind::Extends) {
+            self.advance();
+            Some(self.expect_identifier()?)
+        } else {
+            None
+        };
+        
+        let mut implements = Vec::new();
+        if matches!(self.peek(), TokenKind::Implements) {
+            self.advance();
+            implements.push(self.expect_identifier()?);
+            while matches!(self.peek(), TokenKind::Operator(op) if op == ",") {
+                self.advance();
+                implements.push(self.expect_identifier()?);
+            }
+        }
+        
+        let mut var_sections = Vec::new();
+        let mut methods = Vec::new();
+        
+        loop {
+            match self.peek() {
+                TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var => {
+                    var_sections.push(self.parse_var_section()?);
+                }
+                TokenKind::Method => {
+                    methods.push(self.parse_method_decl()?);
+                }
+                _ => break,
+            }
+        }
+        
+        self.expect(TokenKind::EndClass)?;
+        self.uncheck_recursion();
+        Ok(ClassDecl { name, extends, implements, var_sections, methods })
+    }
+    
+    fn parse_interface_decl(&mut self) -> Result<InterfaceDecl, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::Interface)?;
+        let name = self.expect_identifier()?;
+        
+        let extends = if matches!(self.peek(), TokenKind::Extends) {
+            self.advance();
+            Some(self.expect_identifier()?)
+        } else {
+            None
+        };
+        
+        let mut methods = Vec::new();
+        while matches!(self.peek(), TokenKind::Method) {
+            methods.push(self.parse_method_signature()?);
+        }
+        
+        self.expect(TokenKind::EndInterface)?;
+        self.uncheck_recursion();
+        Ok(InterfaceDecl { name, extends, methods })
+    }
+    
+    fn parse_method_decl(&mut self) -> Result<MethodDecl, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::Method)?;
+        
+        let access = self.parse_access_modifier();
+        let name = self.expect_identifier()?;
+        self.expect(TokenKind::Operator(":".to_string()))?;
+        let return_type = self.parse_type_ref()?;
+        
+        let mut var_sections = Vec::new();
+        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var | TokenKind::VarAccess | TokenKind::VarExternal) {
+            var_sections.push(self.parse_var_section()?);
+        }
+        
+        // BEGIN is optional for TIA Portal compatibility
+        if matches!(self.peek(), TokenKind::Begin) {
+            self.advance();
+        }
+        
+        let mut statements = Vec::new();
+        let mut iterations = 0;
+        while !matches!(self.peek(), TokenKind::EndMethod) {
+            iterations += 1;
+            if iterations > self.max_iterations {
+                return Err(self.make_error(ParseErrorKind::TooManyStatements, self.current().span));
+            }
+            statements.push(self.parse_statement()?);
+        }
+        
+        self.expect(TokenKind::EndMethod)?;
+        self.uncheck_recursion();
+        Ok(MethodDecl { access, name, return_type, var_sections, statements })
+    }
+    
+    fn parse_method_signature(&mut self) -> Result<MethodSignature, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::Method)?;
+        let name = self.expect_identifier()?;
+        self.expect(TokenKind::Operator(":".to_string()))?;
+        let return_type = self.parse_type_ref()?;
+        
+        let mut var_sections = Vec::new();
+        while matches!(self.peek(), TokenKind::VarInput | TokenKind::VarOutput | TokenKind::VarInOut | TokenKind::VarTemp | TokenKind::Var | TokenKind::VarAccess | TokenKind::VarExternal) {
+            var_sections.push(self.parse_var_section()?);
+        }
+        
+        self.expect(TokenKind::Operator(";".to_string()))?;
+        self.uncheck_recursion();
+        Ok(MethodSignature { name, return_type, var_sections })
+    }
+    
+    fn parse_access_modifier(&mut self) -> Option<AccessModifier> {
+        match self.peek() {
+            TokenKind::Public => { self.advance(); Some(AccessModifier::Public) }
+            TokenKind::Private => { self.advance(); Some(AccessModifier::Private) }
+            TokenKind::Protected => { self.advance(); Some(AccessModifier::Protected) }
+            TokenKind::Internal => { self.advance(); Some(AccessModifier::Internal) }
+            _ => None
+        }
+    }
+    
+    fn parse_region(&mut self) -> Result<Region, ParseError> {
+        self.check_recursion()?;
+        self.expect(TokenKind::Region)?;
+        let name = self.expect_identifier()?;
+        
+        let mut statements = Vec::new();
+        let mut iterations = 0;
+        while !matches!(self.peek(), TokenKind::EndRegion) {
+            iterations += 1;
+            if iterations > self.max_iterations {
+                return Err(self.make_error(ParseErrorKind::TooManyStatements, self.current().span));
+            }
+            statements.push(self.parse_statement()?);
+        }
+        
+        self.expect(TokenKind::EndRegion)?;
+        self.uncheck_recursion();
+        Ok(Region { name, statements })
+    }
+    
+
+    // Skip TIA Portal metadata lines (generated from tia_extensions.ebnf)
+    fn skip_tia_metadata(&mut self) {
+        loop {
+            match self.peek() {
+                // Skip AUTHOR : value
+                TokenKind::Identifier(name) if name == "AUTHOR" => {
+                    self.advance();
+                    if matches!(self.peek(), TokenKind::Operator(op) if op == ":") {
+                        self.advance();
+                        self.advance(); // Skip the value
+                    }
+                }
+                // Skip FAMILY : value
+                TokenKind::Identifier(name) if name == "FAMILY" => {
+                    self.advance();
+                    if matches!(self.peek(), TokenKind::Operator(op) if op == ":") {
+                        self.advance();
+                        self.advance(); // Skip the value
+                    }
+                }
+                // Skip TITLE = value
+                TokenKind::Identifier(name) if name == "TITLE" => {
+                    self.advance();
+                    if matches!(self.peek(), TokenKind::Operator(op) if op == "=") {
+                        self.advance();
+                        self.advance(); // Skip the value
+                    }
+                }
+                // Skip VERSION : number
+                TokenKind::Identifier(name) if name == "VERSION" => {
+                    self.advance();
+                    if matches!(self.peek(), TokenKind::Operator(op) if op == ":") {
+                        self.advance();
+                        self.advance(); // Skip the value
+                    }
+                }
+                // Skip { attributes }
+                TokenKind::Operator(op) if op == "{" => {
+                    self.advance();
+                    let mut depth = 1;
+                    while depth > 0 && !matches!(self.peek(), TokenKind::Eof) {
+                        match self.peek() {
+                            TokenKind::Operator(op) if op == "{" => depth += 1,
+                            TokenKind::Operator(op) if op == "}" => depth -= 1,
+                            _ => {}
+                        }
+                        self.advance();
+                    }
+                }
+                _ => break,
+            }
+        }
+    }
+    
+    // Skip TIA Portal attributes in variable declarations (generated from tia_extensions.ebnf)
+    fn skip_tia_attributes(&mut self) {
+        if matches!(self.peek(), TokenKind::Operator(op) if op == "{") {
+            self.advance();
+            let mut depth = 1;
+            while depth > 0 && !matches!(self.peek(), TokenKind::Eof) {
+                match self.peek() {
+                    TokenKind::Operator(op) if op == "{" => depth += 1,
+                    TokenKind::Operator(op) if op == "}" => depth -= 1,
+                    _ => {}
+                }
+                self.advance();
+            }
         }
     }
 }

@@ -4,10 +4,9 @@ A Rust library for parsing Rockwell Automation L5X files exported from Studio 50
 
 ## Features
 
-- **Fast, type-safe parsing** using quick-xml and serde
-- **Complete L5X schema support** - 247 types generated from the official XSD
 - **RLL (Relay Ladder Logic) parsing** - parse ladder logic instructions into AST
 - **Tag reference extraction** - find all tag references in rungs
+- **Security/Safety features** - protection against certan type of badly formed XML
 
 ## Installation
 
@@ -15,7 +14,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-l5x = "0.3"
+l5x = "0.4"
 ```
 
 ## Usage
@@ -35,6 +34,26 @@ println!("Controller: {}", project.controller.name);
 for program in &project.controller.programs.program {
     println!("Program: {}", program.name);
 }
+```
+
+### Parse with security limits (recommended for untrusted files)
+
+```rust
+use l5x::{Project, from_str_secure, security::SecurityLimits};
+
+// Use strict limits for untrusted input
+let limits = SecurityLimits::strict();
+let xml = std::fs::read_to_string("untrusted.L5X")?;
+
+match from_str_secure::<Project>(&xml, &limits) {
+    Ok(project) => println!("Parsed: {}", project.controller.name),
+    Err(e) => eprintln!("Security validation failed: {}", e),
+}
+
+// Available profiles:
+// - SecurityLimits::strict()    - For untrusted input (10 MB, 32 levels)
+// - SecurityLimits::balanced()  - For typical files (100 MB, 100 levels) 
+// - SecurityLimits::relaxed()   - For trusted files (500 MB, 256 levels)
 ```
 
 ### Parse ladder logic rungs

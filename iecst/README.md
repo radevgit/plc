@@ -20,6 +20,7 @@ IEC 61131-3 Structured Text parser for Rust.
 - **Cyclomatic complexity** - calculate code complexity metrics
 - **Nesting depth analysis** - detect deeply nested control structures
 - **Basic static analysis** - type checking, unused variables, diagnostics
+- **Security features** - DoS protection with configurable resource limits
 
 ## Installation
 
@@ -27,7 +28,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-iecst = "0.1"
+iecst = "0.4"
 ```
 
 ## Quick Start
@@ -40,6 +41,23 @@ let stmt = parse_statement("x := 1 + 2;").unwrap();
 
 // Parse an expression
 let expr = parse_expression("a AND b OR c").unwrap();
+```
+
+## Security
+
+For untrusted input, use security limits to prevent DoS attacks:
+
+```rust
+use iecst::{Parser, security::ParserLimits};
+
+// Use strict limits for untrusted input
+let limits = ParserLimits::strict();
+let parser = Parser::new_with_limits(source, limits)?;
+
+// Available profiles:
+// - ParserLimits::strict()    - For untrusted input (10 MB, 64 levels)
+// - ParserLimits::balanced()  - For typical files (100 MB, 256 levels)
+// - ParserLimits::relaxed()   - For trusted files (500 MB, 512 levels)
 ```
 
 ## Supported Constructs

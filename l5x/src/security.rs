@@ -51,6 +51,11 @@ impl Default for SecurityLimits {
 }
 
 impl SecurityLimits {
+    /// Balanced limits for typical industrial projects
+    pub fn balanced() -> Self {
+        Self::default()
+    }
+    
     /// Conservative limits for untrusted input
     pub fn strict() -> Self {
         SecurityLimits {
@@ -93,11 +98,6 @@ pub fn validate_xml<R: BufRead>(
     xml_reader
         .config_mut()
         .trim_text(true);  // Trim whitespace to save memory
-    
-    // Set buffer size limit
-    xml_reader
-        .config_mut()
-        .max_buffer_size(limits.max_buffer_size);
     
     let mut buf = Vec::new();
     let mut depth = 0;

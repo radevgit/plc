@@ -9,6 +9,7 @@ keywords = ["plc", "scl", "siemens", "parser", "iec61131"]
 categories = ["parser-implementations", "parsing"]
 
 [dependencies]
-# No dependencies - pure Rust generated parser
+thiserror = "1.0"
 
 [dev-dependencies]
+walkdir = "2.5.0"

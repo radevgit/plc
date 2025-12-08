@@ -14,4 +14,4 @@ pub mod parser {
 
 pub use ast::*;
 pub use lexer::{Lexer, Token, TokenKind};
-pub use parser::{Parser, ParseError};
+pub use parser::{Parser, ParserLimits, ParseError, ParseErrorKind};

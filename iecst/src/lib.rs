@@ -48,11 +48,13 @@ mod ast;
 mod error;
 mod lexer;
 mod parser;
+pub mod security;
 mod span;
 
 pub use ast::*;
 pub use error::{ParseError, ParseErrorKind, ParseResult};
 pub use parser::{parse_expression, parse_statement, parse_statements, parse_pou, parse_type_block};
+pub use security::{ParserLimits, ParserState, SecurityError};
 pub use span::Span;
 
 // Re-export key analysis types

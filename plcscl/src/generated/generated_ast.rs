@@ -11,13 +11,74 @@ pub enum Block {
     Function(Function),
     DataBlock(DataBlock),
     TypeDecl(TypeDecl),
+    OrganizationBlock(OrganizationBlock),
+    ProgramBlock(ProgramBlock),
+    Class(ClassDecl),
+    Interface(InterfaceDecl),
 }
 
 #[derive(Debug, Clone)]
 pub struct FunctionBlock {
     pub name: String,
+    pub extends: Option<String>,
+    pub implements: Vec<String>,
+    pub var_sections: Vec<VarSection>,
+    pub methods: Vec<MethodDecl>,
+    pub statements: Vec<Statement>,
+}
+
+#[derive(Debug, Clone)]
+pub struct OrganizationBlock {
+    pub name: String,
     pub var_sections: Vec<VarSection>,
     pub statements: Vec<Statement>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ProgramBlock {
+    pub name: String,
+    pub var_sections: Vec<VarSection>,
+    pub statements: Vec<Statement>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ClassDecl {
+    pub name: String,
+    pub extends: Option<String>,
+    pub implements: Vec<String>,
+    pub var_sections: Vec<VarSection>,
+    pub methods: Vec<MethodDecl>,
+}
+
+#[derive(Debug, Clone)]
+pub struct InterfaceDecl {
+    pub name: String,
+    pub extends: Option<String>,
+    pub methods: Vec<MethodSignature>,
+}
+
+#[derive(Debug, Clone)]
+pub struct MethodDecl {
+    pub access: Option<AccessModifier>,
+    pub name: String,
+    pub return_type: TypeRef,
+    pub var_sections: Vec<VarSection>,
+    pub statements: Vec<Statement>,
+}
+
+#[derive(Debug, Clone)]
+pub struct MethodSignature {
+    pub name: String,
+    pub return_type: TypeRef,
+    pub var_sections: Vec<VarSection>,
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum AccessModifier {
+    Public,
+    Private,
+    Protected,
+    Internal,
 }
 
 #[derive(Debug, Clone)]
@@ -53,6 +114,7 @@ pub enum VarSection {
     InOut(VarInout),
     Temp(VarTemp),
     Var(VarDecl),
+    Constant(VarDecl),
 }
 
 #[derive(Debug, Clone)]
@@ -84,6 +146,7 @@ pub struct VarDecl {
 pub struct VarDeclaration {
     pub names: Vec<String>,
     pub type_ref: TypeRef,
+    pub at_address: Option<String>,
     pub initializer: Option<Expression>,
 }
 
@@ -93,6 +156,8 @@ pub enum TypeRef {
     Array(Box<ArrayType>),
     Struct(StructType),
     Pointer(Box<PointerType>),
+    Variant,
+    Any,
 }
 
 #[derive(Debug, Clone)]
@@ -121,17 +186,33 @@ pub struct PointerType {
 #[derive(Debug, Clone)]
 pub enum Statement {
     Assignment(Assignment),
+    NullableAssignment(NullableAssignment),
     If(IfStmt),
     Case(CaseStmt),
     For(ForStmt),
     While(WhileStmt),
     Repeat(RepeatStmt),
     Return(ReturnStmt),
+    Exit,
+    Continue,
     FunctionCall(FunctionCallStmt),
+    Region(Region),
+}
+
+#[derive(Debug, Clone)]
+pub struct Region {
+    pub name: String,
+    pub statements: Vec<Statement>,
 }
 
 #[derive(Debug, Clone)]
 pub struct Assignment {
+    pub target: String,
+    pub value: Expression,
+}
+
+#[derive(Debug, Clone)]
+pub struct NullableAssignment {
     pub target: String,
     pub value: Expression,
 }
@@ -301,8 +382,8 @@ pub enum Primary {
 
 #[derive(Debug, Clone)]
 pub enum Literal {
-    Integer(String),
-    Real(String),
+    IntLit(String),
+    FloatLit(String),
     String(String),
     Boolean(bool),
     Time(String),

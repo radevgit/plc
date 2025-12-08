@@ -5,23 +5,42 @@
 use crate::ast::*;
 use crate::error::{ParseError, ParseErrorKind, ParseResult};
 use crate::lexer::{Lexer, SpannedToken, Token};
+use crate::security::{ParserLimits, ParserState};
 
 /// Parser state.
 pub struct Parser<'a> {
     lexer: Lexer<'a>,
     current: SpannedToken,
     previous: SpannedToken,
+    security: ParserState,
+    depth: usize,
 }
 
 impl<'a> Parser<'a> {
-    /// Create a new parser for the given input.
+    /// Create a new parser for the given input with default security limits.
     pub fn new(input: &'a str) -> Self {
+        Self::with_limits(input, ParserLimits::default())
+    }
+
+    /// Create a new parser with custom security limits.
+    pub fn with_limits(input: &'a str, limits: ParserLimits) -> Self {
+        // Check input size
+        if input.len() > limits.max_input_size {
+            panic!(
+                "Input size {} exceeds maximum {}",
+                input.len(),
+                limits.max_input_size
+            );
+        }
+
         let mut lexer = Lexer::new(input);
         let current = lexer.next_token();
         Self {
             lexer,
             current: current.clone(),
             previous: current,
+            security: ParserState::new(limits),
+            depth: 0,
         }
     }
 
@@ -528,6 +547,14 @@ impl<'a> Parser<'a> {
 
     /// Parse a single statement.
     pub fn parse_statement(&mut self) -> ParseResult<Stmt> {
+        // Track statement count for security
+        if let Err(e) = self.security.record_statement() {
+            return Err(ParseError::new(
+                ParseErrorKind::Security(e.to_string()),
+                self.current.span,
+            ));
+        }
+
         let start = self.current.span;
 
         // Empty statement
@@ -631,6 +658,15 @@ impl<'a> Parser<'a> {
         let start = self.current.span;
         self.expect(&Token::If, "IF")?;
 
+        // Track nesting depth for security
+        self.depth += 1;
+        if let Err(e) = self.security.enter_depth() {
+            return Err(ParseError::new(
+                ParseErrorKind::Security(e.to_string()),
+                self.current.span,
+            ));
+        }
+
         let condition = self.parse_expression()?;
         self.expect(&Token::Then, "THEN")?;
 
@@ -661,6 +697,10 @@ impl<'a> Parser<'a> {
         let end = self.expect(&Token::EndIf, "END_IF")?.span;
         self.expect(&Token::Semicolon, ";")?;
 
+        // Exit depth tracking
+        self.security.exit_depth();
+        self.depth = self.depth.saturating_sub(1);
+
         Ok(Stmt::new(
             StmtKind::If {
                 condition,
@@ -676,6 +716,15 @@ impl<'a> Parser<'a> {
     fn parse_case(&mut self) -> ParseResult<Stmt> {
         let start = self.current.span;
         self.expect(&Token::Case, "CASE")?;
+
+        // Track nesting depth
+        self.depth += 1;
+        if let Err(e) = self.security.enter_depth() {
+            return Err(ParseError::new(
+                ParseErrorKind::Security(e.to_string()),
+                self.current.span,
+            ));
+        }
 
         let expr = self.parse_expression()?;
         self.expect(&Token::Of, "OF")?;
@@ -710,6 +759,10 @@ impl<'a> Parser<'a> {
 
         let end = self.expect(&Token::EndCase, "END_CASE")?.span;
         self.expect(&Token::Semicolon, ";")?;
+
+        // Exit depth tracking
+        self.security.exit_depth();
+        self.depth = self.depth.saturating_sub(1);
 
         Ok(Stmt::new(
             StmtKind::Case {
@@ -773,6 +826,15 @@ impl<'a> Parser<'a> {
         let start = self.current.span;
         self.expect(&Token::For, "FOR")?;
 
+        // Track nesting depth
+        self.depth += 1;
+        if let Err(e) = self.security.enter_depth() {
+            return Err(ParseError::new(
+                ParseErrorKind::Security(e.to_string()),
+                self.current.span,
+            ));
+        }
+
         let var_tok = self.expect(&Token::Ident(String::new()), "identifier")?;
         let var = match var_tok.token {
             Token::Ident(name) => name,
@@ -795,6 +857,10 @@ impl<'a> Parser<'a> {
         let end = self.expect(&Token::EndFor, "END_FOR")?.span;
         self.expect(&Token::Semicolon, ";")?;
 
+        // Exit depth tracking
+        self.security.exit_depth();
+        self.depth = self.depth.saturating_sub(1);
+
         Ok(Stmt::new(
             StmtKind::For {
                 var,
@@ -812,11 +878,24 @@ impl<'a> Parser<'a> {
         let start = self.current.span;
         self.expect(&Token::While, "WHILE")?;
 
+        // Track nesting depth
+        self.depth += 1;
+        if let Err(e) = self.security.enter_depth() {
+            return Err(ParseError::new(
+                ParseErrorKind::Security(e.to_string()),
+                self.current.span,
+            ));
+        }
+
         let condition = self.parse_expression()?;
         self.expect(&Token::Do, "DO")?;
         let body = self.parse_statements_until(&[Token::EndWhile])?;
         let end = self.expect(&Token::EndWhile, "END_WHILE")?.span;
         self.expect(&Token::Semicolon, ";")?;
+
+        // Exit depth tracking
+        self.security.exit_depth();
+        self.depth = self.depth.saturating_sub(1);
 
         Ok(Stmt::new(
             StmtKind::While { condition, body },
@@ -829,10 +908,23 @@ impl<'a> Parser<'a> {
         let start = self.current.span;
         self.expect(&Token::Repeat, "REPEAT")?;
 
+        // Track nesting depth
+        self.depth += 1;
+        if let Err(e) = self.security.enter_depth() {
+            return Err(ParseError::new(
+                ParseErrorKind::Security(e.to_string()),
+                self.current.span,
+            ));
+        }
+
         let body = self.parse_statements_until(&[Token::Until])?;
         self.expect(&Token::Until, "UNTIL")?;
         let until = self.parse_expression()?;
         let end = self.expect(&Token::Semicolon, ";")?.span;
+
+        // Exit depth tracking
+        self.security.exit_depth();
+        self.depth = self.depth.saturating_sub(1);
 
         Ok(Stmt::new(
             StmtKind::Repeat { body, until },

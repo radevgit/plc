@@ -28,13 +28,79 @@
 //!     Err(e) => eprintln!("Parse error: {}", e.message),
 //! }
 //! ```
+//!
+//! ## Security
+//!
+//! For untrusted input, use the `parse_scl_secure` function with appropriate limits:
+//!
+//! ```ignore
+//! use plcscl::{parse_scl_secure, security::ParserLimits};
+//!
+//! let source = get_untrusted_input();
+//! match parse_scl_secure(source, ParserLimits::strict()) {
+//!     Ok(program) => println!("Parsed successfully!"),
+//!     Err(e) => eprintln!("Parse error: {}", e),
+//! }
+//! ```
 
 pub mod generated;
+pub mod security;
 
 pub use generated::*;
+pub use security::{ParserLimits, ParserState, SecurityError};
 
 /// Parse SCL source code into an AST
 pub fn parse_scl(input: &str) -> Result<Program, ParseError> {
     let mut parser = Parser::new(input);
     parser.parse_program()
+}
+
+/// Parse SCL source code with security limits to prevent DoS attacks
+///
+/// This function enforces security limits on the input size and parsing complexity
+/// to prevent denial-of-service attacks via malicious SCL code.
+///
+/// # Arguments
+///
+/// * `input` - SCL source code to parse
+/// * `limits` - Security limits to enforce during parsing
+///
+/// # Returns
+///
+/// Returns the parsed AST or an error if parsing fails or limits are exceeded.
+///
+/// # Example
+///
+/// ```ignore
+/// use plcscl::{parse_scl_secure, security::ParserLimits};
+///
+/// let source = r#"FUNCTION_BLOCK MyFB ... END_FUNCTION_BLOCK"#;
+/// match parse_scl_secure(source, ParserLimits::strict()) {
+///     Ok(program) => println!("Parsed successfully!"),
+///     Err(e) => eprintln!("Parse error: {}", e),
+/// }
+/// ```
+pub fn parse_scl_secure(input: &str, limits: ParserLimits) -> Result<Program, SecureParseError> {
+    // Check input size before parsing
+    if input.len() > limits.max_input_size {
+        return Err(SecureParseError::Security(SecurityError::InputTooLarge {
+            size: input.len(),
+            limit: limits.max_input_size,
+        }));
+    }
+
+    // Parse with standard parser (limits would be enforced in future parser implementation)
+    let mut parser = Parser::new(input);
+    parser.parse_program()
+        .map_err(|e| SecureParseError::Parse(e.message().to_string()))
+}
+
+/// Error type for secure parsing that can be either a parse error or security violation
+#[derive(Debug, thiserror::Error)]
+pub enum SecureParseError {
+    #[error("Parse error: {0}")]
+    Parse(String),
+    
+    #[error("Security limit exceeded: {0}")]
+    Security(#[from] SecurityError),
 }

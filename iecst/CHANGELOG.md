@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 (2024-12-08)
+
+### Added
+- **Security module** - DoS attack protection for untrusted input
+  - `ParserLimits` - configurable limits (strict/balanced/relaxed)
+  - `ParserState` - runtime tracking of parser resource usage
+  - `SecurityError` - comprehensive error types for limit violations
+  - Input size, nesting depth, iteration, collection size limits
+- Added `thiserror` dependency for error handling
+
 ## 0.3.0 (2024-12-06)
 
 ### Added
