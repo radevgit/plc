@@ -65,6 +65,18 @@ impl ParserLimits {
             max_string_length: 10 * 1024 * 1024,    // 10 MB strings
         }
     }
+
+    /// Convert to internal generated parser limits
+    pub(crate) fn to_parser_limits(&self) -> crate::generated::parser::ParserLimits {
+        crate::generated::parser::ParserLimits {
+            max_tokens: 1_000_000, // Reasonable default, input size checked separately
+            max_iterations: self.max_iterations,
+            max_recursion_depth: self.max_depth,
+            max_collection_size: self.max_collection_size,
+            max_nesting_depth: self.max_depth,
+            max_nodes: self.max_statements,
+        }
+    }
 }
 
 /// Runtime state for tracking parser security limits

@@ -610,7 +610,7 @@ mod tests {
     use crate::parser::Parser;
 
     fn parse_and_build_cfg(code: &str) -> Cfg {
-        let mut parser = Parser::new(code);
+        let mut parser = Parser::new(code).expect("parser creation failed");
         let stmts = parser.parse_statements().expect("parse failed");
         CfgBuilder::new().build(&stmts)
     }

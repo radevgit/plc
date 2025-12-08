@@ -18,30 +18,36 @@ pub struct Parser<'a> {
 
 impl<'a> Parser<'a> {
     /// Create a new parser for the given input with default security limits.
-    pub fn new(input: &'a str) -> Self {
+    pub fn new(input: &'a str) -> ParseResult<Self> {
         Self::with_limits(input, ParserLimits::default())
     }
 
     /// Create a new parser with custom security limits.
-    pub fn with_limits(input: &'a str, limits: ParserLimits) -> Self {
+    ///
+    /// Returns an error if input size exceeds the limit.
+    pub fn with_limits(input: &'a str, limits: ParserLimits) -> ParseResult<Self> {
         // Check input size
         if input.len() > limits.max_input_size {
-            panic!(
-                "Input size {} exceeds maximum {}",
-                input.len(),
-                limits.max_input_size
-            );
+            use crate::security::SecurityError;
+            use crate::Span;
+            return Err(ParseError::new(
+                ParseErrorKind::Security(SecurityError::InputTooLarge {
+                    size: input.len(),
+                    limit: limits.max_input_size,
+                }.to_string()),
+                Span::empty(),
+            ));
         }
 
         let mut lexer = Lexer::new(input);
         let current = lexer.next_token();
-        Self {
+        Ok(Self {
             lexer,
             current: current.clone(),
             previous: current,
             security: ParserState::new(limits),
             depth: 0,
-        }
+        })
     }
 
     /// Advance to the next token.
@@ -1303,27 +1309,27 @@ impl<'a> Parser<'a> {
 
 /// Parse an expression from source.
 pub fn parse_expression(source: &str) -> ParseResult<Expr> {
-    Parser::new(source).parse_expression()
+    Parser::new(source)?.parse_expression()
 }
 
 /// Parse a single statement from source.
 pub fn parse_statement(source: &str) -> ParseResult<Stmt> {
-    Parser::new(source).parse_statement()
+    Parser::new(source)?.parse_statement()
 }
 
 /// Parse multiple statements from source.
 pub fn parse_statements(source: &str) -> ParseResult<Vec<Stmt>> {
-    Parser::new(source).parse_statements()
+    Parser::new(source)?.parse_statements()
 }
 
 /// Parse a POU from source.
 pub fn parse_pou(source: &str) -> ParseResult<Pou> {
-    Parser::new(source).parse_pou()
+    Parser::new(source)?.parse_pou()
 }
 
 /// Parse a TYPE block from source.
 pub fn parse_type_block(source: &str) -> ParseResult<Vec<TypeDecl>> {
-    Parser::new(source).parse_type_block()
+    Parser::new(source)?.parse_type_block()
 }
 
 #[cfg(test)]

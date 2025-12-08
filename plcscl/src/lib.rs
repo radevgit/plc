@@ -57,12 +57,15 @@ pub fn parse_scl(input: &str) -> Result<Program, ParseError> {
 
 /// Parse SCL source code with security limits to prevent DoS attacks
 ///
-/// **v0.1.0 Security Note**: Currently enforces input size validation only.
-/// Runtime depth/iteration tracking planned for v0.2.0.
+/// This function enforces security limits during parsing to prevent
+/// denial-of-service attacks via malicious SCL code.
 ///
-/// This function currently checks input size before parsing to prevent
-/// memory exhaustion. Additional runtime security limits (depth, iterations,
-/// statement count) are defined but not yet integrated into the parser.
+/// The generated parser includes built-in runtime checks for:
+/// - Input size (checked before parsing)
+/// - Recursion depth (checked during block parsing)
+/// - Complexity/node count (checked during AST construction)
+/// - Iteration count (checked during statement parsing)
+/// - Collection sizes (checked for Vec allocations)
 ///
 /// # Arguments
 ///
@@ -85,8 +88,7 @@ pub fn parse_scl(input: &str) -> Result<Program, ParseError> {
 /// }
 /// ```
 pub fn parse_scl_secure(input: &str, limits: ParserLimits) -> Result<Program, SecureParseError> {
-    // v0.1.0: Check input size only
-    // TODO v0.2.0: Integrate ParserState for runtime depth/iteration tracking
+    // Check input size first (quick check before tokenization)
     if input.len() > limits.max_input_size {
         return Err(SecureParseError::Security(SecurityError::InputTooLarge {
             size: input.len(),
@@ -94,7 +96,9 @@ pub fn parse_scl_secure(input: &str, limits: ParserLimits) -> Result<Program, Se
         }));
     }
 
-    let mut parser = Parser::new(input);
+    // Convert to internal parser limits and parse with security checks
+    let parser_limits = limits.to_parser_limits();
+    let mut parser = Parser::with_limits(input, parser_limits);
     parser.parse_program()
         .map_err(|e| SecureParseError::Parse(e.message().to_string()))
 }

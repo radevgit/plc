@@ -3,52 +3,27 @@
 use super::lexer::{Lexer, Token, TokenKind};
 use super::ast::*;
 
-/// Parser security limits to prevent DoS attacks
+/// Internal parser limits (runtime checks during parsing)
+/// Note: For external API, use security::ParserLimits which provides conversion
 #[derive(Debug, Clone)]
 pub struct ParserLimits {
-    pub max_tokens: usize,           // Maximum tokens in input
-    pub max_iterations: usize,       // Maximum loop iterations
-    pub max_recursion_depth: usize,  // Maximum call stack depth
-    pub max_collection_size: usize,  // Maximum items in collections
-    pub max_nesting_depth: usize,    // Maximum block/expression nesting
-    pub max_nodes: usize,            // Maximum total AST nodes
+    pub max_tokens: usize,
+    pub max_iterations: usize,
+    pub max_recursion_depth: usize,
+    pub max_collection_size: usize,
+    pub max_nesting_depth: usize,
+    pub max_nodes: usize,
 }
 
 impl Default for ParserLimits {
     fn default() -> Self {
         ParserLimits {
-            max_tokens: 1_000_000,        // 1M tokens (~10-50MB source)
-            max_iterations: 100_000,      // 100K iterations per loop
-            max_recursion_depth: 256,     // 256 levels deep
-            max_collection_size: 100_000, // 100K items per collection
-            max_nesting_depth: 100,       // 100 levels of nesting
-            max_nodes: 10_000_000,        // 10M AST nodes total
-        }
-    }
-}
-
-impl ParserLimits {
-    /// Conservative limits for untrusted input
-    pub fn strict() -> Self {
-        ParserLimits {
-            max_tokens: 100_000,
-            max_iterations: 10_000,
-            max_recursion_depth: 64,
-            max_collection_size: 10_000,
-            max_nesting_depth: 32,
-            max_nodes: 1_000_000,
-        }
-    }
-    
-    /// Relaxed limits for trusted input
-    pub fn relaxed() -> Self {
-        ParserLimits {
-            max_tokens: 10_000_000,
-            max_iterations: 1_000_000,
-            max_recursion_depth: 512,
-            max_collection_size: 1_000_000,
-            max_nesting_depth: 256,
-            max_nodes: 100_000_000,
+            max_tokens: 1_000_000,
+            max_iterations: 100_000,
+            max_recursion_depth: 256,
+            max_collection_size: 100_000,
+            max_nesting_depth: 100,
+            max_nodes: 10_000_000,
         }
     }
 }
@@ -179,7 +154,6 @@ impl ParseError {
     }
 }
 
-#[allow(dead_code)]
 pub struct Parser {
     tokens: Vec<Token>,
     pos: usize,
@@ -283,7 +257,6 @@ impl Parser {
         ParseError::new(kind, span).with_source(&self.source)
     }
     
-    #[allow(dead_code)]
     fn record_error(&mut self, error: ParseError) {
         self.errors.push(error);
     }

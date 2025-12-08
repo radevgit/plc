@@ -84,8 +84,6 @@ match parse_scl(source) {
 
 ### Security
 
-**v0.1.0 Note**: Currently enforces input size validation only. Runtime depth/iteration tracking is planned for v0.2.0.
-
 For untrusted input, use `parse_scl_secure` with appropriate limits:
 
 ```rust
@@ -97,6 +95,12 @@ match parse_scl_secure(source, ParserLimits::strict()) {
     Err(e) => eprintln!("Parse error: {}", e),
 }
 ```
+
+The parser includes built-in security checks for:
+- Input size (prevents memory exhaustion)
+- Recursion depth (prevents stack overflow)
+- AST complexity (prevents complexity attacks)
+- Collection sizes (prevents allocation bombs)
 
 Available limit presets:
 - `ParserLimits::strict()` - For untrusted/external input (10 MB max, 64 depth)
