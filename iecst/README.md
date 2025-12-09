@@ -28,7 +28,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-iecst = "0.4"
+iecst = "0.5"
 ```
 
 ## Quick Start

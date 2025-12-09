@@ -1,6 +1,9 @@
 # Changelog
 
-## 0.4.0 (2024-12-08)
+## 0.5.0 (2025-12-09)
+- Fixed security module
+
+## 0.4.0 (2025-12-08)
 
 ### Added
 - **Security module** - DoS attack protection for untrusted input
@@ -10,7 +13,7 @@
   - Input size, nesting depth, iteration, collection size limits
 - Added `thiserror` dependency for error handling
 
-## 0.3.0 (2024-12-06)
+## 0.3.0 (2025-12-06)
 
 ### Added
 - **Nesting depth analysis** - new `analysis::nesting` module
@@ -21,7 +24,7 @@
 ### Changed
 - Re-export `max_nesting_depth` from `iecst`
 
-## 0.2.0 (2024-12-06)
+## 0.2.0 (2025-12-06)
 
 ### Added
 - **Control Flow Graph (CFG)** - new `analysis::cfg` module
@@ -39,7 +42,7 @@
 ### Changed
 - Re-export CFG types from `iecst`: `Cfg`, `CfgBuilder`, `CfgNode`, `NodeId`, `NodeKind`
 
-## 0.1.0 (2024-12-04)
+## 0.1.0 (2025-12-04)
 
 - Initial release
 - IEC 61131-3 Structured Text lexer
