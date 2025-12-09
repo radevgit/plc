@@ -127,20 +127,20 @@ checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "iecst"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b871d61aa69c3c5f1cf0a83cf45aee698ec5f07bd3f3c23fabc2bfe9c26dd0d1"
+version = "0.5.0"
 dependencies = [
  "thiserror 1.0.69",
+ "walkdir",
  "winnow",
 ]
 
 [[package]]
 name = "iecst"
 version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "051aca2da2fef8d196f346179ddb6dae76f486d5762171f9dd181a06d783165d"
 dependencies = [
  "thiserror 1.0.69",
- "walkdir",
  "winnow",
 ]
 
@@ -168,19 +168,6 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 
 [[package]]
 name = "l5x"
-version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2a84e301e24ebd267a9c67ebbdb1e73747a9a08a886eccfcd39b5b604a3f85af"
-dependencies = [
- "iecst 0.4.0",
- "quick-xml",
- "serde",
- "thiserror 1.0.69",
- "winnow",
-]
-
-[[package]]
-name = "l5x"
 version = "0.5.0"
 dependencies = [
  "iecst 0.5.0",
@@ -188,6 +175,19 @@ dependencies = [
  "serde",
  "thiserror 1.0.69",
  "walkdir",
+ "winnow",
+]
+
+[[package]]
+name = "l5x"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d929e9cb7efd0465d1bd347c2ea1f5ab2708751a31cacec7857942701b2021b"
+dependencies = [
+ "iecst 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "quick-xml",
+ "serde",
+ "thiserror 1.0.69",
  "winnow",
 ]
 
@@ -247,7 +247,7 @@ name = "plcviz"
 version = "0.3.0"
 dependencies = [
  "clap",
- "l5x 0.4.0",
+ "l5x 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "layout-rs",
  "regex",
 ]

@@ -9,6 +9,19 @@ Parser for PLCopen TC6 XML files - the IEC 61131-3 standard exchange format for 
 - ST (Structured Text) extraction and parsing via `iecst`
 - Support for all IEC 61131-3 languages (ST, IL, LD, FBD, SFC)
 
+## Installation
+
+```bash
+cargo add plcopen
+```
+
+Or add to your `Cargo.toml`:
+
+```toml
+[dependencies]
+plcopen = "0.2"
+```
+
 ## Usage
 
 ```rust
