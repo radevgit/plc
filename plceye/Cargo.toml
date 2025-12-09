@@ -15,7 +15,7 @@ rust-version = "1.70"
 
 [dependencies]
 # Format parsers
-l5x = { version = "0.4", path = "../l5x" }
+l5x = { version = "0.5", path = "../l5x" }
 plcopen = { version = "0.2", path = "../plcopen" }
 
 # ST parsing

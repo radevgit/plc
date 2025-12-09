@@ -14,7 +14,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-l5x = "0.4"
+l5x = "0.5"
 ```
 
 ## Usage

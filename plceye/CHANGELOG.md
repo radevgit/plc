@@ -20,13 +20,13 @@
 - Stats now display complexity metrics when ST routines are present
 - Updated iecst dependency to 0.3.0
 
-## 0.4.0 (2024-12-05)
+## 0.4.0 (2025-12-05)
 
 ### Added
 - S0004: Unused AOI detection
 - S0005: Unused DataType detection
 
-## 0.3.0 (2024-12-05)
+## 0.3.0 (2025-12-05)
 
 ### Added
 - PLCopen XML format support
@@ -39,7 +39,7 @@
 - Updated config format with `ignore_patterns` and `ignore_scopes`
 - Improved output format with rule codes
 
-## 0.1.0 (2024-12-04)
+## 0.1.0 (2025-12-04)
 
 - Initial release
 - Unused tags detection
