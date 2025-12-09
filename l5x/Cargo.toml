@@ -17,7 +17,7 @@ rust-version = "1.70"
 quick-xml = { version = "0.37", features = ["serialize", "overlapped-lists"] }
 serde = { version = "1.0", features = ["derive"] }
 winnow = "0.7"
-iecst = { path = "../iecst", version = "0.4" }
+iecst = { path = "../iecst", version = "0.5" }
 thiserror = "1.0"
 
 [dev-dependencies]
