@@ -430,6 +430,16 @@ impl Parser {
         let result = match self.peek() {
             TokenKind::VarInput => {
                 self.advance();
+                // Check for optional RETAIN / NON_RETAIN
+                let _retain_type = if matches!(self.peek(), TokenKind::Retain) {
+                    self.advance();
+                    "RETAIN"
+                } else if matches!(self.peek(), TokenKind::NonRetain) {
+                    self.advance();
+                    "NON_RETAIN"
+                } else {
+                    ""
+                };
                 let mut declarations = Vec::new();
                 let mut iterations = 0;
                 while !matches!(self.peek(), TokenKind::EndVar) {
@@ -444,6 +454,16 @@ impl Parser {
             }
             TokenKind::VarOutput => {
                 self.advance();
+                // Check for optional RETAIN / NON_RETAIN
+                let _retain_type = if matches!(self.peek(), TokenKind::Retain) {
+                    self.advance();
+                    "RETAIN"
+                } else if matches!(self.peek(), TokenKind::NonRetain) {
+                    self.advance();
+                    "NON_RETAIN"
+                } else {
+                    ""
+                };
                 let mut declarations = Vec::new();
                 let mut iterations = 0;
                 while !matches!(self.peek(), TokenKind::EndVar) {
@@ -458,6 +478,16 @@ impl Parser {
             }
             TokenKind::VarInOut => {
                 self.advance();
+                // Check for optional RETAIN / NON_RETAIN
+                let _retain_type = if matches!(self.peek(), TokenKind::Retain) {
+                    self.advance();
+                    "RETAIN"
+                } else if matches!(self.peek(), TokenKind::NonRetain) {
+                    self.advance();
+                    "NON_RETAIN"
+                } else {
+                    ""
+                };
                 let mut declarations = Vec::new();
                 let mut iterations = 0;
                 while !matches!(self.peek(), TokenKind::EndVar) {
@@ -472,6 +502,16 @@ impl Parser {
             }
             TokenKind::VarTemp => {
                 self.advance();
+                // Check for optional RETAIN / NON_RETAIN
+                let _retain_type = if matches!(self.peek(), TokenKind::Retain) {
+                    self.advance();
+                    "RETAIN"
+                } else if matches!(self.peek(), TokenKind::NonRetain) {
+                    self.advance();
+                    "NON_RETAIN"
+                } else {
+                    ""
+                };
                 let mut declarations = Vec::new();
                 let mut iterations = 0;
                 while !matches!(self.peek(), TokenKind::EndVar) {
@@ -535,6 +575,16 @@ impl Parser {
             }
             TokenKind::VarExternal => {
                 self.advance();
+                // Check for optional RETAIN / NON_RETAIN
+                let _retain_type = if matches!(self.peek(), TokenKind::Retain) {
+                    self.advance();
+                    "RETAIN"
+                } else if matches!(self.peek(), TokenKind::NonRetain) {
+                    self.advance();
+                    "NON_RETAIN"
+                } else {
+                    ""
+                };
                 let mut declarations = Vec::new();
                 let mut iterations = 0;
                 while !matches!(self.peek(), TokenKind::EndVar) {
@@ -1610,7 +1660,29 @@ impl Parser {
     fn parse_region(&mut self) -> Result<Region, ParseError> {
         self.check_recursion()?;
         self.expect(TokenKind::Region)?;
-        let name = self.expect_identifier()?;
+        
+        // REGION can have multiple identifiers as name (e.g., "REGION delta time")
+        // Consume identifiers until we hit something that clearly isn't part of the region name:
+        // - Identifiers starting with # or % (local temps, absolute addresses)
+        // - Statement keywords (IF, FOR, WHILE, etc.)
+        // - Operators that indicate a statement (like :=, (, etc.)
+        let mut name_parts = vec![self.expect_identifier()?];
+        
+        while matches!(self.peek(), TokenKind::Identifier(id) if !id.starts_with('#') && !id.starts_with('%')) {
+            // Lookahead: check if the next identifier starts a statement
+            let checkpoint = self.pos;
+            let id = self.expect_identifier()?;
+            
+            // If followed by :=, (, or ?=, this identifier starts a statement
+            if matches!(self.peek(), TokenKind::Operator(op) if op == ":=" || op == "(" || op == "?=") {
+                self.pos = checkpoint;
+                break;
+            }
+            
+            name_parts.push(id);
+        }
+        
+        let name = name_parts.join(" ");
         
         let mut statements = Vec::new();
         let mut iterations = 0;
