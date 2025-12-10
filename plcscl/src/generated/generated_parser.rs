@@ -752,11 +752,51 @@ impl Parser {
     
     fn parse_type_decl(&mut self) -> Result<TypeDecl, ParseError> { 
         self.expect(TokenKind::Type)?;
-        let name = self.expect_identifier()?;
-        self.expect(TokenKind::Operator(":".to_string()))?;
-        let type_ref = self.parse_type_ref()?;
+        
+        let mut declarations = Vec::new();
+        
+        // Parse multiple type declarations until END_TYPE
+        while !matches!(self.peek(), TokenKind::EndType) {
+            let name = self.expect_identifier()?;
+            self.expect(TokenKind::Operator(":".to_string()))?;
+            let type_ref = self.parse_type_ref()?;
+            
+            // Optional initial value
+            let initial_value = if matches!(self.peek(), TokenKind::Operator(op) if op == ":=") {
+                self.advance(); // consume :=
+                Some(self.parse_expression()?)
+            } else {
+                None
+            };
+            
+            // Optional semicolon (be flexible)
+            if matches!(self.peek(), TokenKind::Operator(op) if op == ";") {
+                self.advance();
+            }
+            
+            declarations.push((name, type_ref, initial_value));
+            
+            // Skip comments and whitespace
+            if matches!(self.peek(), TokenKind::Eof | TokenKind::EndType) {
+                break;
+            }
+        }
+        
         self.expect(TokenKind::EndType)?;
-        Ok(TypeDecl { name, type_spec: TypeSpec { type_ref } })
+        
+        // For now, return first declaration (maintain compatibility)
+        // TODO: Update TypeDecl to support multiple declarations
+        if let Some((name, type_ref, _initial_value)) = declarations.first() {
+            Ok(TypeDecl { name: name.clone(), type_spec: TypeSpec { type_ref: type_ref.clone() } })
+        } else {
+            Err(ParseError::new(
+                ParseErrorKind::UnexpectedToken { 
+                    expected: "type declaration".to_string(), 
+                    found: "END_TYPE".to_string() 
+                },
+                (self.pos, self.pos)
+            ))
+        }
     }
     
     fn parse_var_declaration(&mut self) -> Result<VarDeclaration, ParseError> { 
@@ -925,6 +965,17 @@ impl Parser {
                     let _size = self.parse_expression()?;
                     self.expect(TokenKind::Operator("]".to_string()))?;
                     name = format!("{}[...]", name); // Simplified representation
+                }
+                
+                // Handle subrange types like INT (-4095 .. 4095)
+                if matches!(self.peek(), TokenKind::Operator(op) if op == "(") {
+                    self.advance(); // consume (
+                    let _min = self.parse_expression()?;
+                    self.expect(TokenKind::Operator("..".to_string()))?;
+                    let _max = self.parse_expression()?;
+                    self.expect(TokenKind::Operator(")".to_string()))?;
+                    // Store as subrange type (simplified for now)
+                    name = format!("{}(subrange)", name);
                 }
                 
                 Ok(TypeRef::Named(name))

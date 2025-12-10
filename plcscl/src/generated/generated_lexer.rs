@@ -2,109 +2,109 @@
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenKind {
-    Exit,
-    Function,
-    Pointer,
-    Struct,
-    EndInterface,
-    While,
-    Class,
+    At,
+    EndRepeat,
+    Public,
     EndStruct,
     EndWhile,
-    If,
-    Repeat,
-    EndCase,
-    AnyString,
-    For,
-    VarTemp,
-    Mod,
-    False,
-    Then,
-    Not,
-    Private,
-    Protected,
-    AnyNum,
-    Attribute,
-    Begin,
-    VarOutput,
-    Constant,
-    Var,
-    At,
-    Elsif,
-    AnyReal,
-    Array,
-    NonRetain,
-    EndType,
-    EndVar,
-    Retain,
-    EndFor,
-    Type,
-    Until,
-    Method,
-    EndFunctionBlock,
-    EndFunction,
-    Program,
+    True,
     Do,
-    EndClass,
-    By,
     Extends,
+    AnyString,
+    Program,
+    Exit,
+    VarInput,
+    Retain,
+    RefTo,
+    Return,
+    Struct,
+    EndType,
+    AnyNum,
+    OrganizationBlock,
+    VarOutput,
+    EndOrganizationBlock,
+    VarAccess,
     EndProgram,
     Else,
-    Internal,
-    To,
-    EndDataBlock,
-    VarInOut,
-    OrganizationBlock,
-    AnyDate,
-    Case,
-    Return,
-    True,
-    EndOrganizationBlock,
-    Interface,
-    Implements,
-    Variant,
+    By,
+    AnyReal,
+    EndFunction,
+    EndFor,
+    For,
     Goto,
-    EndRepeat,
-    DataBlock,
-    EndIf,
+    VarTemp,
+    Method,
+    Variant,
+    Repeat,
+    Internal,
+    Attribute,
+    Then,
+    EndInterface,
+    Implements,
     EndMethod,
-    FunctionBlock,
-    VarAccess,
-    VarExternal,
-    And,
-    Or,
-    Public,
+    EndVar,
+    Type,
     Of,
-    VarInput,
-    RefTo,
-    Any,
-    AnyBit,
+    AnyDate,
+    NonRetain,
+    EndDataBlock,
+    Constant,
+    Array,
+    If,
+    EndIf,
     Continue,
-    AnyInt,
+    Any,
     Xor,
-    LInt,
-    WString,
-    Char,
-    String,
+    While,
+    Function,
+    Private,
+    EndClass,
+    Protected,
+    Elsif,
+    Case,
+    To,
+    Pointer,
+    EndFunctionBlock,
+    FunctionBlock,
+    Begin,
+    Class,
+    Var,
+    Or,
+    And,
+    Until,
+    AnyBit,
+    Mod,
+    Not,
+    False,
+    AnyInt,
+    VarInOut,
+    Interface,
+    VarExternal,
+    DataBlock,
+    EndCase,
     TimeOfDay,
-    LReal,
-    Version,
-    USInt,
-    UInt,
-    Title,
-    ULInt,
-    Date,
-    DateTime,
-    Dtl,
-    Byte,
-    Region,
-    EndRegion,
+    String,
     Time,
-    Family,
-    LWord,
-    WChar,
+    LReal,
+    EndRegion,
+    Title,
+    Dtl,
+    Date,
+    LInt,
     UDInt,
+    WString,
     Author,
+    Family,
+    UInt,
+    LWord,
+    Byte,
+    DateTime,
+    USInt,
+    ULInt,
+    Region,
+    Version,
+    WChar,
+    Char,
     Identifier(String),
     IntLit(String),
     FloatLit(String),
@@ -205,18 +205,18 @@ impl Lexer {
                 return Some(Token::new(TokenKind::EndOrganizationBlock, start, end));
             }
         }
-        if remaining_upper.starts_with("END_FUNCTION_BLOCK") {
-            let end = self.pos + 18;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::EndFunctionBlock, start, end));
-            }
-        }
         if remaining_upper.starts_with("ORGANIZATION_BLOCK") {
             let end = self.pos + 18;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::OrganizationBlock, start, end));
+            }
+        }
+        if remaining_upper.starts_with("END_FUNCTION_BLOCK") {
+            let end = self.pos + 18;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::EndFunctionBlock, start, end));
             }
         }
         if remaining_upper.starts_with("END_DATA_BLOCK") {
@@ -261,6 +261,13 @@ impl Lexer {
                 return Some(Token::new(TokenKind::EndProgram, start, end));
             }
         }
+        if remaining_upper.starts_with("END_REPEAT") {
+            let end = self.pos + 10;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::EndRepeat, start, end));
+            }
+        }
         if remaining_upper.starts_with("END_STRUCT") {
             let end = self.pos + 10;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -282,6 +289,27 @@ impl Lexer {
                 return Some(Token::new(TokenKind::VarOutput, start, end));
             }
         }
+        if remaining_upper.starts_with("VAR_ACCESS") {
+            let end = self.pos + 10;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::VarAccess, start, end));
+            }
+        }
+        if remaining_upper.starts_with("IMPLEMENTS") {
+            let end = self.pos + 10;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Implements, start, end));
+            }
+        }
+        if remaining_upper.starts_with("END_METHOD") {
+            let end = self.pos + 10;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::EndMethod, start, end));
+            }
+        }
         if remaining_upper.starts_with("NON_RETAIN") {
             let end = self.pos + 10;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -296,39 +324,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::VarInOut, start, end));
             }
         }
-        if remaining_upper.starts_with("IMPLEMENTS") {
-            let end = self.pos + 10;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Implements, start, end));
-            }
-        }
-        if remaining_upper.starts_with("END_REPEAT") {
-            let end = self.pos + 10;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::EndRepeat, start, end));
-            }
-        }
         if remaining_upper.starts_with("DATA_BLOCK") {
             let end = self.pos + 10;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::DataBlock, start, end));
-            }
-        }
-        if remaining_upper.starts_with("END_METHOD") {
-            let end = self.pos + 10;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::EndMethod, start, end));
-            }
-        }
-        if remaining_upper.starts_with("VAR_ACCESS") {
-            let end = self.pos + 10;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::VarAccess, start, end));
             }
         }
         if remaining_upper.starts_with("END_WHILE") {
@@ -338,11 +338,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::EndWhile, start, end));
             }
         }
-        if remaining_upper.starts_with("PROTECTED") {
+        if remaining_upper.starts_with("VAR_INPUT") {
             let end = self.pos + 9;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::Protected, start, end));
+                return Some(Token::new(TokenKind::VarInput, start, end));
             }
         }
         if remaining_upper.starts_with("attribute") {
@@ -359,6 +359,13 @@ impl Lexer {
                 return Some(Token::new(TokenKind::EndClass, start, end));
             }
         }
+        if remaining_upper.starts_with("PROTECTED") {
+            let end = self.pos + 9;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Protected, start, end));
+            }
+        }
         if remaining_upper.starts_with("INTERFACE") {
             let end = self.pos + 9;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -366,39 +373,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Interface, start, end));
             }
         }
-        if remaining_upper.starts_with("VAR_INPUT") {
-            let end = self.pos + 9;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::VarInput, start, end));
-            }
-        }
-        if remaining_upper.starts_with("FUNCTION") {
+        if remaining_upper.starts_with("END_TYPE") {
             let end = self.pos + 8;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::Function, start, end));
-            }
-        }
-        if remaining_upper.starts_with("END_CASE") {
-            let end = self.pos + 8;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::EndCase, start, end));
-            }
-        }
-        if remaining_upper.starts_with("VAR_TEMP") {
-            let end = self.pos + 8;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::VarTemp, start, end));
-            }
-        }
-        if remaining_upper.starts_with("CONSTANT") {
-            let end = self.pos + 8;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Constant, start, end));
+                return Some(Token::new(TokenKind::EndType, start, end));
             }
         }
         if remaining_upper.starts_with("ANY_REAL") {
@@ -408,11 +387,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::AnyReal, start, end));
             }
         }
-        if remaining_upper.starts_with("END_TYPE") {
+        if remaining_upper.starts_with("VAR_TEMP") {
             let end = self.pos + 8;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::EndType, start, end));
+                return Some(Token::new(TokenKind::VarTemp, start, end));
             }
         }
         if remaining_upper.starts_with("INTERNAL") {
@@ -429,6 +408,13 @@ impl Lexer {
                 return Some(Token::new(TokenKind::AnyDate, start, end));
             }
         }
+        if remaining_upper.starts_with("CONSTANT") {
+            let end = self.pos + 8;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Constant, start, end));
+            }
+        }
         if remaining_upper.starts_with("CONTINUE") {
             let end = self.pos + 8;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -436,46 +422,18 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Continue, start, end));
             }
         }
-        if remaining_upper.starts_with("POINTER") {
-            let end = self.pos + 7;
+        if remaining_upper.starts_with("FUNCTION") {
+            let end = self.pos + 8;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::Pointer, start, end));
+                return Some(Token::new(TokenKind::Function, start, end));
             }
         }
-        if remaining_upper.starts_with("PRIVATE") {
-            let end = self.pos + 7;
+        if remaining_upper.starts_with("END_CASE") {
+            let end = self.pos + 8;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::Private, start, end));
-            }
-        }
-        if remaining_upper.starts_with("ANY_NUM") {
-            let end = self.pos + 7;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::AnyNum, start, end));
-            }
-        }
-        if remaining_upper.starts_with("END_VAR") {
-            let end = self.pos + 7;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::EndVar, start, end));
-            }
-        }
-        if remaining_upper.starts_with("END_FOR") {
-            let end = self.pos + 7;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::EndFor, start, end));
-            }
-        }
-        if remaining_upper.starts_with("PROGRAM") {
-            let end = self.pos + 7;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Program, start, end));
+                return Some(Token::new(TokenKind::EndCase, start, end));
             }
         }
         if remaining_upper.starts_with("EXTENDS") {
@@ -485,11 +443,53 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Extends, start, end));
             }
         }
+        if remaining_upper.starts_with("PROGRAM") {
+            let end = self.pos + 7;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Program, start, end));
+            }
+        }
+        if remaining_upper.starts_with("ANY_NUM") {
+            let end = self.pos + 7;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::AnyNum, start, end));
+            }
+        }
+        if remaining_upper.starts_with("END_FOR") {
+            let end = self.pos + 7;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::EndFor, start, end));
+            }
+        }
         if remaining_upper.starts_with("VARIANT") {
             let end = self.pos + 7;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::Variant, start, end));
+            }
+        }
+        if remaining_upper.starts_with("END_VAR") {
+            let end = self.pos + 7;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::EndVar, start, end));
+            }
+        }
+        if remaining_upper.starts_with("PRIVATE") {
+            let end = self.pos + 7;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Private, start, end));
+            }
+        }
+        if remaining_upper.starts_with("POINTER") {
+            let end = self.pos + 7;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Pointer, start, end));
             }
         }
         if remaining_upper.starts_with("ANY_BIT") {
@@ -506,18 +506,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::AnyInt, start, end));
             }
         }
-        if remaining_upper.starts_with("STRUCT") {
+        if remaining_upper.starts_with("PUBLIC") {
             let end = self.pos + 6;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::Struct, start, end));
-            }
-        }
-        if remaining_upper.starts_with("REPEAT") {
-            let end = self.pos + 6;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Repeat, start, end));
+                return Some(Token::new(TokenKind::Public, start, end));
             }
         }
         if remaining_upper.starts_with("RETAIN") {
@@ -527,11 +520,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Retain, start, end));
             }
         }
-        if remaining_upper.starts_with("METHOD") {
+        if remaining_upper.starts_with("REF_TO") {
             let end = self.pos + 6;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::Method, start, end));
+                return Some(Token::new(TokenKind::RefTo, start, end));
             }
         }
         if remaining_upper.starts_with("RETURN") {
@@ -541,60 +534,32 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Return, start, end));
             }
         }
+        if remaining_upper.starts_with("STRUCT") {
+            let end = self.pos + 6;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Struct, start, end));
+            }
+        }
+        if remaining_upper.starts_with("METHOD") {
+            let end = self.pos + 6;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Method, start, end));
+            }
+        }
+        if remaining_upper.starts_with("REPEAT") {
+            let end = self.pos + 6;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Repeat, start, end));
+            }
+        }
         if remaining_upper.starts_with("END_IF") {
             let end = self.pos + 6;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::EndIf, start, end));
-            }
-        }
-        if remaining_upper.starts_with("PUBLIC") {
-            let end = self.pos + 6;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Public, start, end));
-            }
-        }
-        if remaining_upper.starts_with("REF_TO") {
-            let end = self.pos + 6;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::RefTo, start, end));
-            }
-        }
-        if remaining_upper.starts_with("WHILE") {
-            let end = self.pos + 5;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::While, start, end));
-            }
-        }
-        if remaining_upper.starts_with("CLASS") {
-            let end = self.pos + 5;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Class, start, end));
-            }
-        }
-        if remaining_upper.starts_with("FALSE") {
-            let end = self.pos + 5;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::False, start, end));
-            }
-        }
-        if remaining_upper.starts_with("BEGIN") {
-            let end = self.pos + 5;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Begin, start, end));
-            }
-        }
-        if remaining_upper.starts_with("ELSIF") {
-            let end = self.pos + 5;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Elsif, start, end));
             }
         }
         if remaining_upper.starts_with("ARRAY") {
@@ -604,6 +569,34 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Array, start, end));
             }
         }
+        if remaining_upper.starts_with("WHILE") {
+            let end = self.pos + 5;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::While, start, end));
+            }
+        }
+        if remaining_upper.starts_with("ELSIF") {
+            let end = self.pos + 5;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Elsif, start, end));
+            }
+        }
+        if remaining_upper.starts_with("BEGIN") {
+            let end = self.pos + 5;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Begin, start, end));
+            }
+        }
+        if remaining_upper.starts_with("CLASS") {
+            let end = self.pos + 5;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Class, start, end));
+            }
+        }
         if remaining_upper.starts_with("UNTIL") {
             let end = self.pos + 5;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -611,11 +604,39 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Until, start, end));
             }
         }
+        if remaining_upper.starts_with("FALSE") {
+            let end = self.pos + 5;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::False, start, end));
+            }
+        }
+        if remaining_upper.starts_with("TRUE") {
+            let end = self.pos + 4;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::True, start, end));
+            }
+        }
         if remaining_upper.starts_with("EXIT") {
             let end = self.pos + 4;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::Exit, start, end));
+            }
+        }
+        if remaining_upper.starts_with("ELSE") {
+            let end = self.pos + 4;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Else, start, end));
+            }
+        }
+        if remaining_upper.starts_with("GOTO") {
+            let end = self.pos + 4;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Goto, start, end));
             }
         }
         if remaining_upper.starts_with("THEN") {
@@ -632,13 +653,6 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Type, start, end));
             }
         }
-        if remaining_upper.starts_with("ELSE") {
-            let end = self.pos + 4;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Else, start, end));
-            }
-        }
         if remaining_upper.starts_with("CASE") {
             let end = self.pos + 4;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -646,53 +660,11 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Case, start, end));
             }
         }
-        if remaining_upper.starts_with("TRUE") {
-            let end = self.pos + 4;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::True, start, end));
-            }
-        }
-        if remaining_upper.starts_with("GOTO") {
-            let end = self.pos + 4;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Goto, start, end));
-            }
-        }
         if remaining_upper.starts_with("FOR") {
             let end = self.pos + 3;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::For, start, end));
-            }
-        }
-        if remaining_upper.starts_with("MOD") {
-            let end = self.pos + 3;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Mod, start, end));
-            }
-        }
-        if remaining_upper.starts_with("NOT") {
-            let end = self.pos + 3;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Not, start, end));
-            }
-        }
-        if remaining_upper.starts_with("VAR") {
-            let end = self.pos + 3;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Var, start, end));
-            }
-        }
-        if remaining_upper.starts_with("AND") {
-            let end = self.pos + 3;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::And, start, end));
             }
         }
         if remaining_upper.starts_with("ANY") {
@@ -709,11 +681,32 @@ impl Lexer {
                 return Some(Token::new(TokenKind::Xor, start, end));
             }
         }
-        if remaining_upper.starts_with("IF") {
-            let end = self.pos + 2;
+        if remaining_upper.starts_with("VAR") {
+            let end = self.pos + 3;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
-                return Some(Token::new(TokenKind::If, start, end));
+                return Some(Token::new(TokenKind::Var, start, end));
+            }
+        }
+        if remaining_upper.starts_with("AND") {
+            let end = self.pos + 3;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::And, start, end));
+            }
+        }
+        if remaining_upper.starts_with("MOD") {
+            let end = self.pos + 3;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Mod, start, end));
+            }
+        }
+        if remaining_upper.starts_with("NOT") {
+            let end = self.pos + 3;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Not, start, end));
             }
         }
         if remaining_upper.starts_with("AT") {
@@ -737,6 +730,20 @@ impl Lexer {
                 return Some(Token::new(TokenKind::By, start, end));
             }
         }
+        if remaining_upper.starts_with("OF") {
+            let end = self.pos + 2;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::Of, start, end));
+            }
+        }
+        if remaining_upper.starts_with("IF") {
+            let end = self.pos + 2;
+            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
+                self.pos = end;
+                return Some(Token::new(TokenKind::If, start, end));
+            }
+        }
         if remaining_upper.starts_with("TO") {
             let end = self.pos + 2;
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
@@ -749,13 +756,6 @@ impl Lexer {
             if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
                 self.pos = end;
                 return Some(Token::new(TokenKind::Or, start, end));
-            }
-        }
-        if remaining_upper.starts_with("OF") {
-            let end = self.pos + 2;
-            if end >= self.input.len() || !(self.input[end].is_alphanumeric() || self.input[end] == '_') {
-                self.pos = end;
-                return Some(Token::new(TokenKind::Of, start, end));
             }
         }
         None
@@ -856,16 +856,16 @@ impl Lexer {
         // Try multi-character operators first
         if self.pos + 2 <= self.input.len() {
             let op_chars: String = self.input[self.pos..self.pos+2].iter().collect();
-            if op_chars == ".." {
+            if op_chars == "<>" {
                 self.pos += 2;
-                return Token::new(TokenKind::Operator("..".to_string()), start, self.pos);
+                return Token::new(TokenKind::Operator("<>".to_string()), start, self.pos);
             }
         }
         if self.pos + 2 <= self.input.len() {
             let op_chars: String = self.input[self.pos..self.pos+2].iter().collect();
-            if op_chars == ":=" {
+            if op_chars == ".." {
                 self.pos += 2;
-                return Token::new(TokenKind::Operator(":=".to_string()), start, self.pos);
+                return Token::new(TokenKind::Operator("..".to_string()), start, self.pos);
             }
         }
         if self.pos + 2 <= self.input.len() {
@@ -877,9 +877,9 @@ impl Lexer {
         }
         if self.pos + 2 <= self.input.len() {
             let op_chars: String = self.input[self.pos..self.pos+2].iter().collect();
-            if op_chars == "<>" {
+            if op_chars == ":=" {
                 self.pos += 2;
-                return Token::new(TokenKind::Operator("<>".to_string()), start, self.pos);
+                return Token::new(TokenKind::Operator(":=".to_string()), start, self.pos);
             }
         }
         if self.pos + 2 <= self.input.len() {
