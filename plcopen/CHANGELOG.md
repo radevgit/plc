@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0 (2025-12-11)
+- moved to iec61131 for ST parsing
+
 ## 0.2.0 (2025-12-09)
 
 - Added security module with DoS attack protection
@@ -13,6 +16,5 @@
 
 - Initial release
 - PLCopen TC6 XML parser
-- Support for all IEC 61131-3 languages (ST, IL, LD, FBD, SFC)
 - Type-safe parsing using quick-xml and serde
 - Generated types from official PLCopen TC6 XML schema (v2.01)

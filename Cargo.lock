@@ -232,7 +232,7 @@ dependencies = [
 
 [[package]]
 name = "plcopen"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "iec61131",
  "quick-xml",
