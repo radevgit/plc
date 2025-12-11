@@ -2,7 +2,6 @@
 // This runs at compile time and generates lexer.rs, ast.rs, and parser.rs
 
 use std::env;
-use std::fs;
 use std::path::PathBuf;
 
 fn main() {
@@ -21,18 +20,6 @@ fn main() {
         "cargo:rerun-if-changed={}",
         generator_path.join("schema/iec61131-3_2013_official.ebnf").display()
     );
-
-    // Read the EBNF grammar
-    let ebnf_path = generator_path.join("schema/iec61131-3_2013_official.ebnf");
-    let ebnf_content = fs::read_to_string(&ebnf_path).expect("Failed to read EBNF file");
-
-    // Generate the parser code using plcp/iec61131
-    // We need to inline the generator code since we can't depend on it directly
-    // For now, just copy the generated code manually
-    println!("cargo:warning=Build script running - parser generation not yet implemented");
-    println!(
-        "cargo:warning=Generator path: {}",
-        generator_path.display()
-    );
-    println!("cargo:warning=EBNF path: {}", ebnf_path.display());
+    
+    // Note: Parser code is pre-generated.
 }
