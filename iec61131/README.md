@@ -1,6 +1,6 @@
 # iec61131
 
-Complete IEC 61131-3 parser for PLC programming languages.
+IEC 61131-3 Structured Text (ST) parser for PLC programming.
 
 [![Crates.io](https://img.shields.io/crates/v/iec61131.svg)](https://crates.io/crates/iec61131)
 [![Documentation](https://docs.rs/iec61131/badge.svg)](https://docs.rs/iec61131)
@@ -8,9 +8,11 @@ Complete IEC 61131-3 parser for PLC programming languages.
 
 ## Overview
 
-`iec61131` is a comprehensive parser for IEC 61131-3, the international standard for PLC (Programmable Logic Controller) programming languages. It supports all 5 standardized languages:
+`iec61131` is a parser for IEC 61131-3 Structured Text (ST), the international standard for PLC (Programmable Logic Controller) programming. Currently supports:
 
-- **ST** (Structured Text) - High-level programming language
+- **ST** (Structured Text) - High-level programming language ✅
+
+**Planned support** for additional IEC 61131-3 languages:
 - **IL** (Instruction List) - Low-level assembly-like language
 - **LD** (Ladder Diagram) - Graphical ladder logic representation
 - **FBD** (Function Block Diagram) - Graphical function block representation
@@ -18,9 +20,8 @@ Complete IEC 61131-3 parser for PLC programming languages.
 
 ## Features
 
-- ✅ **Complete IEC 61131-3:2013 support** - Based on official specification
-- ✅ **All 5 languages** - ST, IL, LD, FBD, SFC
-- ✅ **Full syntax support** - Functions, function blocks, programs, classes, interfaces
+- ✅ **Structured Text (ST) support** - Based on IEC 61131-3:2013 specification
+- ✅ **Full ST syntax support** - Functions, function blocks, programs, classes, interfaces
 - ✅ **Modern PLC features** - OOP (classes, interfaces), namespaces, references
 - ✅ **Detailed error reporting** - Source locations and helpful messages
 - ✅ **Security limits** - DoS protection with configurable resource limits
@@ -32,7 +33,7 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-iec61131 = "0.6"
+iec61131 = "0.7"
 ```
 
 ## Quick Start
@@ -235,11 +236,11 @@ This crate (`iec61131`) supersedes the older `iecst` crate with several improvem
 
 | Feature | iecst | iec61131 |
 |---------|-------|----------|
-| Languages | ST only | All 5 (ST, IL, LD, FBD, SFC) |
-| IEC Version | Partial | Complete IEC 61131-3:2013 |
+| Languages | ST only | ST only (currently) |
+| IEC Version | Partial | IEC 61131-3:2013 ST |
 | OOP Support | Limited | Full (classes, interfaces) |
 | Namespaces | No | Yes |
-| Specification | Manual implementation | Generated from official EBNF |
+| Specification | Manual implementation | Based on official specification |
 | AST | Basic | Comprehensive |
 
 For new projects, use `iec61131`. The `iecst` crate remains available for backward compatibility.
