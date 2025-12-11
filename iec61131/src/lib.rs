@@ -106,7 +106,7 @@ pub mod analysis;
 pub use generated::ast::{
     CompilationUnit, PouDeclaration, FunctionDecl, FunctionBlockDecl, ProgramDecl, ClassDecl,
     InterfaceDecl, MethodDecl, Statement, Expression, VarDecl, TypeSpec,
-    Variable, Argument, StatementList,
+    Variable, Argument, StatementList, BinaryOp, UnaryOp, Literal,
 };
 
 pub use generated::lexer::{Token, Lexer, Span};
