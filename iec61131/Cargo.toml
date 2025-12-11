@@ -2,7 +2,7 @@
 name = "iec61131"
 version = "0.7.0"
 edition = "2021"
-description = "Complete IEC 61131-3 parser for all 5 PLC programming languages with static analysis"
+description = "IEC 61131-3 Structured Text (ST) parser with static analysis"
 license = "MIT"
 repository = "https://github.com/radevgit/plc"
 homepage = "https://github.com/radevgit/plc"
