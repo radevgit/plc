@@ -234,7 +234,7 @@ dependencies = [
 name = "plcopen"
 version = "0.2.0"
 dependencies = [
- "iecst 0.5.1",
+ "iec61131",
  "quick-xml",
  "serde",
  "thiserror 1.0.69",
@@ -253,8 +253,10 @@ name = "plcviz"
 version = "0.3.0"
 dependencies = [
  "clap",
+ "iec61131",
  "l5x 0.5.0",
  "layout-rs",
+ "plcopen",
  "regex",
 ]
 

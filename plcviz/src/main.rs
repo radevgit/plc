@@ -1,19 +1,19 @@
-//! plcviz CLI - Generate SVG diagrams from L5X files
+//! plcviz CLI - Generate SVG diagrams from L5X and PLCopen files
 
 use std::path::PathBuf;
 use std::fs;
 
 use clap::{Parser, Subcommand, ValueEnum};
-use plcviz::{L5xGraph, L5xNodeType, GraphType};
+use plcviz::{L5xGraph, L5xNodeType, GraphType, PlcopenGraphBuilder, PlcopenGraphType};
 
 #[derive(Parser)]
 #[command(name = "plcviz")]
-#[command(version, about = "Generate SVG diagrams from L5X files", long_about = None)]
+#[command(version, about = "Generate SVG diagrams from L5X and PLCopen XML files", long_about = None)]
 struct Cli {
     #[command(subcommand)]
     command: Option<Commands>,
 
-    /// L5X file to visualize
+    /// L5X or PLCopen XML file to visualize
     #[arg(value_name = "FILE")]
     file: Option<PathBuf>,
 
@@ -21,7 +21,7 @@ struct Cli {
     #[arg(short = 't', long = "type", value_name = "TYPE", default_value = "structure")]
     graph_type: GraphTypeArg,
 
-    /// Include AOIs in the graph
+    /// Include AOIs in the graph (L5X only)
     #[arg(short = 'a', long = "aois")]
     show_aois: bool,
 }
@@ -158,7 +158,7 @@ fn generate_from_l5x(path: &str, graph_type: GraphType, show_aois: bool) {
     
     eprintln!("Generating {} from: {}", graph_type.description(), path.display());
     
-    // Read and parse L5X
+    // Read file
     let content = match fs::read_to_string(&path) {
         Ok(c) => c,
         Err(e) => {
@@ -167,7 +167,23 @@ fn generate_from_l5x(path: &str, graph_type: GraphType, show_aois: bool) {
         }
     };
     
-    let project: l5x::Project = match l5x::from_str(&content) {
+    // Detect format and dispatch
+    if is_plcopen_format(&content) {
+        generate_from_plcopen(&content, graph_type);
+    } else {
+        generate_from_l5x_content(&content, graph_type, show_aois);
+    }
+}
+
+/// Detect if the XML is PLCopen format
+fn is_plcopen_format(content: &str) -> bool {
+    // PLCopen files have <project> root element with xmlns PLCopen namespace
+    content.contains("<project") && content.contains("http://www.plcopen.org/xml/tc6")
+}
+
+/// Generate from L5X content
+fn generate_from_l5x_content(content: &str, graph_type: GraphType, show_aois: bool) {
+    let project: l5x::Project = match l5x::from_str(content) {
         Ok(p) => p,
         Err(e) => {
             eprintln!("Error parsing L5X: {}", e);
@@ -177,13 +193,43 @@ fn generate_from_l5x(path: &str, graph_type: GraphType, show_aois: bool) {
     
     // Dispatch based on export type
     let target_type = project.target_type.as_deref().unwrap_or("Controller");
-    eprintln!("Export type: {}", target_type);
+    eprintln!("L5X export type: {}", target_type);
     
     let svg = match target_type {
         "Program" => generate_program_export(&project, graph_type, show_aois),
         "AddOnInstructionDefinition" => generate_aoi_export(&project, graph_type),
         _ => generate_controller_export(&project, graph_type, show_aois),
     };
+    
+    println!("{}", svg);
+}
+
+/// Generate from PLCopen content
+fn generate_from_plcopen(content: &str, graph_type: GraphType) {
+    let project: plcopen::Project = match plcopen::from_str(content) {
+        Ok(p) => p,
+        Err(e) => {
+            eprintln!("Error parsing PLCopen XML: {}", e);
+            std::process::exit(1);
+        }
+    };
+    
+    let project_name = project.content_header
+        .as_ref()
+        .map(|h| h.name.as_str())
+        .unwrap_or("unknown");
+    eprintln!("PLCopen project: {}", project_name);
+    
+    let plcopen_graph_type = match graph_type {
+        GraphType::Structure | GraphType::Combined => PlcopenGraphType::Structure,
+        GraphType::CallGraph => PlcopenGraphType::CallGraph,
+        GraphType::DataFlow => PlcopenGraphType::DataTypeDeps,
+    };
+    
+    // Pass raw XML for ST code extraction
+    let builder = PlcopenGraphBuilder::with_xml(project, plcopen_graph_type, content.to_string());
+    let graph = builder.build();
+    let svg = graph.render_svg();
     
     println!("{}", svg);
 }

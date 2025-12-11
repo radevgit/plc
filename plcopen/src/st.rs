@@ -1,7 +1,7 @@
 //! ST (Structured Text) extraction and parsing utilities.
 //!
 //! This module provides utilities for extracting ST code from PLCopen XML
-//! and parsing it using the `iecst` crate.
+//! and parsing it using the `iec61131` crate.
 //!
 //! PLCopen TC6 stores ST code in `<ST><xhtml:p><![CDATA[...]]></xhtml:p></ST>` elements,
 //! while IEC 61131-10 uses `<ST><![CDATA[...]]></ST>` directly.
@@ -105,35 +105,37 @@ pub fn extract_all_st_from_xml(xml: &str) -> Vec<(String, String)> {
     results
 }
 
-/// Parse ST code string using iecst parser.
+/// Parse ST code string using iec61131 parser.
 ///
-/// Returns parsed statements or an error.
+/// Returns parsed compilation unit or an error.
 ///
 /// # Example
 ///
 /// ```
 /// use plcopen::st::parse_st;
 ///
-/// let code = "x := 1 + 2;";
+/// let code = "FUNCTION Test : INT\n  x := 1 + 2;\n  Test := x;\nEND_FUNCTION";
 /// let result = parse_st(code);
 /// assert!(result.is_ok());
 /// ```
-pub fn parse_st(code: &str) -> Result<Vec<iecst::Stmt>, iecst::ParseError> {
-    iecst::parse_statements(code)
+pub fn parse_st(code: &str) -> Result<iec61131::CompilationUnit, iec61131::ParseError> {
+    let mut parser = iec61131::Parser::new(code);
+    parser.parse()
 }
 
 /// Parse ST code and run analysis diagnostics.
 ///
-/// Returns parsed statements with any diagnostics (warnings/errors).
+/// Returns parsed compilation unit with any diagnostics (warnings/errors).
 pub fn analyze_st(code: &str) -> StAnalysisResult {
-    match iecst::parse_statements(code) {
-        Ok(statements) => StAnalysisResult {
-            statements: Some(statements),
+    let mut parser = iec61131::Parser::new(code);
+    match parser.parse() {
+        Ok(cu) => StAnalysisResult {
+            compilation_unit: Some(cu),
             parse_error: None,
-            diagnostics: Vec::new(), // TODO: Add analysis when iecst supports statement-level analysis
+            diagnostics: Vec::new(), // TODO: Add analysis using iec61131::analysis
         },
         Err(e) => StAnalysisResult {
-            statements: None,
+            compilation_unit: None,
             parse_error: Some(e),
             diagnostics: Vec::new(),
         },
@@ -143,24 +145,23 @@ pub fn analyze_st(code: &str) -> StAnalysisResult {
 /// Result of ST analysis including parsed AST and diagnostics.
 #[derive(Debug)]
 pub struct StAnalysisResult {
-    /// Parsed statements (if parsing succeeded)
-    pub statements: Option<Vec<iecst::Stmt>>,
+    /// Parsed compilation unit (if parsing succeeded)
+    pub compilation_unit: Option<iec61131::CompilationUnit>,
     /// Parse error (if parsing failed)
-    pub parse_error: Option<iecst::ParseError>,
-    /// Analysis diagnostics (warnings, hints, etc.)
-    pub diagnostics: Vec<iecst::Diagnostic>,
+    pub parse_error: Option<iec61131::ParseError>,
+    /// Analysis diagnostics (warnings, hints, etc.) - placeholder for future analysis
+    pub diagnostics: Vec<String>,
 }
 
 impl StAnalysisResult {
     /// Check if parsing was successful.
     pub fn is_ok(&self) -> bool {
-        self.statements.is_some()
+        self.compilation_unit.is_some()
     }
     
     /// Check if there are any errors (parse or diagnostic).
     pub fn has_errors(&self) -> bool {
-        self.parse_error.is_some() 
-            || self.diagnostics.iter().any(|d| d.severity == iecst::Severity::Error)
+        self.parse_error.is_some()
     }
 }
 
@@ -243,21 +244,21 @@ END_IF;]]></xhtml:p></ST></body>"#;
 
     #[test]
     fn test_parse_st_simple() {
-        let code = "x := 1 + 2;";
+        let code = "FUNCTION Test : INT\n  x := 1 + 2;\n  Test := x;\nEND_FUNCTION";
         let result = parse_st(code);
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_parse_st_if() {
-        let code = "IF x > 0 THEN y := 1; END_IF;";
+        let code = "FUNCTION Test : INT\n  IF x > 0 THEN y := 1; END_IF;\n  Test := y;\nEND_FUNCTION";
         let result = parse_st(code);
         assert!(result.is_ok());
     }
 
     #[test]
     fn test_analyze_st() {
-        let code = "x := 1;";
+        let code = "FUNCTION Test : INT\n  x := 1;\n  Test := x;\nEND_FUNCTION";
         let result = analyze_st(code);
         assert!(result.is_ok());
         assert!(!result.has_errors());

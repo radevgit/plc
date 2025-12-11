@@ -15,6 +15,8 @@ rust-version = "1.70"
 
 [dependencies]
 l5x = "0.5"
+plcopen = { path = "../plcopen" }
+iec61131 = { path = "../iec61131" }
 layout-rs = "0.1"
 regex = "1"
 clap = { version = "4.5", features = ["derive"] }
