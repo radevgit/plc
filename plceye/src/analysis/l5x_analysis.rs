@@ -10,8 +10,8 @@ use l5x::{
     Controller,
     UDIDefinition, UDIDefinitionContent,
 };
-use iecst::Pou;
 
+use super::iec61131_adapter::Pou;
 use super::rll_parsing::parse_routine;
 use super::st_parsing::{
     parse_st_routines_from_program, parse_st_routines_from_aoi,
@@ -124,7 +124,7 @@ pub struct ParsedSTRoutine {
     pub location: STLocation,
     pub source: String,
     pub pou: Option<Pou>,
-    pub parse_error: Option<iecst::ParseError>,
+    pub parse_error: Option<super::iec61131_adapter::ParseError>,
 }
 
 impl ParsedSTRoutine {
@@ -452,9 +452,9 @@ pub fn analyze_controller(controller: &Controller) -> ProjectAnalysis {
     
     for st_routine in &st_routines {
         if let Some(ref pou) = st_routine.pou {
-            let cfg = iecst::CfgBuilder::new().build(&pou.body);
+            let cfg = iec61131::analysis::CfgBuilder::new().build(&pou.body);
             let complexity = cfg.cyclomatic_complexity();
-            let nesting = iecst::max_nesting_depth(&pou.body);
+            let nesting = iec61131::analysis::max_nesting_depth(&pou.body);
             
             complexities.push(complexity);
             nestings.push(nesting);
@@ -525,12 +525,12 @@ mod tests {
             END_IF;
         "#;
         let wrapped = format!("PROGRAM Test\nVAR\nEND_VAR\n{}\nEND_PROGRAM", code);
-        let pou = iecst::parse_pou(&wrapped).unwrap();
+        let pou = crate::analysis::parse_pou(&wrapped).unwrap();
         
         // Calculate complexity
-        let cfg = iecst::CfgBuilder::new().build(&pou.body);
+        let cfg = iec61131::analysis::CfgBuilder::new().build(&pou.body);
         let complexity = cfg.cyclomatic_complexity();
-        let nesting = iecst::max_nesting_depth(&pou.body);
+        let nesting = iec61131::analysis::max_nesting_depth(&pou.body);
         
         // Verify expected values
         assert!(complexity >= 3, "Expected complexity >= 3, got {}", complexity);

@@ -1,6 +1,6 @@
 [package]
 name = "plceye"
-version = "0.6.0"
+version = "0.7.0"
 edition = "2021"
 description = "PLC code smell detector and static analyzer for L5X and PLCopen files"
 license = "MIT"
@@ -18,8 +18,8 @@ rust-version = "1.70"
 l5x = { version = "0.5", path = "../l5x" }
 plcopen = { version = "0.2", path = "../plcopen" }
 
-# ST parsing
-iecst = { version = "0.5", path = "../iecst" }
+# ST parsing and analysis
+iec61131 = { version = "0.7", path = "../iec61131" }
 
 # Serialization
 quick-xml = { version = "0.37", features = ["serialize"] }

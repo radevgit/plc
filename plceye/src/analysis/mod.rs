@@ -6,10 +6,13 @@
 //! - `l5x_analysis` - L5X-specific detailed analysis
 //! - `plcopen_analysis` - PLCopen-specific analysis
 
+mod iec61131_adapter;
 mod l5x_analysis;
 mod plcopen_analysis;
 mod rll_parsing;
 mod st_parsing;
+
+pub use iec61131_adapter::{Pou, ParseError, parse_pou};
 
 pub use l5x_analysis::{
     ProjectAnalysis, ParseStats, RoutineSummary,

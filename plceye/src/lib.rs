@@ -49,6 +49,6 @@ pub use analysis::{ProjectAnalysis, ParseStats, analyze_controller};
 pub use analysis::{PlcopenAnalysis, PlcopenStats, analyze_plcopen_project};
 
 // Re-export parser crates for extensions
-pub use iecst;
 pub use l5x;
 pub use plcopen;
+pub use iec61131;

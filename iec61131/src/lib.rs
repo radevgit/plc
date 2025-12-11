@@ -63,11 +63,35 @@
 //! # Ok::<(), iec61131::ParseError>(())
 //! ```
 //! 
+//! 
 //! ## Analysis Features
 //!
-//! For static analysis features (CFG, cyclomatic complexity, nesting depth, type checking),
-//! use the [`iecst`](https://crates.io/crates/iecst) crate which provides these capabilities
-//! for Structured Text code.
+//! This crate now includes static analysis features previously available in iecst:
+//!
+//! ```rust
+//! use iec61131::{Parser, analysis::{CfgBuilder, max_nesting_depth}};
+//!
+//! let code = r#"
+//! FUNCTION Example : INT
+//!     IF x > 0 THEN
+//!         y := 1;
+//!     ELSE
+//!         y := 2;
+//!     END_IF;
+//!     Example := y;
+//! END_FUNCTION
+//! "#;
+//! 
+//! let mut parser = Parser::new(code);
+//! let cu = parser.parse().unwrap();
+//! 
+//! // Extract function body and analyze
+//! if let Some(iec61131::PouDeclaration::Function(func)) = cu.declarations.first() {
+//!     let cfg = CfgBuilder::new().build(&func.body);
+//!     println!("Cyclomatic complexity: {}", cfg.cyclomatic_complexity());
+//!     println!("Nesting depth: {}", max_nesting_depth(&func.body));
+//! }
+//! ```
 
 // Generated parser components
 mod generated;
@@ -75,10 +99,14 @@ mod generated;
 // Security features
 pub mod security;
 
+// Analysis features
+pub mod analysis;
+
 // Re-export the main types
 pub use generated::ast::{
     CompilationUnit, PouDeclaration, FunctionDecl, FunctionBlockDecl, ProgramDecl, ClassDecl,
     InterfaceDecl, MethodDecl, Statement, Expression, VarDecl, TypeSpec,
+    Variable, Argument, StatementList,
 };
 
 pub use generated::lexer::{Token, Lexer, Span};

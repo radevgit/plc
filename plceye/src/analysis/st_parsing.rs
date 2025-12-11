@@ -7,8 +7,8 @@ use l5x::{
     STContent, STContentContent, STLine,
     UDIDefinition, UDIDefinitionContent,
 };
-use iecst::{Pou, Expr, Stmt, ExprKind, StmtKind};
 
+use super::iec61131_adapter::{Pou, parse_pou};
 use super::{STLocation, ParsedSTRoutine};
 
 /// Extract the ST source code from an STLine element.
@@ -78,7 +78,7 @@ pub fn parse_st_routine(routine: &Routine, program: &str) -> Option<ParsedSTRout
         routine.name, source
     );
 
-    match iecst::parse_pou(&wrapped_source) {
+    match parse_pou(&wrapped_source) {
         Ok(pou) => {
             Some(ParsedSTRoutine {
                 location,
@@ -133,51 +133,65 @@ pub fn parse_st_routines_from_aoi(aoi: &UDIDefinition) -> Vec<ParsedSTRoutine> {
 
 /// Extract all function/FB call names from an ST POU.
 pub fn extract_st_call_names(pou: &Pou) -> Vec<String> {
+    use iec61131::{Statement, Expression, Variable};
+    
     let mut calls = Vec::new();
     
-    fn visit_expr(expr: &Expr, calls: &mut Vec<String>) {
-        match &expr.kind {
-            ExprKind::FunctionCall { name, args } => {
-                calls.push(name.clone());
-                for arg in args {
-                    if let Some(ref value) = arg.value {
-                        visit_expr(value, calls);
-                    }
-                }
-            }
-            ExprKind::BinaryOp { left, right, .. } => {
-                visit_expr(left, calls);
-                visit_expr(right, calls);
-            }
-            ExprKind::UnaryOp { expr, .. } => {
-                visit_expr(expr, calls);
-            }
-            ExprKind::ArrayIndex { array, indices } => {
-                visit_expr(array, calls);
+    fn visit_var(var: &Variable, calls: &mut Vec<String>) {
+        match var {
+            Variable::MemberAccess { base, .. } => visit_var(base, calls),
+            Variable::ArrayAccess { base, indices } => {
+                visit_var(base, calls);
                 for idx in indices {
                     visit_expr(idx, calls);
                 }
             }
-            ExprKind::MemberAccess { expr, .. } => {
-                visit_expr(expr, calls);
+            Variable::Dereference { base } => visit_var(base, calls),
+            _ => {}
+        }
+    }
+    
+    fn visit_expr(expr: &Expression, calls: &mut Vec<String>) {
+        use iec61131::Argument;
+        match expr {
+            Expression::Call { function, arguments } => {
+                calls.push(function.clone());
+                for arg in arguments {
+                    match arg {
+                        Argument::Positional(e) => visit_expr(e, calls),
+                        Argument::Named { value, .. } => visit_expr(value, calls),
+                        Argument::Output { variable, .. } => visit_var(variable, calls),
+                    }
+                }
             }
-            ExprKind::Paren(inner) => {
+            Expression::Binary { left, right, .. } => {
+                visit_expr(left, calls);
+                visit_expr(right, calls);
+            }
+            Expression::Unary { operand, .. } => {
+                visit_expr(operand, calls);
+            }
+            Expression::Variable(var) => {
+                visit_var(var, calls);
+            }
+            Expression::Parenthesized(inner) => {
                 visit_expr(inner, calls);
             }
             _ => {}
         }
     }
     
-    fn visit_stmt(stmt: &Stmt, calls: &mut Vec<String>) {
-        match &stmt.kind {
-            StmtKind::Assignment { target, value } => {
-                visit_expr(target, calls);
+    fn visit_stmt(stmt: &Statement, calls: &mut Vec<String>) {
+        use iec61131::Argument;
+        match stmt {
+            Statement::Assignment { target, value, .. } => {
+                visit_var(target, calls);
                 visit_expr(value, calls);
             }
-            StmtKind::If { condition, then_body, elsif_branches, else_body } => {
+            Statement::If { condition, then_body, elsif_parts, else_body, .. } => {
                 visit_expr(condition, calls);
                 for s in then_body { visit_stmt(s, calls); }
-                for (cond, body) in elsif_branches {
+                for (cond, body) in elsif_parts {
                     visit_expr(cond, calls);
                     for s in body { visit_stmt(s, calls); }
                 }
@@ -185,8 +199,8 @@ pub fn extract_st_call_names(pou: &Pou) -> Vec<String> {
                     for s in else_stmts { visit_stmt(s, calls); }
                 }
             }
-            StmtKind::Case { expr, cases, else_body } => {
-                visit_expr(expr, calls);
+            Statement::Case { selector, cases, else_body, .. } => {
+                visit_expr(selector, calls);
                 for case in cases {
                     for s in &case.body { visit_stmt(s, calls); }
                 }
@@ -194,29 +208,40 @@ pub fn extract_st_call_names(pou: &Pou) -> Vec<String> {
                     for s in else_stmts { visit_stmt(s, calls); }
                 }
             }
-            StmtKind::For { from, to, by, body, .. } => {
-                visit_expr(from, calls);
-                visit_expr(to, calls);
-                if let Some(by_expr) = by { visit_expr(by_expr, calls); }
+            Statement::For { start, end, step, body, .. } => {
+                visit_expr(start, calls);
+                visit_expr(end, calls);
+                if let Some(step_expr) = step { visit_expr(step_expr, calls); }
                 for s in body { visit_stmt(s, calls); }
             }
-            StmtKind::While { condition, body } => {
+            Statement::While { condition, body, .. } => {
                 visit_expr(condition, calls);
                 for s in body { visit_stmt(s, calls); }
             }
-            StmtKind::Repeat { body, until } => {
+            Statement::Repeat { body, condition, .. } => {
                 for s in body { visit_stmt(s, calls); }
-                visit_expr(until, calls);
+                visit_expr(condition, calls);
             }
-            StmtKind::Return { value: Some(v) } => {
+            Statement::Return { value: Some(v), .. } => {
                 visit_expr(v, calls);
             }
-            StmtKind::Return { value: None } => {}
-            StmtKind::Call { name, args } => {
+            Statement::FunctionCall { name, arguments, .. } => {
                 calls.push(name.clone());
-                for arg in args {
-                    if let Some(ref value) = arg.value {
-                        visit_expr(value, calls);
+                for arg in arguments {
+                    match arg {
+                        Argument::Positional(e) => visit_expr(e, calls),
+                        Argument::Named { value, .. } => visit_expr(value, calls),
+                        Argument::Output { variable, .. } => visit_var(variable, calls),
+                    }
+                }
+            }
+            Statement::FbInvocation { instance, arguments, .. } => {
+                calls.push(instance.clone());
+                for arg in arguments {
+                    match arg {
+                        Argument::Positional(e) => visit_expr(e, calls),
+                        Argument::Named { value, .. } => visit_expr(value, calls),
+                        Argument::Output { variable, .. } => visit_var(variable, calls),
                     }
                 }
             }

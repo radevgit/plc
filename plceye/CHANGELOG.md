@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.7.0 (2025-12-11)
+
+### Changed
+- **BREAKING**: Migrated from `iecst` to `iec61131` v0.7.0 for ST parsing and analysis
+  - Now using standards-compliant IEC 61131-3:2013 parser for Structured Text (ST)
+  - All analysis features (CFG, complexity, nesting) ported to new parser
+  - Better parse error reporting with source locations
+  - Improved ST language support with spec-compliant parsing
+
+### Internal
+- Created `iec61131_adapter` module for seamless migration
+- Updated all analysis and rule modules to use new AST structure
+- Maintained backward compatibility for all rules and detectors
+
 ## 0.6.0 (2025-12-06)
 
 ### Added

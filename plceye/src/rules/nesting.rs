@@ -2,7 +2,7 @@
 //!
 //! Detects ST routines with excessively deep control structure nesting (M0003).
 
-use iecst::max_nesting_depth;
+use iec61131::analysis::max_nesting_depth;
 
 use crate::analysis::ProjectAnalysis;
 use crate::config::NestingConfig;
@@ -128,7 +128,7 @@ mod tests {
     fn create_test_analysis(st_source: &str) -> ProjectAnalysis {
         // Wrap source in a PROGRAM to parse as POU
         let wrapped = format!("PROGRAM Test\nVAR\nEND_VAR\n{}\nEND_PROGRAM", st_source);
-        let pou = iecst::parse_pou(&wrapped).ok();
+        let pou = crate::analysis::parse_pou(&wrapped).ok();
         let st_routine = ParsedSTRoutine {
             location: STLocation::new("MainProgram", "TestRoutine"),
             source: st_source.to_string(),

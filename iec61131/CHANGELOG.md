@@ -1,7 +1,24 @@
 # Changelog
 
+## 0.7.0 (2025-12-11)
+
+### Added
+- **Static analysis module** - Complete analysis capabilities for PLC code
+  - `analysis::cfg` - Control Flow Graph (CFG) construction and analysis
+    - `CfgBuilder` - build CFG from AST statements
+    - `Cfg` - graph structure with cyclomatic complexity calculation
+    - `cyclomatic_complexity()` - calculate code complexity
+    - `cyclomatic_complexity_decisions()` - alternative calculation using decision points
+    - `to_dot()` - export to Graphviz format for visualization
+  - `analysis::nesting` - Nesting depth analysis
+    - `max_nesting_depth()` - calculate maximum control structure nesting
+  - `count_expression_decisions()` - count AND/OR decisions in expressions
+
+### Changed
+- Updated exports to include `Variable`, `Argument`, and `StatementList`
+- Enhanced documentation with analysis examples
+
 ## 0.6.1 (2025-12-11)
-- parser analysis added
 - parser security added
 
 ## 0.6.0 (2025-12-11)
