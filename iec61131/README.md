@@ -229,7 +229,3 @@ cargo doc --open
 ## License
 
 MIT
-
-## Contributing
-
-Contributions welcome! Please open issues or pull requests on [GitHub](https://github.com/radevgit/plc).

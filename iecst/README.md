@@ -1,6 +1,10 @@
 # iecst
 
+> **⚠️ DEPRECATED**: This crate is deprecated in favor of [`iec61131`](https://crates.io/crates/iec61131), which provides complete IEC 61131-3 support for all 5 programming languages (ST, IL, LD, FBD, SFC) based on the official specification. New projects should use `iec61131` instead.
+
 IEC 61131-3 Structured Text parser for Rust.
+
+
 
 [![Crates.io](https://img.shields.io/crates/v/iecst.svg)](https://crates.io/crates/iecst)
 [![Documentation](https://docs.rs/iecst/badge.svg)](https://docs.rs/iecst)

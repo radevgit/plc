@@ -132,19 +132,19 @@ version = "0.6.0"
 [[package]]
 name = "iecst"
 version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "051aca2da2fef8d196f346179ddb6dae76f486d5762171f9dd181a06d783165d"
 dependencies = [
  "thiserror 1.0.69",
- "walkdir",
  "winnow",
 ]
 
 [[package]]
 name = "iecst"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "051aca2da2fef8d196f346179ddb6dae76f486d5762171f9dd181a06d783165d"
+version = "0.5.1"
 dependencies = [
  "thiserror 1.0.69",
+ "walkdir",
  "winnow",
 ]
 
@@ -174,7 +174,7 @@ checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
 name = "l5x"
 version = "0.5.0"
 dependencies = [
- "iecst 0.5.0",
+ "iecst 0.5.1",
  "quick-xml",
  "serde",
  "thiserror 1.0.69",
@@ -188,7 +188,7 @@ version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7d929e9cb7efd0465d1bd347c2ea1f5ab2708751a31cacec7857942701b2021b"
 dependencies = [
- "iecst 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "iecst 0.5.0",
  "quick-xml",
  "serde",
  "thiserror 1.0.69",
@@ -218,7 +218,7 @@ name = "plceye"
 version = "0.6.0"
 dependencies = [
  "clap",
- "iecst 0.5.0",
+ "iecst 0.5.1",
  "l5x 0.5.0",
  "plcopen",
  "quick-xml",
@@ -232,7 +232,7 @@ dependencies = [
 name = "plcopen"
 version = "0.2.0"
 dependencies = [
- "iecst 0.5.0",
+ "iecst 0.5.1",
  "quick-xml",
  "serde",
  "thiserror 1.0.69",

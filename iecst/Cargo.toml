@@ -1,6 +1,6 @@
 [package]
 name = "iecst"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 description = "IEC 61131-3 Structured Text parser for PLC programming"
 license = "MIT"
