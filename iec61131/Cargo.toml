@@ -13,5 +13,6 @@ categories = ["parsing", "development-tools"]
 rust-version = "1.70"
 
 [dependencies]
+thiserror = "1.0"
 
 [dev-dependencies]

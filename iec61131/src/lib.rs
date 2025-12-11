@@ -40,10 +40,40 @@
 //! - ✅ Classes and interfaces (OOP)
 //! - ✅ Namespaces and using directives
 //! - ✅ Detailed error reporting with source locations
-//! - ✅ Zero dependencies
+//! - ✅ Security limits to prevent DoS attacks
+//! 
+//! ## Security
+//!
+//! For untrusted input, use security limits to prevent denial-of-service attacks:
+//!
+//! ```rust
+//! use iec61131::{Parser, security::ParserLimits};
+//!
+//! let input = "FUNCTION Test : INT\n  VAR x : INT; END_VAR\n  Test := x;\nEND_FUNCTION";
+//! 
+//! // Use strict limits for untrusted input
+//! let limits = ParserLimits::strict();
+//! // Check input size before parsing
+//! if input.len() > limits.max_input_size {
+//!     panic!("Input too large");
+//! }
+//! 
+//! let mut parser = Parser::new(input);
+//! let ast = parser.parse()?;
+//! # Ok::<(), iec61131::ParseError>(())
+//! ```
+//! 
+//! ## Analysis Features
+//!
+//! For static analysis features (CFG, cyclomatic complexity, nesting depth, type checking),
+//! use the [`iecst`](https://crates.io/crates/iecst) crate which provides these capabilities
+//! for Structured Text code.
 
 // Generated parser components
 mod generated;
+
+// Security features
+pub mod security;
 
 // Re-export the main types
 pub use generated::ast::{
@@ -53,6 +83,9 @@ pub use generated::ast::{
 
 pub use generated::lexer::{Token, Lexer, Span};
 pub use generated::parser::{Parser, ParseError};
+
+// Re-export security types
+pub use security::{ParserLimits, ParserState, SecurityError};
 
 #[cfg(test)]
 mod tests {

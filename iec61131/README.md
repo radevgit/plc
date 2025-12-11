@@ -23,7 +23,7 @@ Complete IEC 61131-3 parser for PLC programming languages.
 - ✅ **Full syntax support** - Functions, function blocks, programs, classes, interfaces
 - ✅ **Modern PLC features** - OOP (classes, interfaces), namespaces, references
 - ✅ **Detailed error reporting** - Source locations and helpful messages
-- ✅ **Zero dependencies** - Pure Rust, no external dependencies
+- ✅ **Security limits** - DoS protection with configurable resource limits
 - ✅ **Production ready** - Comprehensive testing and validation
 
 ## Installation
@@ -146,6 +146,36 @@ END_FUNCTION_BLOCK
 let mut parser = Parser::new(code);
 let ast = parser.parse()?;
 ```
+
+## Security
+
+For untrusted input, use security limits to prevent denial-of-service attacks:
+
+```rust
+use iec61131::{Parser, ParserLimits};
+
+let input = load_untrusted_file()?;
+
+// Use strict limits for untrusted input
+let limits = ParserLimits::strict();
+if input.len() > limits.max_input_size {
+    return Err("Input too large");
+}
+
+let mut parser = Parser::new(&input);
+let ast = parser.parse()?;
+```
+
+Available security profiles:
+
+- `ParserLimits::strict()` - For untrusted/external input (10MB max, 64 depth)
+- `ParserLimits::balanced()` - For general use (100MB max, 256 depth) [default]
+- `ParserLimits::relaxed()` - For trusted/internal files (500MB max, 512 depth)
+
+The limits protect against:
+- Stack overflow from deeply nested code
+- Memory exhaustion from huge arrays/collections
+- CPU exhaustion from pathological inputs
 
 ### Parse a Program with Multiple POUs
 
