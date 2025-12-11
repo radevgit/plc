@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0 (2025-12-11)
+- support for plcopen files
+
 ## 0.2.1 (2025-12-05)
 - Changes in docs
 
