@@ -1,0 +1,19 @@
+[package]
+name = "iec61131"
+version = "0.6.0"
+edition = "2021"
+description = "Complete IEC 61131-3 parser for all 5 PLC programming languages"
+license = "MIT"
+repository = "https://github.com/radevgit/plc"
+homepage = "https://github.com/radevgit/plc"
+documentation = "https://docs.rs/iec61131"
+readme = "README.md"
+keywords = ["plc", "iec61131", "parser", "structured-text", "automation"]
+categories = ["parsing", "development-tools"]
+rust-version = "1.70"
+
+[dependencies]
+
+[dev-dependencies]
+
+[build-dependencies]

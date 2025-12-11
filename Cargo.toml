@@ -6,8 +6,7 @@ members = [
     "iecst",
     "plceye",
     "plcviz",
-    "plcscl",
-]
+    "plcscl", "iec61131",    "iec61131",]
 
 [profile.dev]
 # Faster debug builds
