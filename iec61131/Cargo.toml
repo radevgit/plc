@@ -1,6 +1,6 @@
 [package]
 name = "iec61131"
-version = "0.6.0"
+version = "0.6.1"
 edition = "2021"
 description = "Complete IEC 61131-3 parser for all 5 PLC programming languages"
 license = "MIT"
@@ -15,5 +15,3 @@ rust-version = "1.70"
 [dependencies]
 
 [dev-dependencies]
-
-[build-dependencies]
