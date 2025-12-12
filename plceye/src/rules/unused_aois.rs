@@ -104,7 +104,7 @@ fn glob_match_recursive(pattern: &[char], text: &[char], pi: usize, ti: usize) -
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::analysis::{ProjectAnalysis, AoiReference, RungLocation, AoiCallSource, ParseStats};
+    use crate::analysis::{ProjectAnalysis, AoiReference, AoiCallSource, ParseStats};
 
     #[test]
     fn test_detects_unused_aoi() {
