@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.1 (2025-12-14)
+
+### Added
+- PLCopen struct member extraction in datatype dependency graphs
+- Recursive type reference extraction from:
+  - Struct members
+  - Array base types
+  - Derived (user-defined) types
+
+### Changed
+- `build_datatype_graph()` now shows struct member dependencies
+- Graph edges display datatype relationships
+
 ## 0.3.0 (2025-12-11)
 - support for plcopen files
 

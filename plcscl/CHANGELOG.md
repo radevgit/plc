@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.1] - 2025-12-14
+
+### Added
+- `std::error::Error` trait implementation for `ParseError` and `ParseErrorKind`
+- Proper error chaining with `source()` method
+
+### Changed
+- Error types now integrate seamlessly with standard error handling patterns
+
 ## [0.2.0] - 2025-12-09
 
 ### Added

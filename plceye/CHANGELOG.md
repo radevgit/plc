@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.7.1 (2025-12-14)
+
+### Added
+- PLCopen graphical language support: FBD, LD, SFC reference extraction
+- PLCopen stats display with `--stats` option
+  - Shows POU counts by type (Functions, Function Blocks, Programs)
+  - Displays language usage across all 5 IEC 61131-3 languages
+  - Variable counts and empty POU detection
+
+### Fixed
+- Comment filtering in ST/IL code extraction (prevents false positives)
+- IL opcode recognition (prevents opcodes being flagged as undefined variables)
+- Improved identifier validation (rejects tokens with punctuation)
+- `--stats` now correctly displays PLCopen project statistics
+
+### Changed
+- Enhanced variable reference extraction across all IEC 61131-3 languages
+- Better unused variable detection for graphical languages
+
 ## 0.7.0 (2025-12-11)
 
 ### Changed

@@ -47,6 +47,8 @@ impl std::fmt::Display for L5xParseErrorKind {
     }
 }
 
+impl std::error::Error for L5xParseErrorKind {}
+
 /// Kinds of configuration errors.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ConfigErrorKind {
@@ -61,3 +63,5 @@ impl std::fmt::Display for ConfigErrorKind {
         }
     }
 }
+
+impl std::error::Error for ConfigErrorKind {}

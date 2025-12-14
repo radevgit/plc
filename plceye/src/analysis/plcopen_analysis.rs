@@ -262,12 +262,22 @@ fn extract_formatted_text(ft: &FormattedText) -> Option<String> {
     ft.text.clone()
 }
 
+/// Extract variable and POU references from ST (Structured Text) code.
+///
+/// This function:
+/// - Removes comments (both `(* ... *)` and `//` style)
+/// - Splits code into identifiers
+/// - Filters out keywords and non-identifiers
+/// - Adds potential variable/POU references to the analysis
 fn extract_references_from_st(code: &str, analysis: &mut PlcopenAnalysis) {
+    // Remove comments: (* ... *) and // ... 
+    let code = remove_plc_comments(code);
+    
     // Simple extraction: find identifiers that could be variables
     for word in code.split(|c: char| !c.is_alphanumeric() && c != '_') {
         let word = word.trim();
         if !word.is_empty() 
-            && word.chars().next().map(|c| c.is_alphabetic()).unwrap_or(false)
+            && is_identifier(word)
             && !is_st_keyword(word)
         {
             // Could be a variable or POU call
@@ -276,19 +286,45 @@ fn extract_references_from_st(code: &str, analysis: &mut PlcopenAnalysis) {
     }
 }
 
+/// Extract variable references from IL (Instruction List) code.
+///
+/// This function:
+/// - Removes comments
+/// - Parses IL format: `OPCODE OPERAND`
+/// - Filters out IL opcodes (LD, ST, ADD, etc.)
+/// - Extracts operands as variable references
 fn extract_references_from_il(code: &str, analysis: &mut PlcopenAnalysis) {
+    // Remove comments: (* ... *) and // ...
+    let code = remove_plc_comments(code);
+    
     // IL format: OPCODE OPERAND
     for line in code.lines() {
         let parts: Vec<&str> = line.split_whitespace().collect();
         if parts.len() >= 2 {
+            // First part is opcode, second is operand (unless opcode takes no args)
+            let opcode = parts[0].to_uppercase();
+            
+            // Skip if first token is not an opcode (e.g., label)
+            if !is_il_opcode(&opcode) {
+                continue;
+            }
+            
             let operand = parts[1];
-            if operand.chars().next().map(|c| c.is_alphabetic()).unwrap_or(false) {
+            if is_identifier(operand) && !is_il_opcode(&operand.to_uppercase()) {
                 analysis.used_variables.insert(operand.to_string());
             }
         }
     }
 }
 
+/// Extract references from FBD (Function Block Diagram) bodies.
+///
+/// Extracts:
+/// - Block type names (function/FB calls)
+/// - Variable references (inVariable, outVariable, inOutVariable)
+/// - Label names for jumps
+///
+/// FBD is a graphical language where logic is expressed as interconnected blocks.
 fn extract_references_from_fbd(fbd: &plcopen::Body_FBD_Inline, analysis: &mut PlcopenAnalysis) {
     // Extract from blocks (function blocks, function calls)
     for block in &fbd.block {
@@ -353,6 +389,15 @@ fn extract_references_from_fbd(fbd: &plcopen::Body_FBD_Inline, analysis: &mut Pl
     }
 }
 
+/// Extract references from LD (Ladder Diagram) bodies.
+///
+/// Extracts:
+/// - Contact variable names (input conditions)
+/// - Coil variable names (output actions)
+/// - Block type names (function/FB calls)
+/// - Other variables used in the ladder logic
+///
+/// LD is a graphical language resembling electrical ladder diagrams.
 fn extract_references_from_ld(ld: &plcopen::Body_LD_Inline, analysis: &mut PlcopenAnalysis) {
     // LD shares many elements with FBD, plus ladder-specific coils and contacts
     
@@ -434,6 +479,15 @@ fn extract_references_from_ld(ld: &plcopen::Body_LD_Inline, analysis: &mut Plcop
     }
 }
 
+/// Extract references from SFC (Sequential Function Chart) bodies.
+///
+/// Extracts:
+/// - Step names (states in the sequence)
+/// - Action block qualifiers and references
+/// - Transition conditions
+/// - Jump step targets
+///
+/// SFC is a graphical language for sequential control processes.
 fn extract_references_from_sfc(sfc: &plcopen::Body_SFC_Inline, analysis: &mut PlcopenAnalysis) {
     // SFC shares FBD/LD elements plus SFC-specific steps, transitions, actions
     
@@ -530,8 +584,56 @@ fn extract_references_from_sfc(sfc: &plcopen::Body_SFC_Inline, analysis: &mut Pl
     }
 }
 
+/// Remove PLC-style comments from code: `(* ... *)` and `// ...`
+///
+/// This prevents comment text from being incorrectly identified as
+/// variable references or POU calls.
+///
+/// # Example
+/// ```ignore
+/// let code = "XIC(Tag1) (* Comment *) OTE(Tag2)";
+/// let cleaned = remove_plc_comments(code);
+/// // Result: "XIC(Tag1)   OTE(Tag2)"
+/// ```
+fn remove_plc_comments(code: &str) -> String {
+    let mut result = String::with_capacity(code.len());
+    let mut chars = code.chars().peekable();
+    
+    while let Some(ch) = chars.next() {
+        if ch == '(' && chars.peek() == Some(&'*') {
+            // Block comment (* ... *)
+            chars.next(); // consume *
+            let mut prev = ' ';
+            while let Some(c) = chars.next() {
+                if prev == '*' && c == ')' {
+                    break;
+                }
+                prev = c;
+            }
+            result.push(' '); // Replace comment with space
+        } else if ch == '/' && chars.peek() == Some(&'/') {
+            // Line comment // ...
+            chars.next(); // consume second /
+            while let Some(c) = chars.next() {
+                if c == '\n' {
+                    result.push(c);
+                    break;
+                }
+            }
+        } else {
+            result.push(ch);
+        }
+    }
+    
+    result
+}
+
 /// Check if a string is a valid identifier (not a literal or complex expression)
 fn is_identifier(s: &str) -> bool {
+    if s.is_empty() {
+        return false;
+    }
+    
     // Skip numeric literals
     if s.chars().next().map(|c| c.is_ascii_digit()).unwrap_or(false) {
         return false;
@@ -547,13 +649,13 @@ fn is_identifier(s: &str) -> bool {
         return false;
     }
     
-    // Must start with letter or underscore and contain only alphanumeric/underscore
+    // Must start with letter or underscore
     let first_char = s.chars().next();
     if !matches!(first_char, Some(c) if c.is_alphabetic() || c == '_') {
         return false;
     }
     
-    // Simple identifier check - no dots, brackets, or operators
+    // Must contain ONLY alphanumeric and underscore - reject anything with punctuation
     s.chars().all(|c| c.is_alphanumeric() || c == '_')
 }
 
@@ -575,6 +677,35 @@ fn is_st_keyword(word: &str) -> bool {
         "RETURN" | "EXIT" | "CONTINUE" |
         "BOOL" | "INT" | "DINT" | "SINT" | "LINT" | "UINT" | "UDINT" | "USINT" | "ULINT" |
         "REAL" | "LREAL" | "STRING" | "WSTRING" | "TIME" | "DATE" | "TOD" | "DT" | "BYTE" | "WORD" | "DWORD" | "LWORD"
+    )
+}
+
+/// Check if a word is an IL (Instruction List) opcode.
+///
+/// IL opcodes include:
+/// - Load/Store: LD, LDN, ST, STN, S, R
+/// - Arithmetic: ADD, SUB, MUL, DIV, MOD
+/// - Bitwise: AND, OR, XOR, NOT
+/// - Comparison: GT, GE, EQ, NE, LE, LT
+/// - Flow: JMP, JMPC, CAL, RET
+///
+/// This prevents opcodes from being flagged as undefined variables.
+fn is_il_opcode(word: &str) -> bool {
+    matches!(word,
+        // Load/Store
+        "LD" | "LDN" | "ST" | "STN" | "S" | "R" |
+        // Stack operations
+        "PUSH" | "POP" |
+        // Arithmetic
+        "ADD" | "SUB" | "MUL" | "DIV" | "MOD" |
+        // Bitwise
+        "AND" | "ANDN" | "OR" | "ORN" | "XOR" | "XORN" | "NOT" |
+        // Comparison
+        "GT" | "GE" | "EQ" | "NE" | "LE" | "LT" |
+        // Jump/Call
+        "JMP" | "JMPC" | "JMPCN" | "CAL" | "CALC" | "CALCN" | "RET" | "RETC" | "RETCN" |
+        // Other
+        "NOP"
     )
 }
 

@@ -160,9 +160,32 @@ fn show_stats(files: &[PathBuf]) -> ExitCode {
     for file in files {
         println!("=== {} ===", file.display());
         
-        match detector.get_stats_file(file) {
-            Ok(stats) => {
-                print_stats(&stats);
+        // Try to load the project to detect format
+        match plceye::LoadedProject::from_file(file) {
+            Ok(project) => {
+                if project.format == plceye::FileFormat::PlcOpen {
+                    // PLCopen format - show PLCopen stats
+                    match detector.get_plcopen_stats(&project) {
+                        Ok(stats) => {
+                            print_plcopen_stats(&stats);
+                        }
+                        Err(e) => {
+                            eprintln!("Error: {}", e);
+                            has_errors = true;
+                        }
+                    }
+                } else {
+                    // L5X format - show L5X stats
+                    match detector.get_stats(&project) {
+                        Ok(stats) => {
+                            print_stats(&stats);
+                        }
+                        Err(e) => {
+                            eprintln!("Error: {}", e);
+                            has_errors = true;
+                        }
+                    }
+                }
             }
             Err(e) => {
                 eprintln!("Error: {}", e);
@@ -208,4 +231,21 @@ fn print_stats(stats: &ParseStats) {
         println!("  Max nesting:      {:>6}", stats.st_max_nesting);
         println!("  Avg nesting:      {:>6.1}", stats.st_avg_nesting);
     }
+}
+
+fn print_plcopen_stats(stats: &plceye::PlcopenStats) {
+    println!("POUs (total):       {:>6}", stats.pous);
+    println!("  Functions:        {:>6}", stats.functions);
+    println!("  Function Blocks:  {:>6}", stats.function_blocks);
+    println!("  Programs:         {:>6}", stats.programs);
+    println!("  Empty POUs:       {:>6}", stats.empty_pous);
+    println!();
+    println!("Language Usage:");
+    println!("  ST (Structured Text):     {:>6}", stats.st_bodies);
+    println!("  IL (Instruction List):    {:>6}", stats.il_bodies);
+    println!("  FBD (Function Block):     {:>6}", stats.fbd_bodies);
+    println!("  LD (Ladder Diagram):      {:>6}", stats.ld_bodies);
+    println!("  SFC (Sequential Chart):   {:>6}", stats.sfc_bodies);
+    println!();
+    println!("Variables:          {:>6}", stats.variables);
 }

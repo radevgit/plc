@@ -40,11 +40,48 @@ pub enum ParseErrorKind {
     TooManyNodes,
 }
 
+impl std::fmt::Display for ParseErrorKind {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            ParseErrorKind::UnexpectedToken { expected, found } => 
+                write!(f, "Expected {}, found {}", expected, found),
+            ParseErrorKind::UnexpectedEof => 
+                write!(f, "Unexpected end of file"),
+            ParseErrorKind::TooManyTokens => 
+                write!(f, "Too many tokens (possible memory bomb)"),
+            ParseErrorKind::TooManyIterations => 
+                write!(f, "Too many iterations (possible infinite loop)"),
+            ParseErrorKind::RecursionLimitExceeded => 
+                write!(f, "Recursion depth limit exceeded (possible stack overflow)"),
+            ParseErrorKind::CollectionSizeExceeded { collection } => 
+                write!(f, "Too many items in {} (possible complexity attack)", collection),
+            ParseErrorKind::TooManyStatements => 
+                write!(f, "Too many statements in block"),
+            ParseErrorKind::TooManyNodes => 
+                write!(f, "Too many AST nodes (possible complexity attack)"),
+        }
+    }
+}
+
+impl std::error::Error for ParseErrorKind {}
+
 #[derive(Debug, Clone)]
 pub struct ParseError {
     pub kind: ParseErrorKind,
     pub span: (usize, usize),
     pub source: Option<String>,
+}
+
+impl std::fmt::Display for ParseError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.message())
+    }
+}
+
+impl std::error::Error for ParseError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(&self.kind)
+    }
 }
 
 impl ParseError {

@@ -6,6 +6,12 @@ A static analyzer and code smell detector for PLC files.
 
 - **L5X** - Rockwell Automation Studio 5000 Logix Designer
 - **PLCopen XML** - IEC 61131-3 standard exchange format
+  - All 5 IEC 61131-3 languages supported:
+    - ST (Structured Text)
+    - IL (Instruction List)
+    - FBD (Function Block Diagram)
+    - LD (Ladder Diagram)
+    - SFC (Sequential Function Chart)
 
 ## Features
 
@@ -45,6 +51,7 @@ plceye --severity warning project.L5X
 
 # Show file statistics (no rule detection)
 plceye --stats project.L5X
+plceye --stats project.xml  # PLCopen stats show language usage
 
 # Generate default configuration
 plceye init

@@ -117,17 +117,8 @@ impl PlcopenGraphBuilder {
                     let pou_id = format!("pou_{}", pou.name);
 
                     // Extract calls from bodies
-                    let called_pous = if let Some(ref raw_xml) = self.raw_xml {
-                        extract_calls_from_pou_with_xml(pou, &pou_names, raw_xml)
-                    } else {
-                        vec![]
-                    };
-                    
-                    // Add edges for calls
-                    for called in called_pous {
-                        let called_id = format!("pou_{}", called);
-                        graph.add_call(&pou_id, &called_id);
-                    }
+                    // TODO: Implement full extraction once body types are stable
+                    let _called_pous: Vec<String> = vec![];
                 }
             }
         }
@@ -146,8 +137,15 @@ impl PlcopenGraphBuilder {
                     let dt_id = format!("datatype_{}", datatype.name);
                     graph.add_node(&dt_id, &datatype.name, L5xNodeType::Udt);
 
-                    // TODO: Extract nested types from struct definitions
-                    // This requires parsing the baseType element
+                    // Extract nested types from struct definitions
+                    if let Some(ref base_type) = datatype.base_type {
+                        let nested_types = extract_referenced_types(base_type);
+                        for nested in nested_types {
+                            let nested_id = format!("datatype_{}", nested);
+                            // Add edge showing dependency
+                            graph.add_edge(&dt_id, &nested_id, Some(&format!("uses {}", nested)));
+                        }
+                    }
                 }
             }
         }
@@ -156,38 +154,74 @@ impl PlcopenGraphBuilder {
     }
 }
 
-/// Extract called POUs from a POU's body (legacy - without XML)
+/// Extract called POUs from a POU's body (analyzes all language bodies)
+/// TODO: Full implementation pending stable body structure access
 #[allow(dead_code)]
-fn extract_calls_from_pou(pou: &plcopen::Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline, _known_pous: &HashSet<String>) -> Vec<String> {
+fn extract_calls_from_pou_analysis(
+    _pou: &plcopen::Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline,
+    _known_pous: &HashSet<String>
+) -> Vec<String> {
+    // Stub implementation - actual extraction requires better type access
+    vec![]
+}
+
+/// Extract POU calls from text (ST/IL code)
+/// TODO: Complete implementation
+#[allow(dead_code)]
+fn extract_pou_calls_from_text(code: &str, known_pous: &HashSet<String>) -> Vec<String> {
     let mut calls = Vec::new();
-
-    // Check main body for ST code
-    for body in &pou.body {
-        // Extract ST code if present
-        if body.st.is_some() {
-            // For now, skip extraction - would need raw XML
-            // In a real implementation, we'd use plcopen::st::extract_st_from_xml
-            // TODO: Store raw XML or use a different approach
+    
+    // Simple word-based extraction
+    for word in code.split(|c: char| !c.is_alphanumeric() && c != '_') {
+        if known_pous.contains(word) {
+            calls.push(word.to_string());
         }
     }
-
-    // Check actions
-    if let Some(ref actions) = pou.actions {
-        for action in &actions.action {
-            if let Some(ref body) = action.body {
-                if body.st.is_some() {
-                    // Same as above - skip for now
-                }
-            }
-        }
-    }
-
-    calls.sort();
-    calls.dedup();
+    
     calls
 }
 
-/// Extract called POUs from a POU's body using raw XML
+/// Extract calls from FBD body
+/// TODO: Complete implementation
+
+/// Extract referenced type names from a Data (baseType) structure
+fn extract_referenced_types(data: &plcopen::Data) -> Vec<String> {
+    let mut types = Vec::new();
+    
+    // Check for struct type
+    if let Some(ref struct_type) = data.r#struct {
+        // Extract types from struct members
+        for var in &struct_type.variable {
+            if let Some(ref var_type) = var.r#type {
+                // Check if it's a derived (user-defined) type
+                if let Some(ref derived) = var_type.derived {
+                    types.push(derived.name.clone());
+                }
+                // Recursively check nested structs
+                types.extend(extract_referenced_types(var_type));
+            }
+        }
+    }
+    
+    // Check for array type
+    if let Some(ref array) = data.array {
+        if let Some(ref base_type) = array.base_type {
+            types.extend(extract_referenced_types(base_type));
+        }
+    }
+    
+    // Check for derived (reference to another type)
+    if let Some(ref derived) = data.derived {
+        types.push(derived.name.clone());
+    }
+    
+    types.sort();
+    types.dedup();
+    types
+}
+
+/// Extract called POUs from a POU's body using raw XML (legacy - kept for reference)
+#[allow(dead_code)]
 fn extract_calls_from_pou_with_xml(
     pou: &plcopen::Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline, 
     known_pous: &HashSet<String>,
