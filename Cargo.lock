@@ -134,16 +134,6 @@ dependencies = [
 
 [[package]]
 name = "iecst"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "051aca2da2fef8d196f346179ddb6dae76f486d5762171f9dd181a06d783165d"
-dependencies = [
- "thiserror 1.0.69",
- "winnow",
-]
-
-[[package]]
-name = "iecst"
 version = "0.5.1"
 dependencies = [
  "thiserror 1.0.69",
@@ -172,19 +162,6 @@ name = "itoa"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c"
-
-[[package]]
-name = "l5x"
-version = "0.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d929e9cb7efd0465d1bd347c2ea1f5ab2708751a31cacec7857942701b2021b"
-dependencies = [
- "iecst 0.5.0",
- "quick-xml",
- "serde",
- "thiserror 1.0.69",
- "winnow",
-]
 
 [[package]]
 name = "l5x"
@@ -221,7 +198,7 @@ version = "0.7.0"
 dependencies = [
  "clap",
  "iec61131",
- "l5x 0.5.1",
+ "l5x",
  "plcopen",
  "quick-xml",
  "serde",
@@ -254,7 +231,7 @@ version = "0.3.1"
 dependencies = [
  "clap",
  "iec61131",
- "l5x 0.5.0",
+ "l5x",
  "layout-rs",
  "plcopen",
  "regex",

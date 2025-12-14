@@ -14,7 +14,7 @@ authors = ["radevgit"]
 rust-version = "1.70"
 
 [dependencies]
-l5x = "0.5"
+l5x = { version = "0.5", path = "../l5x" }
 plcopen = { version = "0.3", path = "../plcopen" }
 iec61131 = { version = "0.7", path = "../iec61131" }
 layout-rs = "0.1"
