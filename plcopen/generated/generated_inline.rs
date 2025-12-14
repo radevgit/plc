@@ -16,10 +16,10 @@ pub struct Root_project_Inline {
     pub content_header: Option<Root_project_InlineType_contentHeader_Inline>,
     /// types element
     #[serde(rename = "types", default)]
-    pub types: Option<Root_project_InlineType_types_Inline>,
+    pub types: Option<Box<Root_project_InlineType_types_Inline>>,
     /// instances element
     #[serde(rename = "instances", default)]
-    pub instances: Option<Root_project_InlineType_instances_Inline>,
+    pub instances: Option<Box<Root_project_InlineType_instances_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -179,10 +179,10 @@ pub struct Root_project_InlineType_contentHeader_InlineType_coordinateInfo_Inlin
 pub struct Root_project_InlineType_types_Inline {
     /// dataTypes element
     #[serde(rename = "dataTypes", default)]
-    pub data_types: Option<Root_project_InlineType_types_InlineType_dataTypes_Inline>,
+    pub data_types: Option<Box<Root_project_InlineType_types_InlineType_dataTypes_Inline>>,
     /// pous element
     #[serde(rename = "pous", default)]
-    pub pous: Option<Root_project_InlineType_types_InlineType_pous_Inline>,
+    pub pous: Option<Box<Root_project_InlineType_types_InlineType_pous_Inline>>,
 }
 
 /// Root_project_InlineType_instances_InlineType element
@@ -190,7 +190,7 @@ pub struct Root_project_InlineType_types_Inline {
 pub struct Root_project_InlineType_instances_Inline {
     /// configurations element
     #[serde(rename = "configurations", default)]
-    pub configurations: Option<Root_project_InlineType_instances_InlineType_configurations_Inline>,
+    pub configurations: Option<Box<Root_project_InlineType_instances_InlineType_configurations_Inline>>,
 }
 
 /// value_simpleValue_InlineType element
@@ -279,7 +279,7 @@ pub struct DerivedTypes_array_Inline {
     pub dimension: Vec<RangeSigned>,
     /// baseType element
     #[serde(rename = "baseType", default)]
-    pub base_type: Option<Data>,
+    pub base_type: Option<Box<Data>>,
 }
 
 /// derivedTypes_derived_InlineType element
@@ -301,7 +301,7 @@ pub struct DerivedTypes_enum_Inline {
     pub values: Option<DerivedTypes_enum_InlineType_values_Inline>,
     /// baseType element
     #[serde(rename = "baseType", default)]
-    pub base_type: Option<Data>,
+    pub base_type: Option<Box<Data>>,
 }
 
 /// derivedTypes_enum_InlineType_values_InlineType element
@@ -331,7 +331,7 @@ pub struct DerivedTypes_subrangeSigned_Inline {
     pub range: Option<RangeSigned>,
     /// baseType element
     #[serde(rename = "baseType", default)]
-    pub base_type: Option<Data>,
+    pub base_type: Option<Box<Data>>,
 }
 
 /// derivedTypes_subrangeUnsigned_InlineType element
@@ -342,7 +342,7 @@ pub struct DerivedTypes_subrangeUnsigned_Inline {
     pub range: Option<RangeUnsigned>,
     /// baseType element
     #[serde(rename = "baseType", default)]
-    pub base_type: Option<Data>,
+    pub base_type: Option<Box<Data>>,
 }
 
 /// extended_pointer_InlineType element
@@ -350,7 +350,7 @@ pub struct DerivedTypes_subrangeUnsigned_Inline {
 pub struct Extended_pointer_Inline {
     /// baseType element
     #[serde(rename = "baseType", default)]
-    pub base_type: Option<Data>,
+    pub base_type: Option<Box<Data>>,
 }
 
 /// commonObjects_comment_InlineType element
@@ -676,7 +676,7 @@ pub struct SfcObjects_macroStep_Inline {
     pub connection_point_out: Option<ConnectionPointOut>,
     /// body element
     #[serde(rename = "body", default)]
-    pub body: Option<Body>,
+    pub body: Option<Box<Body>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,

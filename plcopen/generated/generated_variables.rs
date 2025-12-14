@@ -18,7 +18,7 @@ pub struct VarListPlain_variable_Inline {
     pub global_id: Option<String>,
     /// type element
     #[serde(rename = "type", default)]
-    pub r#type: Option<Data>,
+    pub r#type: Option<Box<Data>>,
     /// initialValue element
     #[serde(rename = "initialValue", default)]
     pub initial_value: Option<Value>,
@@ -44,7 +44,7 @@ pub struct VarListAccess_accessVariable_Inline {
     pub direction: Option<String>,
     /// type element
     #[serde(rename = "type", default)]
-    pub r#type: Option<Data>,
+    pub r#type: Option<Box<Data>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -64,7 +64,7 @@ pub struct VarListConfig_configVariable_Inline {
     pub address: Option<String>,
     /// type element
     #[serde(rename = "type", default)]
-    pub r#type: Option<Data>,
+    pub r#type: Option<Box<Data>>,
     /// initialValue element
     #[serde(rename = "initialValue", default)]
     pub initial_value: Option<Value>,

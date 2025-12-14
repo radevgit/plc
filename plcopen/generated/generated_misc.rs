@@ -47,7 +47,7 @@ pub struct Value {
 pub struct VarList {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -79,7 +79,7 @@ pub struct VarList {
 pub struct VarListPlain {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -93,7 +93,7 @@ pub struct VarListPlain {
 pub struct VarListAccess {
     /// accessVariable element
     #[serde(rename = "accessVariable", default)]
-    pub access_variable: Vec<VarListAccess_accessVariable_Inline>,
+    pub access_variable: Vec<Box<VarListAccess_accessVariable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -107,7 +107,7 @@ pub struct VarListAccess {
 pub struct VarListConfig {
     /// configVariable element
     #[serde(rename = "configVariable", default)]
-    pub config_variable: Vec<VarListConfig_configVariable_Inline>,
+    pub config_variable: Vec<Box<VarListConfig_configVariable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -119,7 +119,10 @@ pub struct VarListConfig {
 /// formattedText element
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct FormattedText {
-    /// Arbitrary child elements (xs:any) - skipped during deserialization
+    /// Text content
+    #[serde(rename = "$text", default)]
+    pub text: Option<String>,
+    /// Arbitrary child elements (xs:any) - captured as text content
     #[serde(skip)]
     pub children: Vec<AnyElement>,
 }

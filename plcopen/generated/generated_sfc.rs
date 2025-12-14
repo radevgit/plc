@@ -33,7 +33,7 @@ pub struct CommonObjects_actionBlock_Inline {
     pub connection_point_in: Option<ConnectionPointIn>,
     /// action element
     #[serde(rename = "action", default)]
-    pub action: Vec<CommonObjects_actionBlock_InlineType_action_Inline>,
+    pub action: Vec<Box<CommonObjects_actionBlock_InlineType_action_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -79,7 +79,7 @@ pub struct CommonObjects_actionBlock_InlineType_action_Inline {
     pub reference: Option<CommonObjects_actionBlock_InlineType_action_InlineType_reference_Inline>,
     /// inline element
     #[serde(rename = "inline", default)]
-    pub inline: Option<Body>,
+    pub inline: Option<Box<Body>>,
     /// connectionPointOut element
     #[serde(rename = "connectionPointOut", default)]
     pub connection_point_out: Option<ConnectionPointOut>,
@@ -275,13 +275,13 @@ pub struct SfcObjects_transition_InlineType_condition_InlineType_inline_Inline {
     pub st: Option<FormattedText>,
     /// FBD element
     #[serde(rename = "FBD", default)]
-    pub fbd: Option<Body_FBD_Inline>,
+    pub fbd: Option<Box<Body_FBD_Inline>>,
     /// LD element
     #[serde(rename = "LD", default)]
-    pub ld: Option<Body_LD_Inline>,
+    pub ld: Option<Box<Body_LD_Inline>>,
     /// SFC element
     #[serde(rename = "SFC", default)]
-    pub sfc: Option<Body_SFC_Inline>,
+    pub sfc: Option<Box<Body_SFC_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,

@@ -21,13 +21,13 @@ pub struct Body {
     pub st: Option<FormattedText>,
     /// FBD element
     #[serde(rename = "FBD", default)]
-    pub fbd: Option<Body_FBD_Inline>,
+    pub fbd: Option<Box<Body_FBD_Inline>>,
     /// LD element
     #[serde(rename = "LD", default)]
-    pub ld: Option<Body_LD_Inline>,
+    pub ld: Option<Box<Body_LD_Inline>>,
     /// SFC element
     #[serde(rename = "SFC", default)]
-    pub sfc: Option<Body_SFC_Inline>,
+    pub sfc: Option<Box<Body_SFC_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -39,15 +39,180 @@ pub struct Body {
 /// body_FBD_InlineType element
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Body_FBD_Inline {
+    /// comment element
+    #[serde(rename = "comment", default)]
+    pub comment: Vec<CommonObjects_comment_Inline>,
+    /// error element
+    #[serde(rename = "error", default)]
+    pub error: Vec<CommonObjects_error_Inline>,
+    /// connector element
+    #[serde(rename = "connector", default)]
+    pub connector: Vec<CommonObjects_connector_Inline>,
+    /// continuation element
+    #[serde(rename = "continuation", default)]
+    pub continuation: Vec<CommonObjects_continuation_Inline>,
+    /// actionBlock element
+    #[serde(rename = "actionBlock", default)]
+    pub action_block: Vec<Box<CommonObjects_actionBlock_Inline>>,
+    /// vendorElement element
+    #[serde(rename = "vendorElement", default)]
+    pub vendor_element: Vec<CommonObjects_vendorElement_Inline>,
+    /// block element
+    #[serde(rename = "block", default)]
+    pub block: Vec<FbdObjects_block_Inline>,
+    /// inVariable element
+    #[serde(rename = "inVariable", default)]
+    pub in_variable: Vec<FbdObjects_inVariable_Inline>,
+    /// outVariable element
+    #[serde(rename = "outVariable", default)]
+    pub out_variable: Vec<FbdObjects_outVariable_Inline>,
+    /// inOutVariable element
+    #[serde(rename = "inOutVariable", default)]
+    pub in_out_variable: Vec<FbdObjects_inOutVariable_Inline>,
+    /// label element
+    #[serde(rename = "label", default)]
+    pub label: Vec<FbdObjects_label_Inline>,
+    /// jump element
+    #[serde(rename = "jump", default)]
+    pub jump: Vec<FbdObjects_jump_Inline>,
+    /// return element
+    #[serde(rename = "return", default)]
+    pub r#return: Vec<FbdObjects_return_Inline>,
 }
 
 /// body_LD_InlineType element
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Body_LD_Inline {
+    /// comment element
+    #[serde(rename = "comment", default)]
+    pub comment: Vec<CommonObjects_comment_Inline>,
+    /// error element
+    #[serde(rename = "error", default)]
+    pub error: Vec<CommonObjects_error_Inline>,
+    /// connector element
+    #[serde(rename = "connector", default)]
+    pub connector: Vec<CommonObjects_connector_Inline>,
+    /// continuation element
+    #[serde(rename = "continuation", default)]
+    pub continuation: Vec<CommonObjects_continuation_Inline>,
+    /// actionBlock element
+    #[serde(rename = "actionBlock", default)]
+    pub action_block: Vec<Box<CommonObjects_actionBlock_Inline>>,
+    /// vendorElement element
+    #[serde(rename = "vendorElement", default)]
+    pub vendor_element: Vec<CommonObjects_vendorElement_Inline>,
+    /// block element
+    #[serde(rename = "block", default)]
+    pub block: Vec<FbdObjects_block_Inline>,
+    /// inVariable element
+    #[serde(rename = "inVariable", default)]
+    pub in_variable: Vec<FbdObjects_inVariable_Inline>,
+    /// outVariable element
+    #[serde(rename = "outVariable", default)]
+    pub out_variable: Vec<FbdObjects_outVariable_Inline>,
+    /// inOutVariable element
+    #[serde(rename = "inOutVariable", default)]
+    pub in_out_variable: Vec<FbdObjects_inOutVariable_Inline>,
+    /// label element
+    #[serde(rename = "label", default)]
+    pub label: Vec<FbdObjects_label_Inline>,
+    /// jump element
+    #[serde(rename = "jump", default)]
+    pub jump: Vec<FbdObjects_jump_Inline>,
+    /// return element
+    #[serde(rename = "return", default)]
+    pub r#return: Vec<FbdObjects_return_Inline>,
+    /// leftPowerRail element
+    #[serde(rename = "leftPowerRail", default)]
+    pub left_power_rail: Vec<LdObjects_leftPowerRail_Inline>,
+    /// rightPowerRail element
+    #[serde(rename = "rightPowerRail", default)]
+    pub right_power_rail: Vec<LdObjects_rightPowerRail_Inline>,
+    /// coil element
+    #[serde(rename = "coil", default)]
+    pub coil: Vec<LdObjects_coil_Inline>,
+    /// contact element
+    #[serde(rename = "contact", default)]
+    pub contact: Vec<LdObjects_contact_Inline>,
 }
 
 /// body_SFC_InlineType element
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Body_SFC_Inline {
+    /// comment element
+    #[serde(rename = "comment", default)]
+    pub comment: Vec<CommonObjects_comment_Inline>,
+    /// error element
+    #[serde(rename = "error", default)]
+    pub error: Vec<CommonObjects_error_Inline>,
+    /// connector element
+    #[serde(rename = "connector", default)]
+    pub connector: Vec<CommonObjects_connector_Inline>,
+    /// continuation element
+    #[serde(rename = "continuation", default)]
+    pub continuation: Vec<CommonObjects_continuation_Inline>,
+    /// actionBlock element
+    #[serde(rename = "actionBlock", default)]
+    pub action_block: Vec<Box<CommonObjects_actionBlock_Inline>>,
+    /// vendorElement element
+    #[serde(rename = "vendorElement", default)]
+    pub vendor_element: Vec<CommonObjects_vendorElement_Inline>,
+    /// block element
+    #[serde(rename = "block", default)]
+    pub block: Vec<FbdObjects_block_Inline>,
+    /// inVariable element
+    #[serde(rename = "inVariable", default)]
+    pub in_variable: Vec<FbdObjects_inVariable_Inline>,
+    /// outVariable element
+    #[serde(rename = "outVariable", default)]
+    pub out_variable: Vec<FbdObjects_outVariable_Inline>,
+    /// inOutVariable element
+    #[serde(rename = "inOutVariable", default)]
+    pub in_out_variable: Vec<FbdObjects_inOutVariable_Inline>,
+    /// label element
+    #[serde(rename = "label", default)]
+    pub label: Vec<FbdObjects_label_Inline>,
+    /// jump element
+    #[serde(rename = "jump", default)]
+    pub jump: Vec<FbdObjects_jump_Inline>,
+    /// return element
+    #[serde(rename = "return", default)]
+    pub r#return: Vec<FbdObjects_return_Inline>,
+    /// leftPowerRail element
+    #[serde(rename = "leftPowerRail", default)]
+    pub left_power_rail: Vec<LdObjects_leftPowerRail_Inline>,
+    /// rightPowerRail element
+    #[serde(rename = "rightPowerRail", default)]
+    pub right_power_rail: Vec<LdObjects_rightPowerRail_Inline>,
+    /// coil element
+    #[serde(rename = "coil", default)]
+    pub coil: Vec<LdObjects_coil_Inline>,
+    /// contact element
+    #[serde(rename = "contact", default)]
+    pub contact: Vec<LdObjects_contact_Inline>,
+    /// step element
+    #[serde(rename = "step", default)]
+    pub step: Vec<SfcObjects_step_Inline>,
+    /// macroStep element
+    #[serde(rename = "macroStep", default)]
+    pub macro_step: Vec<Box<SfcObjects_macroStep_Inline>>,
+    /// jumpStep element
+    #[serde(rename = "jumpStep", default)]
+    pub jump_step: Vec<SfcObjects_jumpStep_Inline>,
+    /// transition element
+    #[serde(rename = "transition", default)]
+    pub transition: Vec<SfcObjects_transition_Inline>,
+    /// selectionDivergence element
+    #[serde(rename = "selectionDivergence", default)]
+    pub selection_divergence: Vec<SfcObjects_selectionDivergence_Inline>,
+    /// selectionConvergence element
+    #[serde(rename = "selectionConvergence", default)]
+    pub selection_convergence: Vec<SfcObjects_selectionConvergence_Inline>,
+    /// simultaneousDivergence element
+    #[serde(rename = "simultaneousDivergence", default)]
+    pub simultaneous_divergence: Vec<SfcObjects_simultaneousDivergence_Inline>,
+    /// simultaneousConvergence element
+    #[serde(rename = "simultaneousConvergence", default)]
+    pub simultaneous_convergence: Vec<SfcObjects_simultaneousConvergence_Inline>,
 }
 

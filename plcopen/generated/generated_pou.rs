@@ -9,7 +9,7 @@ use super::*;
 pub struct Root_project_InlineType_types_InlineType_pous_Inline {
     /// pou element
     #[serde(rename = "pou", default)]
-    pub pou: Vec<Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline>,
+    pub pou: Vec<Box<Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline>>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType element
@@ -26,16 +26,16 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline {
     pub global_id: Option<String>,
     /// interface element
     #[serde(rename = "interface", default)]
-    pub interface: Option<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_Inline>,
+    pub interface: Option<Box<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_Inline>>,
     /// actions element
     #[serde(rename = "actions", default)]
-    pub actions: Option<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_Inline>,
+    pub actions: Option<Box<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_Inline>>,
     /// transitions element
     #[serde(rename = "transitions", default)]
-    pub transitions: Option<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_transitions_Inline>,
+    pub transitions: Option<Box<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_transitions_Inline>>,
     /// body element
     #[serde(rename = "body", default)]
-    pub body: Vec<Body>,
+    pub body: Vec<Box<Body>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -49,7 +49,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_Inline {
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_Inline {
     /// returnType element
     #[serde(rename = "returnType", default)]
-    pub return_type: Option<Data>,
+    pub return_type: Option<Box<Data>>,
     /// localVars element
     #[serde(rename = "localVars", default)]
     pub local_vars: Vec<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_localVars_Inline>,
@@ -89,7 +89,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_localVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -123,7 +123,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_tempVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -157,7 +157,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_inputVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -191,7 +191,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_outputVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -225,7 +225,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_inOutVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -259,7 +259,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_externalVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -293,7 +293,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_interface_InlineType_globalVars_Inline {
     /// variable element
     #[serde(rename = "variable", default)]
-    pub variable: Vec<VarListPlain_variable_Inline>,
+    pub variable: Vec<Box<VarListPlain_variable_Inline>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -325,7 +325,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_Inline {
     /// action element
     #[serde(rename = "action", default)]
-    pub action: Vec<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_InlineType_action_Inline>,
+    pub action: Vec<Box<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_InlineType_action_Inline>>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_actions_InlineType_action_InlineType element
@@ -339,7 +339,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
     pub global_id: Option<String>,
     /// body element
     #[serde(rename = "body", default)]
-    pub body: Option<Body>,
+    pub body: Option<Box<Body>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
@@ -353,7 +353,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
 pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_transitions_Inline {
     /// transition element
     #[serde(rename = "transition", default)]
-    pub transition: Vec<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_transitions_InlineType_transition_Inline>,
+    pub transition: Vec<Box<Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_transitions_InlineType_transition_Inline>>,
 }
 
 /// Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineType_transitions_InlineType_transition_InlineType element
@@ -367,7 +367,7 @@ pub struct Root_project_InlineType_types_InlineType_pous_InlineType_pou_InlineTy
     pub global_id: Option<String>,
     /// body element
     #[serde(rename = "body", default)]
-    pub body: Option<Body>,
+    pub body: Option<Box<Body>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,

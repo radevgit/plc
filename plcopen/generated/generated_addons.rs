@@ -23,7 +23,10 @@ pub struct AddData_data_Inline {
     /// handleUnknown attribute
     #[serde(rename = "@handleUnknown", default)]
     pub handle_unknown: String,
-    /// Arbitrary child elements (xs:any) - skipped during deserialization
+    /// Text content
+    #[serde(rename = "$text", default)]
+    pub text: Option<String>,
+    /// Arbitrary child elements (xs:any) - captured as text content
     #[serde(skip)]
     pub children: Vec<AnyElement>,
 }

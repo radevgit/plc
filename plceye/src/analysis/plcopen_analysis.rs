@@ -193,7 +193,7 @@ fn analyze_pou(pou: &Pou, analysis: &mut PlcopenAnalysis) {
 fn add_variable(var: &Variable, pou_name: &str, var_class: VarClass, analysis: &mut PlcopenAnalysis) {
     analysis.stats.variables += 1;
     
-    let data_type = var.r#type.as_ref().and_then(extract_type_name);
+    let data_type = var.r#type.as_ref().and_then(|t| extract_type_name(t.as_ref()));
     
     let def = VariableDef {
         name: var.name.clone(),
@@ -206,7 +206,7 @@ fn add_variable(var: &Variable, pou_name: &str, var_class: VarClass, analysis: &
     analysis.defined_variables.insert(var.name.clone(), def);
 }
 
-fn analyze_bodies(bodies: &[Body], _pou_name: &str, analysis: &mut PlcopenAnalysis) -> bool {
+fn analyze_bodies(bodies: &[Box<Body>], _pou_name: &str, analysis: &mut PlcopenAnalysis) -> bool {
     let mut has_code = false;
     
     for body in bodies {
@@ -233,34 +233,33 @@ fn analyze_bodies(bodies: &[Body], _pou_name: &str, analysis: &mut PlcopenAnalys
         }
         
         // FBD body
-        if body.fbd.is_some() {
+        if let Some(ref fbd) = body.fbd {
             analysis.stats.fbd_bodies += 1;
             has_code = true;
-            // TODO: Extract references from FBD elements
+            extract_references_from_fbd(fbd, analysis);
         }
         
         // LD body
-        if body.ld.is_some() {
+        if let Some(ref ld) = body.ld {
             analysis.stats.ld_bodies += 1;
             has_code = true;
-            // TODO: Extract references from LD elements
+            extract_references_from_ld(ld, analysis);
         }
         
         // SFC body
-        if body.sfc.is_some() {
+        if let Some(ref sfc) = body.sfc {
             analysis.stats.sfc_bodies += 1;
             has_code = true;
-            // TODO: Extract references from SFC elements
+            extract_references_from_sfc(sfc, analysis);
         }
     }
     
     has_code
 }
 
-fn extract_formatted_text(_ft: &FormattedText) -> Option<String> {
-    // FormattedText contains xhtml content but the generated struct doesn't capture it yet
-    // TODO: Improve PLCopen codegen to capture xhtml content
-    None
+fn extract_formatted_text(ft: &FormattedText) -> Option<String> {
+    // FormattedText now has a text field that captures the content
+    ft.text.clone()
 }
 
 fn extract_references_from_st(code: &str, analysis: &mut PlcopenAnalysis) {
@@ -288,6 +287,274 @@ fn extract_references_from_il(code: &str, analysis: &mut PlcopenAnalysis) {
             }
         }
     }
+}
+
+fn extract_references_from_fbd(fbd: &plcopen::Body_FBD_Inline, analysis: &mut PlcopenAnalysis) {
+    // Extract from blocks (function blocks, function calls)
+    for block in &fbd.block {
+        // typeName is the function block or function being called
+        let type_name = block.type_name.trim();
+        if !type_name.is_empty() && !is_builtin(type_name) {
+            analysis.used_pous.insert(type_name.to_string());
+        }
+        
+        // instanceName is the FB instance variable (optional for functions)
+        if let Some(ref instance_name) = block.instance_name {
+            let name = instance_name.trim();
+            if !name.is_empty() {
+                analysis.used_variables.insert(name.to_string());
+            }
+        }
+    }
+    
+    // Extract from inVariable elements (input variables)
+    for in_var in &fbd.in_variable {
+        if let Some(ref expression) = in_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    // Extract from outVariable elements (output variables)
+    for out_var in &fbd.out_variable {
+        if let Some(ref expression) = out_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    // Extract from inOutVariable elements (in/out variables)
+    for inout_var in &fbd.in_out_variable {
+        if let Some(ref expression) = inout_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    // Extract from label/jump (for SFC-style control flow in FBD)
+    for label in &fbd.label {
+        let name = label.label.trim();
+        if !name.is_empty() {
+            analysis.used_variables.insert(name.to_string());
+        }
+    }
+    
+    for jump in &fbd.jump {
+        let name = jump.label.trim();
+        if !name.is_empty() {
+            analysis.used_variables.insert(name.to_string());
+        }
+    }
+}
+
+fn extract_references_from_ld(ld: &plcopen::Body_LD_Inline, analysis: &mut PlcopenAnalysis) {
+    // LD shares many elements with FBD, plus ladder-specific coils and contacts
+    
+    // Extract from blocks (same as FBD)
+    for block in &ld.block {
+        let type_name = block.type_name.trim();
+        if !type_name.is_empty() && !is_builtin(type_name) {
+            analysis.used_pous.insert(type_name.to_string());
+        }
+        if let Some(ref instance_name) = block.instance_name {
+            let name = instance_name.trim();
+            if !name.is_empty() {
+                analysis.used_variables.insert(name.to_string());
+            }
+        }
+    }
+    
+    // Extract from variables (same as FBD)
+    for in_var in &ld.in_variable {
+        if let Some(ref expression) = in_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    for out_var in &ld.out_variable {
+        if let Some(ref expression) = out_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    for inout_var in &ld.in_out_variable {
+        if let Some(ref expression) = inout_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    // Extract from coils (LD-specific: output variables)
+    for coil in &ld.coil {
+        if let Some(ref variable) = coil.variable {
+            let var_name = variable.trim();
+            if !var_name.is_empty() && is_identifier(var_name) {
+                analysis.used_variables.insert(var_name.to_string());
+            }
+        }
+    }
+    
+    // Extract from contacts (LD-specific: input variables/conditions)
+    for contact in &ld.contact {
+        if let Some(ref variable) = contact.variable {
+            let var_name = variable.trim();
+            if !var_name.is_empty() && is_identifier(var_name) {
+                analysis.used_variables.insert(var_name.to_string());
+            }
+        }
+    }
+    
+    // Extract from labels/jumps (same as FBD)
+    for label in &ld.label {
+        let name = label.label.trim();
+        if !name.is_empty() {
+            analysis.used_variables.insert(name.to_string());
+        }
+    }
+    
+    for jump in &ld.jump {
+        let name = jump.label.trim();
+        if !name.is_empty() {
+            analysis.used_variables.insert(name.to_string());
+        }
+    }
+}
+
+fn extract_references_from_sfc(sfc: &plcopen::Body_SFC_Inline, analysis: &mut PlcopenAnalysis) {
+    // SFC shares FBD/LD elements plus SFC-specific steps, transitions, actions
+    
+    // Extract from blocks (same as FBD/LD)
+    for block in &sfc.block {
+        let type_name = block.type_name.trim();
+        if !type_name.is_empty() && !is_builtin(type_name) {
+            analysis.used_pous.insert(type_name.to_string());
+        }
+        if let Some(ref instance_name) = block.instance_name {
+            let name = instance_name.trim();
+            if !name.is_empty() {
+                analysis.used_variables.insert(name.to_string());
+            }
+        }
+    }
+    
+    // Extract from variables (same as FBD/LD)
+    for in_var in &sfc.in_variable {
+        if let Some(ref expression) = in_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    for out_var in &sfc.out_variable {
+        if let Some(ref expression) = out_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    for inout_var in &sfc.in_out_variable {
+        if let Some(ref expression) = inout_var.expression {
+            let expr = expression.trim();
+            if !expr.is_empty() && is_identifier(expr) {
+                analysis.used_variables.insert(expr.to_string());
+            }
+        }
+    }
+    
+    // Extract from coils/contacts (if used in SFC)
+    for coil in &sfc.coil {
+        if let Some(ref variable) = coil.variable {
+            let var_name = variable.trim();
+            if !var_name.is_empty() && is_identifier(var_name) {
+                analysis.used_variables.insert(var_name.to_string());
+            }
+        }
+    }
+    
+    for contact in &sfc.contact {
+        if let Some(ref variable) = contact.variable {
+            let var_name = variable.trim();
+            if !var_name.is_empty() && is_identifier(var_name) {
+                analysis.used_variables.insert(var_name.to_string());
+            }
+        }
+    }
+    
+    // Extract from SFC steps (step names are variables)
+    for step in &sfc.step {
+        let step_name = step.name.trim();
+        if !step_name.is_empty() {
+            analysis.used_variables.insert(step_name.to_string());
+        }
+    }
+    
+    // Extract from jump steps (references to step names)
+    for jump_step in &sfc.jump_step {
+        let target = jump_step.target_name.trim();
+        if !target.is_empty() {
+            analysis.used_variables.insert(target.to_string());
+        }
+    }
+    
+    // Extract from action blocks
+    for action_block in &sfc.action_block {
+        for action in &action_block.action {
+            // Extract action name references
+            if let Some(ref reference) = action.reference {
+                let action_name = reference.name.trim();
+                if !action_name.is_empty() {
+                    // Action references are typically POU calls
+                    analysis.used_pous.insert(action_name.to_string());
+                }
+            }
+            // Inline actions would contain Body with ST/FBD/etc - already handled recursively
+        }
+    }
+}
+
+/// Check if a string is a valid identifier (not a literal or complex expression)
+fn is_identifier(s: &str) -> bool {
+    // Skip numeric literals
+    if s.chars().next().map(|c| c.is_ascii_digit()).unwrap_or(false) {
+        return false;
+    }
+    
+    // Skip string literals
+    if s.starts_with('\'') || s.starts_with('\"') {
+        return false;
+    }
+    
+    // Skip boolean literals
+    if s == "TRUE" || s == "FALSE" {
+        return false;
+    }
+    
+    // Must start with letter or underscore and contain only alphanumeric/underscore
+    let first_char = s.chars().next();
+    if !matches!(first_char, Some(c) if c.is_alphabetic() || c == '_') {
+        return false;
+    }
+    
+    // Simple identifier check - no dots, brackets, or operators
+    s.chars().all(|c| c.is_alphanumeric() || c == '_')
 }
 
 fn extract_type_name(_data: &plcopen::Data) -> Option<String> {

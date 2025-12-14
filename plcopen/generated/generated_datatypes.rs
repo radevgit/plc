@@ -9,7 +9,7 @@ use super::*;
 pub struct Root_project_InlineType_types_InlineType_dataTypes_Inline {
     /// dataType element
     #[serde(rename = "dataType", default)]
-    pub data_type: Vec<Root_project_InlineType_types_InlineType_dataTypes_InlineType_dataType_Inline>,
+    pub data_type: Vec<Box<Root_project_InlineType_types_InlineType_dataTypes_InlineType_dataType_Inline>>,
 }
 
 /// Root_project_InlineType_types_InlineType_dataTypes_InlineType_dataType_InlineType element
@@ -20,7 +20,7 @@ pub struct Root_project_InlineType_types_InlineType_dataTypes_InlineType_dataTyp
     pub name: String,
     /// baseType element
     #[serde(rename = "baseType", default)]
-    pub base_type: Option<Data>,
+    pub base_type: Option<Box<Data>>,
     /// initialValue element
     #[serde(rename = "initialValue", default)]
     pub initial_value: Option<Value>,
@@ -35,5 +35,119 @@ pub struct Root_project_InlineType_types_InlineType_dataTypes_InlineType_dataTyp
 /// dataType element
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Data {
+    /// BOOL element
+    #[serde(rename = "BOOL", default)]
+    pub bool: Option<String>,
+    /// BYTE element
+    #[serde(rename = "BYTE", default)]
+    pub byte: Option<String>,
+    /// WORD element
+    #[serde(rename = "WORD", default)]
+    pub word: Option<String>,
+    /// DWORD element
+    #[serde(rename = "DWORD", default)]
+    pub dword: Option<String>,
+    /// LWORD element
+    #[serde(rename = "LWORD", default)]
+    pub lword: Option<String>,
+    /// SINT element
+    #[serde(rename = "SINT", default)]
+    pub sint: Option<String>,
+    /// INT element
+    #[serde(rename = "INT", default)]
+    pub int: Option<String>,
+    /// DINT element
+    #[serde(rename = "DINT", default)]
+    pub dint: Option<String>,
+    /// LINT element
+    #[serde(rename = "LINT", default)]
+    pub lint: Option<String>,
+    /// USINT element
+    #[serde(rename = "USINT", default)]
+    pub usint: Option<String>,
+    /// UINT element
+    #[serde(rename = "UINT", default)]
+    pub uint: Option<String>,
+    /// UDINT element
+    #[serde(rename = "UDINT", default)]
+    pub udint: Option<String>,
+    /// ULINT element
+    #[serde(rename = "ULINT", default)]
+    pub ulint: Option<String>,
+    /// REAL element
+    #[serde(rename = "REAL", default)]
+    pub real: Option<String>,
+    /// LREAL element
+    #[serde(rename = "LREAL", default)]
+    pub lreal: Option<String>,
+    /// TIME element
+    #[serde(rename = "TIME", default)]
+    pub time: Option<String>,
+    /// DATE element
+    #[serde(rename = "DATE", default)]
+    pub date: Option<String>,
+    /// DT element
+    #[serde(rename = "DT", default)]
+    pub dt: Option<String>,
+    /// TOD element
+    #[serde(rename = "TOD", default)]
+    pub tod: Option<String>,
+    /// string element
+    #[serde(rename = "string", default)]
+    pub string: Option<ElementaryTypes_string_Inline>,
+    /// wstring element
+    #[serde(rename = "wstring", default)]
+    pub wstring: Option<ElementaryTypes_wstring_Inline>,
+    /// ANY element
+    #[serde(rename = "ANY", default)]
+    pub any: Option<String>,
+    /// ANY_DERIVED element
+    #[serde(rename = "ANY_DERIVED", default)]
+    pub any__derived: Option<String>,
+    /// ANY_ELEMENTARY element
+    #[serde(rename = "ANY_ELEMENTARY", default)]
+    pub any__elementary: Option<String>,
+    /// ANY_MAGNITUDE element
+    #[serde(rename = "ANY_MAGNITUDE", default)]
+    pub any__magnitude: Option<String>,
+    /// ANY_NUM element
+    #[serde(rename = "ANY_NUM", default)]
+    pub any__num: Option<String>,
+    /// ANY_REAL element
+    #[serde(rename = "ANY_REAL", default)]
+    pub any__real: Option<String>,
+    /// ANY_INT element
+    #[serde(rename = "ANY_INT", default)]
+    pub any__int: Option<String>,
+    /// ANY_BIT element
+    #[serde(rename = "ANY_BIT", default)]
+    pub any__bit: Option<String>,
+    /// ANY_STRING element
+    #[serde(rename = "ANY_STRING", default)]
+    pub any__string: Option<String>,
+    /// ANY_DATE element
+    #[serde(rename = "ANY_DATE", default)]
+    pub any__date: Option<String>,
+    /// array element
+    #[serde(rename = "array", default)]
+    pub array: Option<Box<DerivedTypes_array_Inline>>,
+    /// derived element
+    #[serde(rename = "derived", default)]
+    pub derived: Option<DerivedTypes_derived_Inline>,
+    /// enum element
+    #[serde(rename = "enum", default)]
+    pub r#enum: Option<Box<DerivedTypes_enum_Inline>>,
+    /// struct element
+    #[serde(rename = "struct", default)]
+    pub r#struct: Option<Box<VarListPlain>>,
+    /// subrangeSigned element
+    #[serde(rename = "subrangeSigned", default)]
+    pub subrange_signed: Option<Box<DerivedTypes_subrangeSigned_Inline>>,
+    /// subrangeUnsigned element
+    #[serde(rename = "subrangeUnsigned", default)]
+    pub subrange_unsigned: Option<Box<DerivedTypes_subrangeUnsigned_Inline>>,
+    /// pointer element
+    #[serde(rename = "pointer", default)]
+    pub pointer: Option<Box<Extended_pointer_Inline>>,
 }
 

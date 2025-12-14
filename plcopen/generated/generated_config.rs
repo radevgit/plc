@@ -9,7 +9,7 @@ use super::*;
 pub struct Root_project_InlineType_instances_InlineType_configurations_Inline {
     /// configuration element
     #[serde(rename = "configuration", default)]
-    pub configuration: Vec<Root_project_InlineType_instances_InlineType_configurations_InlineType_configuration_Inline>,
+    pub configuration: Vec<Box<Root_project_InlineType_instances_InlineType_configurations_InlineType_configuration_Inline>>,
 }
 
 /// Root_project_InlineType_instances_InlineType_configurations_InlineType_configuration_InlineType element
@@ -29,10 +29,10 @@ pub struct Root_project_InlineType_instances_InlineType_configurations_InlineTyp
     pub global_vars: Vec<VarList>,
     /// accessVars element
     #[serde(rename = "accessVars", default)]
-    pub access_vars: Option<VarListAccess>,
+    pub access_vars: Option<Box<VarListAccess>>,
     /// configVars element
     #[serde(rename = "configVars", default)]
-    pub config_vars: Option<VarListConfig>,
+    pub config_vars: Option<Box<VarListConfig>>,
     /// addData element
     #[serde(rename = "addData", default)]
     pub add_data: Option<AddData>,
