@@ -26,6 +26,7 @@ Download pre-built binaries from [GitHub Releases](https://github.com/radevgit/p
 ```bash
 # plcviz
 curl -L https://github.com/radevgit/plc/releases/download/plcviz-v0.3.2/plcviz-v0.3.2-x86_64-linux.tar.gz | tar xz
+chmod +x plcviz
 sudo mv plcviz /usr/local/bin/
 ```
 
