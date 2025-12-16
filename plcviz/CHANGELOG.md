@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.4 (2025-12-16)
+- Fix the automatic release
+
+
 ## 0.3.3 (2025-12-16)
 - Automatic release
 

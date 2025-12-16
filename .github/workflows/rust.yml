@@ -8,6 +8,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  contents: write  # Required for creating releases
+
 env:
   CARGO_TERM_COLOR: always
 
@@ -84,12 +87,21 @@ jobs:
         cd release
         7z a ../${{ steps.tag.outputs.crate }}-v${{ steps.tag.outputs.version }}-x86_64-windows.zip *
     
-    - name: Upload Release Asset
+    - name: Upload Release Asset (Linux)
+      if: matrix.os == 'ubuntu-latest'
       uses: softprops/action-gh-release@v1
       with:
-        files: |
-          ${{ steps.tag.outputs.crate }}-v${{ steps.tag.outputs.version }}-*.tar.gz
-          ${{ steps.tag.outputs.crate }}-v${{ steps.tag.outputs.version }}-*.zip
+        files: ${{ steps.tag.outputs.crate }}-v${{ steps.tag.outputs.version }}-x86_64-linux.tar.gz
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload Release Asset (Windows)
+      if: matrix.os == 'windows-latest'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ steps.tag.outputs.crate }}-v${{ steps.tag.outputs.version }}-x86_64-windows.zip
         draft: false
         prerelease: false
       env:
