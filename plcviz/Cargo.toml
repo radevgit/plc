@@ -22,8 +22,3 @@ regex = "1"
 clap = { version = "4.5", features = ["derive"] }
 
 [dev-dependencies]
-
-[profile.release]
-strip = true       # Remove debug symbols
-lto = true         # Link-time optimization
-codegen-units = 1  # Better optimization
