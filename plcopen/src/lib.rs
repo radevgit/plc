@@ -166,7 +166,11 @@ mod tests {
     #[test]
     fn test_parse_bbr_file() {
         // Test with real PLCopen file if available
-        let path = std::path::Path::new(env!("HOME"))
+        let home = match std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+            Ok(h) => h,
+            Err(_) => { eprintln!("Skipping test: HOME not set"); return; }
+        };
+        let path = std::path::Path::new(&home)
             .join("devpublic/dataplc/plcopen/bbr/projects/iec61131_lang_test/plc.xml");
         
         if !path.exists() {
@@ -187,7 +191,11 @@ mod tests {
 
     #[test]
     fn test_parse_multiple_bbr_files() {
-        let base = std::path::Path::new(env!("HOME"))
+        let home = match std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+            Ok(h) => h,
+            Err(_) => { eprintln!("Skipping test: HOME not set"); return; }
+        };
+        let base = std::path::Path::new(&home)
             .join("devpublic/dataplc/plcopen/bbr/projects");
         
         if !base.exists() {
@@ -227,7 +235,11 @@ mod tests {
 
     #[test]
     fn test_parse_standard_function_blocks() {
-        let path = std::path::Path::new(env!("HOME"))
+        let home = match std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+            Ok(h) => h,
+            Err(_) => { eprintln!("Skipping test: HOME not set"); return; }
+        };
+        let path = std::path::Path::new(&home)
             .join("devpublic/dataplc/plcopen/bbr/Standard_Function_Blocks.xml");
         
         if !path.exists() {
@@ -247,7 +259,11 @@ mod tests {
 
     #[test]
     fn test_parse_bbr_examples() {
-        let base = std::path::Path::new(env!("HOME"))
+        let home = match std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+            Ok(h) => h,
+            Err(_) => { eprintln!("Skipping test: HOME not set"); return; }
+        };
+        let base = std::path::Path::new(&home)
             .join("devpublic/dataplc/plcopen/bbr/exemples");
         
         if !base.exists() {
@@ -288,7 +304,11 @@ mod tests {
 
     #[test]
     fn test_extract_st_from_real_files() {
-        let base = std::path::Path::new(env!("HOME"))
+        let home = match std::env::var("HOME").or_else(|_| std::env::var("USERPROFILE")) {
+            Ok(h) => h,
+            Err(_) => { eprintln!("Skipping test: HOME not set"); return; }
+        };
+        let base = std::path::Path::new(&home)
             .join("devpublic/dataplc/plcopen/bbr/exemples");
         
         if !base.exists() {
