@@ -18,6 +18,28 @@ Open source tools for parsing and analyzing L5X files exported from PLC programm
 
 ## Installation
 
+### Binary Releases (Recommended)
+
+Download pre-built binaries from [GitHub Releases](https://github.com/radevgit/plc/releases):
+
+**Linux:**
+```bash
+# plcviz
+curl -L https://github.com/radevgit/plc/releases/download/plcviz-v0.3.2/plcviz-v0.3.2-x86_64-linux.tar.gz | tar xz
+sudo mv plcviz /usr/local/bin/
+```
+
+**Windows:**
+```powershell
+# Download from GitHub Releases and extract
+# Add to PATH or run from current directory
+.\plcviz.exe --version
+```
+
+### From Source
+
+Requires Rust 1.70+:
+
 ```bash
 cargo install --path plceye
 cargo install --path plcviz
