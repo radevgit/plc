@@ -30,6 +30,28 @@ PLC code visualization tool - generate SVG diagrams from L5X (Rockwell) and PLCo
 
 ## Installation
 
+### Binary Releases (Recommended)
+
+Download pre-built binaries from [GitHub Releases](https://github.com/radevgit/plc/releases):
+
+**Linux:**
+```bash
+curl -L https://github.com/radevgit/plc/releases/download/plcviz-v0.3.2/plcviz-v0.3.2-x86_64-linux.tar.gz | tar xz
+chmod +x plcviz
+sudo mv plcviz /usr/local/bin/
+```
+
+**Windows:**
+```powershell
+# Download from GitHub Releases and extract
+# Add to PATH or run from current directory
+.\plcviz.exe --version
+```
+
+### From Source
+
+Requires Rust 1.70+:
+
 ```bash
 cargo install --path .
 ```
