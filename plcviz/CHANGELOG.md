@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.3 (2025-12-16)
+- Automatic release
+
 ## 0.3.2 (2025-12-16)
 - Changes to release binary for Linux
 
