@@ -4,32 +4,22 @@
 
 use l5x::rll;
 use l5x::{
-    Routine, RoutineContent, Rung, RungContent,
-    RungCollection, TextWide, TextWideContent,
+    Routine, Rung,
+    RungCollection, TextWide,
 };
 
 use super::{RungLocation, LocatedRung};
 
 /// Extract the text content from a TextWide element.
 pub fn extract_text_content(text_wide: &TextWide) -> Option<String> {
-    for content in &text_wide.content {
-        if let TextWideContent::TextContent(text) = content {
-            let trimmed = text.trim();
-            if !trimmed.is_empty() {
-                return Some(trimmed.to_string());
-            }
-        }
-    }
-    None
+    text_wide.text.as_ref().map(|t| t.trim().to_string()).filter(|t| !t.is_empty())
 }
 
 /// Extract rung text from a Rung element.
 pub fn extract_rung_text(rung: &Rung) -> Option<String> {
-    for content in &rung.content {
-        if let RungContent::Text(text_wide) = content {
-            if let Some(text) = extract_text_content(text_wide) {
-                return Some(text);
-            }
+    for text_wide in &rung.text {
+        if let Some(text) = extract_text_content(text_wide) {
+            return Some(text);
         }
     }
     None
@@ -71,10 +61,8 @@ pub fn parse_routine(routine: &Routine, program: &str) -> Vec<LocatedRung> {
         return results;
     }
 
-    for content in &routine.content {
-        if let RoutineContent::RLLContent(rung_collection) = content {
-            results.extend(parse_rung_collection(rung_collection, program, &routine.name));
-        }
+    for rung_collection in &routine.rllcontent {
+        results.extend(parse_rung_collection(rung_collection, program, &routine.name));
     }
 
     results

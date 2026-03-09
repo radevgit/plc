@@ -304,8 +304,7 @@ fn generate_aoi_export(project: &l5x::Project, graph_type: GraphType) -> String 
                     graph.add_node(aoi_name, aoi_name, L5xNodeType::Aoi);
                     
                     // Find routines in the AOI content
-                    for item in &aoi.content {
-                        if let l5x::UDIDefinitionContent::Routines(ref routines) = item {
+                    if let Some(ref routines) = aoi.routines {
                             for routine in &routines.routine {
                                 let routine_id = format!("{}.{}", aoi_name, routine.name);
                                 
@@ -321,7 +320,6 @@ fn generate_aoi_export(project: &l5x::Project, graph_type: GraphType) -> String 
                                     extract_jsr_calls(&routine_id, aoi_name, routine, &mut graph);
                                 }
                             }
-                        }
                     }
                 }
             }
@@ -368,45 +366,28 @@ fn extract_jsr_calls(
     routine: &l5x::Routine,
     graph: &mut L5xGraph,
 ) {
-    // Iterate through routine content to find RLL or ST content
-    for item in &routine.content {
-        match item {
-            l5x::RoutineContent::RLLContent(rll_content) => {
-                for rung in &rll_content.rung {
-                    // Find Text elements in rung content
-                    for rung_item in &rung.content {
-                        if let l5x::RungContent::Text(text_wide) = rung_item {
-                            // Extract text from TextWide content
-                            let text = extract_text_from_textwide(text_wide);
-                            extract_jsr_from_text(routine_id, program_name, &text, graph);
-                        }
-                    }
-                }
+    // RLL routines
+    for rll_content in &routine.rllcontent {
+        for rung in &rll_content.rung {
+            for text_wide in &rung.text {
+                let text = extract_text_from_textwide(text_wide);
+                extract_jsr_from_text(routine_id, program_name, &text, graph);
             }
-            l5x::RoutineContent::STContent(st_content) => {
-                for item in &st_content.content {
-                    if let l5x::STContentContent::Line(line) = item {
-                        // STLine has text: Option<String>
-                        if let Some(ref text) = line.text {
-                            extract_jsr_from_text(routine_id, program_name, text, graph);
-                        }
-                    }
-                }
+        }
+    }
+    // ST routines
+    for st_content in &routine.stcontent {
+        for line in &st_content.line {
+            if let Some(ref text) = line.text {
+                extract_jsr_from_text(routine_id, program_name, text, graph);
             }
-            _ => {}
         }
     }
 }
 
 /// Extract text content from TextWide
 fn extract_text_from_textwide(text_wide: &l5x::TextWide) -> String {
-    let mut result = String::new();
-    for item in &text_wide.content {
-        if let l5x::TextWideContent::TextContent(s) = item {
-            result.push_str(s);
-        }
-    }
-    result
+    text_wide.text.as_deref().unwrap_or("").to_string()
 }
 
 /// Parse text content to find JSR calls

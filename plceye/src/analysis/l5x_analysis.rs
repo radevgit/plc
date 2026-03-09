@@ -8,7 +8,7 @@ use std::collections::{HashMap, HashSet};
 use l5x::rll::{Rung as ParsedRung, TagReference, ErrorContext, ParseError};
 use l5x::{
     Controller,
-    UDIDefinition, UDIDefinitionContent,
+    UDIDefinition,
 };
 
 use super::iec61131_adapter::Pou;
@@ -282,11 +282,9 @@ fn parse_rll_from_aoi(aoi: &UDIDefinition) -> Vec<LocatedRung> {
     let mut results = Vec::new();
     let aoi_name = format!("AOI:{}", aoi.name);
 
-    for content in &aoi.content {
-        if let UDIDefinitionContent::Routines(routine_collection) = content {
-            for routine in &routine_collection.routine {
-                results.extend(parse_routine(routine, &aoi_name));
-            }
+    if let Some(routine_collection) = &aoi.routines {
+        for routine in &routine_collection.routine {
+            results.extend(parse_routine(routine, &aoi_name));
         }
     }
 

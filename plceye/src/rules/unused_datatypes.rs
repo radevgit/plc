@@ -4,7 +4,7 @@
 
 use std::collections::HashSet;
 
-use l5x::{Controller, UDIDefinitionContent};
+use l5x::Controller;
 
 use crate::config::UnusedDataTypesConfig;
 use crate::report::{Report, Severity, Rule, RuleKind};
@@ -95,21 +95,16 @@ impl<'a> UnusedDataTypesDetector<'a> {
         // Check AOI parameters and local tags
         if let Some(ref aois) = controller.add_on_instruction_definitions {
             for aoi in &aois.add_on_instruction_definition {
-                for content in &aoi.content {
-                    match content {
-                        UDIDefinitionContent::Parameters(params) => {
-                            for param in &params.parameter {
-                                if let Some(ref dt) = param.data_type {
-                                    used.insert(dt.clone());
-                                }
-                            }
+                if let Some(params) = &aoi.parameters {
+                    for param in &params.parameter {
+                        if let Some(ref dt) = param.data_type {
+                            used.insert(dt.clone());
                         }
-                        UDIDefinitionContent::LocalTags(local_tags) => {
-                            for tag in &local_tags.local_tag {
-                                used.insert(tag.data_type.clone());
-                            }
-                        }
-                        _ => {}
+                    }
+                }
+                if let Some(local_tags) = &aoi.local_tags {
+                    for tag in &local_tags.local_tag {
+                        used.insert(tag.data_type.clone());
                     }
                 }
             }

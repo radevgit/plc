@@ -5,7 +5,7 @@
 
 use std::collections::HashSet;
 
-use l5x::{Controller, UDIDefinitionContent};
+use l5x::Controller;
 
 use crate::analysis::ProjectAnalysis;
 
@@ -98,19 +98,14 @@ impl<'a> UndefinedTagsDetector<'a> {
         // AOI parameters and local tags
         if let Some(ref aois) = controller.add_on_instruction_definitions {
             for aoi in &aois.add_on_instruction_definition {
-                for content in &aoi.content {
-                    match content {
-                        UDIDefinitionContent::Parameters(params) => {
-                            for param in &params.parameter {
-                                tags.insert(param.name.clone());
-                            }
-                        }
-                        UDIDefinitionContent::LocalTags(local_tags) => {
-                            for local_tag in &local_tags.local_tag {
-                                tags.insert(local_tag.name.clone());
-                            }
-                        }
-                        _ => {}
+                if let Some(params) = &aoi.parameters {
+                    for param in &params.parameter {
+                        tags.insert(param.name.clone());
+                    }
+                }
+                if let Some(local_tags) = &aoi.local_tags {
+                    for local_tag in &local_tags.local_tag {
+                        tags.insert(local_tag.name.clone());
                     }
                 }
             }

@@ -3,9 +3,9 @@
 //! Extract and parse ST routines from L5X structures.
 
 use l5x::{
-    AProgram, Routine, RoutineContent,
-    STContent, STContentContent, STLine,
-    UDIDefinition, UDIDefinitionContent,
+    AProgram, Routine,
+    STContent, STLine,
+    UDIDefinition,
 };
 
 use super::iec61131_adapter::{Pou, parse_pou};
@@ -28,23 +28,18 @@ fn extract_st_line_text(line: &STLine) -> String {
 pub fn extract_st_source(st_content: &STContent) -> String {
     let mut lines: Vec<(u32, String)> = Vec::new();
 
-    for content in &st_content.content {
-        match content {
-            STContentContent::Line(line) => {
-                let line_num: u32 = line.number
-                    .as_ref()
-                    .and_then(|n| n.parse().ok())
-                    .unwrap_or(0);
-                let text = extract_st_line_text(line);
-                lines.push((line_num, text));
-            }
-            STContentContent::TextContent(text) => {
-                let trimmed = text.trim();
-                if !trimmed.is_empty() {
-                    lines.push((0, trimmed.to_string()));
-                }
-            }
-            _ => {}
+    for line in &st_content.line {
+        let line_num: u32 = line.number
+            .as_ref()
+            .and_then(|n| n.parse().ok())
+            .unwrap_or(0);
+        let text = extract_st_line_text(line);
+        lines.push((line_num, text));
+    }
+    if let Some(text) = &st_content.text {
+        let trimmed = text.trim();
+        if !trimmed.is_empty() {
+            lines.push((0, trimmed.to_string()));
         }
     }
 
@@ -61,13 +56,7 @@ pub fn parse_st_routine(routine: &Routine, program: &str) -> Option<ParsedSTRout
     }
 
     // Find STContent
-    let st_content = routine.content.iter().find_map(|c| {
-        if let RoutineContent::STContent(st) = c {
-            Some(st)
-        } else {
-            None
-        }
-    })?;
+    let st_content = routine.stcontent.first()?;
 
     let source = extract_st_source(st_content);
     let location = STLocation::new(program, &routine.name);
@@ -117,13 +106,11 @@ pub fn parse_st_routines_from_program(program: &AProgram) -> Vec<ParsedSTRoutine
 pub fn parse_st_routines_from_aoi(aoi: &UDIDefinition) -> Vec<ParsedSTRoutine> {
     let mut results = Vec::new();
 
-    for content in &aoi.content {
-        if let UDIDefinitionContent::Routines(routine_collection) = content {
-            for routine in &routine_collection.routine {
-                let aoi_name = format!("AOI:{}", aoi.name);
-                if let Some(parsed) = parse_st_routine(routine, &aoi_name) {
-                    results.push(parsed);
-                }
+    if let Some(routine_collection) = &aoi.routines {
+        for routine in &routine_collection.routine {
+            let aoi_name = format!("AOI:{}", aoi.name);
+            if let Some(parsed) = parse_st_routine(routine, &aoi_name) {
+                results.push(parsed);
             }
         }
     }
