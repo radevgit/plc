@@ -1,7 +1,17 @@
 # Changelog
 
 ## 0.6.0 (2026-03-09)
-- l5x serialization
+
+### Added
+- Full serialization support: all parsed types now round-trip via `to_string()`
+- `to_string()` function for serializing any parsed structure back to L5X XML
+- Automatic stripping of Rockwell-encrypted AOI blobs (opaque base64 payloads) before parsing
+
+### Fixed
+- Trailing space in `@AutoDiagsEnabled` serde rename attribute
+- All `Option` and `Vec` fields now use `skip_serializing_if` to suppress null/empty output
+- Mixed-content types rewritten to use individual struct fields + `$text` instead of `Vec<Enum> + $value`, enabling correct serialization
+- Output size is ~91% of input (vs 130–270% before) across 525 real L5X files
 
 ## 0.5.0 (2025-12-09)
 - fixed security module
