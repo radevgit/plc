@@ -8,28 +8,28 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct MotionGroup {
     /// CoarseUpdatePeriod attribute
-    #[serde(rename = "@CoarseUpdatePeriod", default)]
+    #[serde(rename = "@CoarseUpdatePeriod", default, skip_serializing_if = "Option::is_none")]
     pub coarse_update_period: Option<String>,
     /// PhaseShift attribute
-    #[serde(rename = "@PhaseShift", default)]
+    #[serde(rename = "@PhaseShift", default, skip_serializing_if = "Option::is_none")]
     pub phase_shift: Option<String>,
     /// GeneralFaultType attribute
-    #[serde(rename = "@GeneralFaultType", default)]
+    #[serde(rename = "@GeneralFaultType", default, skip_serializing_if = "Option::is_none")]
     pub general_fault_type: Option<String>,
     /// AutoTagUpdate attribute
-    #[serde(rename = "@AutoTagUpdate", default)]
+    #[serde(rename = "@AutoTagUpdate", default, skip_serializing_if = "Option::is_none")]
     pub auto_tag_update: Option<String>,
     /// Alternate1UpdateMultiplier attribute
-    #[serde(rename = "@Alternate1UpdateMultiplier", default)]
+    #[serde(rename = "@Alternate1UpdateMultiplier", default, skip_serializing_if = "Option::is_none")]
     pub alternate1_update_multiplier: Option<String>,
     /// Alternate2UpdateMultiplier attribute
-    #[serde(rename = "@Alternate2UpdateMultiplier", default)]
+    #[serde(rename = "@Alternate2UpdateMultiplier", default, skip_serializing_if = "Option::is_none")]
     pub alternate2_update_multiplier: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 
@@ -37,1963 +37,1963 @@ pub struct MotionGroup {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct Axis {
     /// MotionGroup attribute
-    #[serde(rename = "@MotionGroup", default)]
+    #[serde(rename = "@MotionGroup", default, skip_serializing_if = "Option::is_none")]
     pub motion_group: Option<String>,
     /// CIPDriveSetAttrUpdateBits attribute
-    #[serde(rename = "@CIPDriveSetAttrUpdateBits", default)]
+    #[serde(rename = "@CIPDriveSetAttrUpdateBits", default, skip_serializing_if = "Option::is_none")]
     pub cipdrive_set_attr_update_bits: Option<String>,
     /// CIPDriveGetAttrUpdateBits attribute
-    #[serde(rename = "@CIPDriveGetAttrUpdateBits", default)]
+    #[serde(rename = "@CIPDriveGetAttrUpdateBits", default, skip_serializing_if = "Option::is_none")]
     pub cipdrive_get_attr_update_bits: Option<String>,
     /// CIPControllerSetAttrUpdateBits attribute
-    #[serde(rename = "@CIPControllerSetAttrUpdateBits", default)]
+    #[serde(rename = "@CIPControllerSetAttrUpdateBits", default, skip_serializing_if = "Option::is_none")]
     pub cipcontroller_set_attr_update_bits: Option<String>,
     /// CIPControllerGetAttrUpdateBits attribute
-    #[serde(rename = "@CIPControllerGetAttrUpdateBits", default)]
+    #[serde(rename = "@CIPControllerGetAttrUpdateBits", default, skip_serializing_if = "Option::is_none")]
     pub cipcontroller_get_attr_update_bits: Option<String>,
     /// MotionModule attribute
-    #[serde(rename = "@MotionModule", default)]
+    #[serde(rename = "@MotionModule", default, skip_serializing_if = "Option::is_none")]
     pub motion_module: Option<String>,
     /// ApplicationCatalogNumberInstance attribute
-    #[serde(rename = "@ApplicationCatalogNumberInstance", default)]
+    #[serde(rename = "@ApplicationCatalogNumberInstance", default, skip_serializing_if = "Option::is_none")]
     pub application_catalog_number_instance: Option<String>,
     /// ApplicationCatalogNumberVersion attribute
-    #[serde(rename = "@ApplicationCatalogNumberVersion", default)]
+    #[serde(rename = "@ApplicationCatalogNumberVersion", default, skip_serializing_if = "Option::is_none")]
     pub application_catalog_number_version: Option<String>,
     /// ApplicationCatalogNumber attribute
-    #[serde(rename = "@ApplicationCatalogNumber", default)]
+    #[serde(rename = "@ApplicationCatalogNumber", default, skip_serializing_if = "Option::is_none")]
     pub application_catalog_number: Option<String>,
     /// AxisConfiguration attribute
-    #[serde(rename = "@AxisConfiguration", default)]
+    #[serde(rename = "@AxisConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub axis_configuration: Option<String>,
     /// FeedbackConfiguration attribute
-    #[serde(rename = "@FeedbackConfiguration", default)]
+    #[serde(rename = "@FeedbackConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub feedback_configuration: Option<String>,
     /// MotorDataSource attribute
-    #[serde(rename = "@MotorDataSource", default)]
+    #[serde(rename = "@MotorDataSource", default, skip_serializing_if = "Option::is_none")]
     pub motor_data_source: Option<String>,
     /// MotorCatalogNumber attribute
-    #[serde(rename = "@MotorCatalogNumber", default)]
+    #[serde(rename = "@MotorCatalogNumber", default, skip_serializing_if = "Option::is_none")]
     pub motor_catalog_number: Option<String>,
     /// Feedback1Type attribute
-    #[serde(rename = "@Feedback1Type", default)]
+    #[serde(rename = "@Feedback1Type", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_type: Option<String>,
     /// Feedback2Type attribute
-    #[serde(rename = "@Feedback2Type", default)]
+    #[serde(rename = "@Feedback2Type", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_type: Option<String>,
     /// MotorType attribute
-    #[serde(rename = "@MotorType", default)]
+    #[serde(rename = "@MotorType", default, skip_serializing_if = "Option::is_none")]
     pub motor_type: Option<String>,
     /// MotionScalingConfiguration attribute
-    #[serde(rename = "@MotionScalingConfiguration", default)]
+    #[serde(rename = "@MotionScalingConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub motion_scaling_configuration: Option<String>,
     /// RotationalPosResolution attribute
-    #[serde(rename = "@RotationalPosResolution", default)]
+    #[serde(rename = "@RotationalPosResolution", default, skip_serializing_if = "Option::is_none")]
     pub rotational_pos_resolution: Option<String>,
     /// ConversionConstant attribute
-    #[serde(rename = "@ConversionConstant", default)]
+    #[serde(rename = "@ConversionConstant", default, skip_serializing_if = "Option::is_none")]
     pub conversion_constant: Option<String>,
     /// OutputCamExecutionTargets attribute
-    #[serde(rename = "@OutputCamExecutionTargets", default)]
+    #[serde(rename = "@OutputCamExecutionTargets", default, skip_serializing_if = "Option::is_none")]
     pub output_cam_execution_targets: Option<String>,
     /// PositionUnits attribute
-    #[serde(rename = "@PositionUnits", default)]
+    #[serde(rename = "@PositionUnits", default, skip_serializing_if = "Option::is_none")]
     pub position_units: Option<String>,
     /// AverageVelocityTimebase attribute
-    #[serde(rename = "@AverageVelocityTimebase", default)]
+    #[serde(rename = "@AverageVelocityTimebase", default, skip_serializing_if = "Option::is_none")]
     pub average_velocity_timebase: Option<String>,
     /// RotaryAxis attribute
-    #[serde(rename = "@RotaryAxis", default)]
+    #[serde(rename = "@RotaryAxis", default, skip_serializing_if = "Option::is_none")]
     pub rotary_axis: Option<String>,
     /// PositionUnwind attribute
-    #[serde(rename = "@PositionUnwind", default)]
+    #[serde(rename = "@PositionUnwind", default, skip_serializing_if = "Option::is_none")]
     pub position_unwind: Option<String>,
     /// HomeMode attribute
-    #[serde(rename = "@HomeMode", default)]
+    #[serde(rename = "@HomeMode", default, skip_serializing_if = "Option::is_none")]
     pub home_mode: Option<String>,
     /// HomeDirection attribute
-    #[serde(rename = "@HomeDirection", default)]
+    #[serde(rename = "@HomeDirection", default, skip_serializing_if = "Option::is_none")]
     pub home_direction: Option<String>,
     /// HomeSequence attribute
-    #[serde(rename = "@HomeSequence", default)]
+    #[serde(rename = "@HomeSequence", default, skip_serializing_if = "Option::is_none")]
     pub home_sequence: Option<String>,
     /// HomeConfigurationBits attribute
-    #[serde(rename = "@HomeConfigurationBits", default)]
+    #[serde(rename = "@HomeConfigurationBits", default, skip_serializing_if = "Option::is_none")]
     pub home_configuration_bits: Option<String>,
     /// HomePosition attribute
-    #[serde(rename = "@HomePosition", default)]
+    #[serde(rename = "@HomePosition", default, skip_serializing_if = "Option::is_none")]
     pub home_position: Option<String>,
     /// HomeOffset attribute
-    #[serde(rename = "@HomeOffset", default)]
+    #[serde(rename = "@HomeOffset", default, skip_serializing_if = "Option::is_none")]
     pub home_offset: Option<String>,
     /// HomeSpeed attribute
-    #[serde(rename = "@HomeSpeed", default)]
+    #[serde(rename = "@HomeSpeed", default, skip_serializing_if = "Option::is_none")]
     pub home_speed: Option<String>,
     /// HomeReturnSpeed attribute
-    #[serde(rename = "@HomeReturnSpeed", default)]
+    #[serde(rename = "@HomeReturnSpeed", default, skip_serializing_if = "Option::is_none")]
     pub home_return_speed: Option<String>,
     /// MaximumSpeed attribute
-    #[serde(rename = "@MaximumSpeed", default)]
+    #[serde(rename = "@MaximumSpeed", default, skip_serializing_if = "Option::is_none")]
     pub maximum_speed: Option<String>,
     /// MaximumAcceleration attribute
-    #[serde(rename = "@MaximumAcceleration", default)]
+    #[serde(rename = "@MaximumAcceleration", default, skip_serializing_if = "Option::is_none")]
     pub maximum_acceleration: Option<String>,
     /// MaximumDeceleration attribute
-    #[serde(rename = "@MaximumDeceleration", default)]
+    #[serde(rename = "@MaximumDeceleration", default, skip_serializing_if = "Option::is_none")]
     pub maximum_deceleration: Option<String>,
     /// ProgrammedStopMode attribute
-    #[serde(rename = "@ProgrammedStopMode", default)]
+    #[serde(rename = "@ProgrammedStopMode", default, skip_serializing_if = "Option::is_none")]
     pub programmed_stop_mode: Option<String>,
     /// MasterInputConfigurationBits attribute
-    #[serde(rename = "@MasterInputConfigurationBits", default)]
+    #[serde(rename = "@MasterInputConfigurationBits", default, skip_serializing_if = "Option::is_none")]
     pub master_input_configuration_bits: Option<String>,
     /// MasterPositionFilterBandwidth attribute
-    #[serde(rename = "@MasterPositionFilterBandwidth", default)]
+    #[serde(rename = "@MasterPositionFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub master_position_filter_bandwidth: Option<String>,
     /// AxisType attribute
-    #[serde(rename = "@AxisType", default)]
+    #[serde(rename = "@AxisType", default, skip_serializing_if = "Option::is_none")]
     pub axis_type: Option<String>,
     /// ServoLoopConfiguration attribute
-    #[serde(rename = "@ServoLoopConfiguration", default)]
+    #[serde(rename = "@ServoLoopConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub servo_loop_configuration: Option<String>,
     /// ExternalDriveType attribute
-    #[serde(rename = "@ExternalDriveType", default)]
+    #[serde(rename = "@ExternalDriveType", default, skip_serializing_if = "Option::is_none")]
     pub external_drive_type: Option<String>,
     /// FaultConfigurationBits attribute
-    #[serde(rename = "@FaultConfigurationBits", default)]
+    #[serde(rename = "@FaultConfigurationBits", default, skip_serializing_if = "Option::is_none")]
     pub fault_configuration_bits: Option<String>,
     /// AxisInfoSelect1 attribute
-    #[serde(rename = "@AxisInfoSelect1", default)]
+    #[serde(rename = "@AxisInfoSelect1", default, skip_serializing_if = "Option::is_none")]
     pub axis_info_select1: Option<String>,
     /// AxisInfoSelect2 attribute
-    #[serde(rename = "@AxisInfoSelect2", default)]
+    #[serde(rename = "@AxisInfoSelect2", default, skip_serializing_if = "Option::is_none")]
     pub axis_info_select2: Option<String>,
     /// LDTType attribute
-    #[serde(rename = "@LDTType", default)]
+    #[serde(rename = "@LDTType", default, skip_serializing_if = "Option::is_none")]
     pub ldttype: Option<String>,
     /// LDTRecirculations attribute
-    #[serde(rename = "@LDTRecirculations", default)]
+    #[serde(rename = "@LDTRecirculations", default, skip_serializing_if = "Option::is_none")]
     pub ldtrecirculations: Option<String>,
     /// LDTCalibrationConstant attribute
-    #[serde(rename = "@LDTCalibrationConstant", default)]
+    #[serde(rename = "@LDTCalibrationConstant", default, skip_serializing_if = "Option::is_none")]
     pub ldtcalibration_constant: Option<String>,
     /// LDTCalibrationConstantUnits attribute
-    #[serde(rename = "@LDTCalibrationConstantUnits", default)]
+    #[serde(rename = "@LDTCalibrationConstantUnits", default, skip_serializing_if = "Option::is_none")]
     pub ldtcalibration_constant_units: Option<String>,
     /// LDTScaling attribute
-    #[serde(rename = "@LDTScaling", default)]
+    #[serde(rename = "@LDTScaling", default, skip_serializing_if = "Option::is_none")]
     pub ldtscaling: Option<String>,
     /// LDTScalingUnits attribute
-    #[serde(rename = "@LDTScalingUnits", default)]
+    #[serde(rename = "@LDTScalingUnits", default, skip_serializing_if = "Option::is_none")]
     pub ldtscaling_units: Option<String>,
     /// LDTLength attribute
-    #[serde(rename = "@LDTLength", default)]
+    #[serde(rename = "@LDTLength", default, skip_serializing_if = "Option::is_none")]
     pub ldtlength: Option<String>,
     /// LDTLengthUnits attribute
-    #[serde(rename = "@LDTLengthUnits", default)]
+    #[serde(rename = "@LDTLengthUnits", default, skip_serializing_if = "Option::is_none")]
     pub ldtlength_units: Option<String>,
     /// SSICodeType attribute
-    #[serde(rename = "@SSICodeType", default)]
+    #[serde(rename = "@SSICodeType", default, skip_serializing_if = "Option::is_none")]
     pub ssicode_type: Option<String>,
     /// SSIDataLength attribute
-    #[serde(rename = "@SSIDataLength", default)]
+    #[serde(rename = "@SSIDataLength", default, skip_serializing_if = "Option::is_none")]
     pub ssidata_length: Option<String>,
     /// SSIClockFrequency attribute
-    #[serde(rename = "@SSIClockFrequency", default)]
+    #[serde(rename = "@SSIClockFrequency", default, skip_serializing_if = "Option::is_none")]
     pub ssiclock_frequency: Option<String>,
     /// AbsoluteFeedbackEnable attribute
-    #[serde(rename = "@AbsoluteFeedbackEnable", default)]
+    #[serde(rename = "@AbsoluteFeedbackEnable", default, skip_serializing_if = "Option::is_none")]
     pub absolute_feedback_enable: Option<String>,
     /// AbsoluteFeedbackOffset attribute
-    #[serde(rename = "@AbsoluteFeedbackOffset", default)]
+    #[serde(rename = "@AbsoluteFeedbackOffset", default, skip_serializing_if = "Option::is_none")]
     pub absolute_feedback_offset: Option<String>,
     /// ServoFeedbackType attribute
-    #[serde(rename = "@ServoFeedbackType", default)]
+    #[serde(rename = "@ServoFeedbackType", default, skip_serializing_if = "Option::is_none")]
     pub servo_feedback_type: Option<String>,
     /// ServoPolarityBits attribute
-    #[serde(rename = "@ServoPolarityBits", default)]
+    #[serde(rename = "@ServoPolarityBits", default, skip_serializing_if = "Option::is_none")]
     pub servo_polarity_bits: Option<String>,
     /// VelocityFeedforwardGain attribute
-    #[serde(rename = "@VelocityFeedforwardGain", default)]
+    #[serde(rename = "@VelocityFeedforwardGain", default, skip_serializing_if = "Option::is_none")]
     pub velocity_feedforward_gain: Option<String>,
     /// AccelerationFeedforwardGain attribute
-    #[serde(rename = "@AccelerationFeedforwardGain", default)]
+    #[serde(rename = "@AccelerationFeedforwardGain", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_feedforward_gain: Option<String>,
     /// PositionProportionalGain attribute
-    #[serde(rename = "@PositionProportionalGain", default)]
+    #[serde(rename = "@PositionProportionalGain", default, skip_serializing_if = "Option::is_none")]
     pub position_proportional_gain: Option<String>,
     /// PositionIntegralGain attribute
-    #[serde(rename = "@PositionIntegralGain", default)]
+    #[serde(rename = "@PositionIntegralGain", default, skip_serializing_if = "Option::is_none")]
     pub position_integral_gain: Option<String>,
     /// VelocityProportionalGain attribute
-    #[serde(rename = "@VelocityProportionalGain", default)]
+    #[serde(rename = "@VelocityProportionalGain", default, skip_serializing_if = "Option::is_none")]
     pub velocity_proportional_gain: Option<String>,
     /// VelocityIntegralGain attribute
-    #[serde(rename = "@VelocityIntegralGain", default)]
+    #[serde(rename = "@VelocityIntegralGain", default, skip_serializing_if = "Option::is_none")]
     pub velocity_integral_gain: Option<String>,
     /// VelocityScaling attribute
-    #[serde(rename = "@VelocityScaling", default)]
+    #[serde(rename = "@VelocityScaling", default, skip_serializing_if = "Option::is_none")]
     pub velocity_scaling: Option<String>,
     /// TorqueScaling attribute
-    #[serde(rename = "@TorqueScaling", default)]
+    #[serde(rename = "@TorqueScaling", default, skip_serializing_if = "Option::is_none")]
     pub torque_scaling: Option<String>,
     /// OutputLPFilterBandwidth attribute
-    #[serde(rename = "@OutputLPFilterBandwidth", default)]
+    #[serde(rename = "@OutputLPFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub output_lpfilter_bandwidth: Option<String>,
     /// IntegratorHoldEnable attribute
-    #[serde(rename = "@IntegratorHoldEnable", default)]
+    #[serde(rename = "@IntegratorHoldEnable", default, skip_serializing_if = "Option::is_none")]
     pub integrator_hold_enable: Option<String>,
     /// PositionDifferentialGain attribute
-    #[serde(rename = "@PositionDifferentialGain", default)]
+    #[serde(rename = "@PositionDifferentialGain", default, skip_serializing_if = "Option::is_none")]
     pub position_differential_gain: Option<String>,
     /// DirectionalScalingRatio attribute
-    #[serde(rename = "@DirectionalScalingRatio", default)]
+    #[serde(rename = "@DirectionalScalingRatio", default, skip_serializing_if = "Option::is_none")]
     pub directional_scaling_ratio: Option<String>,
     /// MaximumPositiveTravel attribute
-    #[serde(rename = "@MaximumPositiveTravel", default)]
+    #[serde(rename = "@MaximumPositiveTravel", default, skip_serializing_if = "Option::is_none")]
     pub maximum_positive_travel: Option<String>,
     /// MaximumNegativeTravel attribute
-    #[serde(rename = "@MaximumNegativeTravel", default)]
+    #[serde(rename = "@MaximumNegativeTravel", default, skip_serializing_if = "Option::is_none")]
     pub maximum_negative_travel: Option<String>,
     /// PositionErrorTolerance attribute
-    #[serde(rename = "@PositionErrorTolerance", default)]
+    #[serde(rename = "@PositionErrorTolerance", default, skip_serializing_if = "Option::is_none")]
     pub position_error_tolerance: Option<String>,
     /// PositionLockTolerance attribute
-    #[serde(rename = "@PositionLockTolerance", default)]
+    #[serde(rename = "@PositionLockTolerance", default, skip_serializing_if = "Option::is_none")]
     pub position_lock_tolerance: Option<String>,
     /// OutputLimit attribute
-    #[serde(rename = "@OutputLimit", default)]
+    #[serde(rename = "@OutputLimit", default, skip_serializing_if = "Option::is_none")]
     pub output_limit: Option<String>,
     /// DirectDriveRampRate attribute
-    #[serde(rename = "@DirectDriveRampRate", default)]
+    #[serde(rename = "@DirectDriveRampRate", default, skip_serializing_if = "Option::is_none")]
     pub direct_drive_ramp_rate: Option<String>,
     /// OutputOffset attribute
-    #[serde(rename = "@OutputOffset", default)]
+    #[serde(rename = "@OutputOffset", default, skip_serializing_if = "Option::is_none")]
     pub output_offset: Option<String>,
     /// VelocityOffset attribute
-    #[serde(rename = "@VelocityOffset", default)]
+    #[serde(rename = "@VelocityOffset", default, skip_serializing_if = "Option::is_none")]
     pub velocity_offset: Option<String>,
     /// TorqueOffset attribute
-    #[serde(rename = "@TorqueOffset", default)]
+    #[serde(rename = "@TorqueOffset", default, skip_serializing_if = "Option::is_none")]
     pub torque_offset: Option<String>,
     /// FrictionCompensation attribute
-    #[serde(rename = "@FrictionCompensation", default)]
+    #[serde(rename = "@FrictionCompensation", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation: Option<String>,
     /// FrictionCompensationWindow attribute
-    #[serde(rename = "@FrictionCompensationWindow", default)]
+    #[serde(rename = "@FrictionCompensationWindow", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_window: Option<String>,
     /// BacklashStabilizationWindow attribute
-    #[serde(rename = "@BacklashStabilizationWindow", default)]
+    #[serde(rename = "@BacklashStabilizationWindow", default, skip_serializing_if = "Option::is_none")]
     pub backlash_stabilization_window: Option<String>,
     /// BacklashReversalOffset attribute
-    #[serde(rename = "@BacklashReversalOffset", default)]
+    #[serde(rename = "@BacklashReversalOffset", default, skip_serializing_if = "Option::is_none")]
     pub backlash_reversal_offset: Option<String>,
     /// HardOvertravelFaultAction attribute
-    #[serde(rename = "@HardOvertravelFaultAction", default)]
+    #[serde(rename = "@HardOvertravelFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub hard_overtravel_fault_action: Option<String>,
     /// SoftOvertravelFaultAction attribute
-    #[serde(rename = "@SoftOvertravelFaultAction", default)]
+    #[serde(rename = "@SoftOvertravelFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub soft_overtravel_fault_action: Option<String>,
     /// PositionErrorFaultAction attribute
-    #[serde(rename = "@PositionErrorFaultAction", default)]
+    #[serde(rename = "@PositionErrorFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub position_error_fault_action: Option<String>,
     /// FeedbackFaultAction attribute
-    #[serde(rename = "@FeedbackFaultAction", default)]
+    #[serde(rename = "@FeedbackFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub feedback_fault_action: Option<String>,
     /// FeedbackNoiseFaultAction attribute
-    #[serde(rename = "@FeedbackNoiseFaultAction", default)]
+    #[serde(rename = "@FeedbackNoiseFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub feedback_noise_fault_action: Option<String>,
     /// DriveFaultAction attribute
-    #[serde(rename = "@DriveFaultAction", default)]
+    #[serde(rename = "@DriveFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub drive_fault_action: Option<String>,
     /// TestIncrement attribute
-    #[serde(rename = "@TestIncrement", default)]
+    #[serde(rename = "@TestIncrement", default, skip_serializing_if = "Option::is_none")]
     pub test_increment: Option<String>,
     /// TuningTravelLimit attribute
-    #[serde(rename = "@TuningTravelLimit", default)]
+    #[serde(rename = "@TuningTravelLimit", default, skip_serializing_if = "Option::is_none")]
     pub tuning_travel_limit: Option<String>,
     /// TuningSpeed attribute
-    #[serde(rename = "@TuningSpeed", default)]
+    #[serde(rename = "@TuningSpeed", default, skip_serializing_if = "Option::is_none")]
     pub tuning_speed: Option<String>,
     /// TuningTorque attribute
-    #[serde(rename = "@TuningTorque", default)]
+    #[serde(rename = "@TuningTorque", default, skip_serializing_if = "Option::is_none")]
     pub tuning_torque: Option<String>,
     /// DampingFactor attribute
-    #[serde(rename = "@DampingFactor", default)]
+    #[serde(rename = "@DampingFactor", default, skip_serializing_if = "Option::is_none")]
     pub damping_factor: Option<String>,
     /// DriveModelTimeConstant attribute
-    #[serde(rename = "@DriveModelTimeConstant", default)]
+    #[serde(rename = "@DriveModelTimeConstant", default, skip_serializing_if = "Option::is_none")]
     pub drive_model_time_constant: Option<String>,
     /// PositionServoBandwidth attribute
-    #[serde(rename = "@PositionServoBandwidth", default)]
+    #[serde(rename = "@PositionServoBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub position_servo_bandwidth: Option<String>,
     /// VelocityServoBandwidth attribute
-    #[serde(rename = "@VelocityServoBandwidth", default)]
+    #[serde(rename = "@VelocityServoBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub velocity_servo_bandwidth: Option<String>,
     /// TuningConfigurationBits attribute
-    #[serde(rename = "@TuningConfigurationBits", default)]
+    #[serde(rename = "@TuningConfigurationBits", default, skip_serializing_if = "Option::is_none")]
     pub tuning_configuration_bits: Option<String>,
     /// TorqueLimitSource attribute
-    #[serde(rename = "@TorqueLimitSource", default)]
+    #[serde(rename = "@TorqueLimitSource", default, skip_serializing_if = "Option::is_none")]
     pub torque_limit_source: Option<String>,
     /// DriveUnit attribute
-    #[serde(rename = "@DriveUnit", default)]
+    #[serde(rename = "@DriveUnit", default, skip_serializing_if = "Option::is_none")]
     pub drive_unit: Option<String>,
     /// PositionDataScaling attribute
-    #[serde(rename = "@PositionDataScaling", default)]
+    #[serde(rename = "@PositionDataScaling", default, skip_serializing_if = "Option::is_none")]
     pub position_data_scaling: Option<String>,
     /// PositionDataScalingFactor attribute
-    #[serde(rename = "@PositionDataScalingFactor", default)]
+    #[serde(rename = "@PositionDataScalingFactor", default, skip_serializing_if = "Option::is_none")]
     pub position_data_scaling_factor: Option<String>,
     /// PositionDataScalingExp attribute
-    #[serde(rename = "@PositionDataScalingExp", default)]
+    #[serde(rename = "@PositionDataScalingExp", default, skip_serializing_if = "Option::is_none")]
     pub position_data_scaling_exp: Option<String>,
     /// VelocityDataScaling attribute
-    #[serde(rename = "@VelocityDataScaling", default)]
+    #[serde(rename = "@VelocityDataScaling", default, skip_serializing_if = "Option::is_none")]
     pub velocity_data_scaling: Option<String>,
     /// VelocityDataScalingFactor attribute
-    #[serde(rename = "@VelocityDataScalingFactor", default)]
+    #[serde(rename = "@VelocityDataScalingFactor", default, skip_serializing_if = "Option::is_none")]
     pub velocity_data_scaling_factor: Option<String>,
     /// VelocityDataScalingExp attribute
-    #[serde(rename = "@VelocityDataScalingExp", default)]
+    #[serde(rename = "@VelocityDataScalingExp", default, skip_serializing_if = "Option::is_none")]
     pub velocity_data_scaling_exp: Option<String>,
     /// AccelerationDataScaling attribute
-    #[serde(rename = "@AccelerationDataScaling", default)]
+    #[serde(rename = "@AccelerationDataScaling", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_data_scaling: Option<String>,
     /// AccelerationDataScalingFactor attribute
-    #[serde(rename = "@AccelerationDataScalingFactor", default)]
+    #[serde(rename = "@AccelerationDataScalingFactor", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_data_scaling_factor: Option<String>,
     /// AccelerationDataScalingExp attribute
-    #[serde(rename = "@AccelerationDataScalingExp", default)]
+    #[serde(rename = "@AccelerationDataScalingExp", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_data_scaling_exp: Option<String>,
     /// TorqueDataScaling attribute
-    #[serde(rename = "@TorqueDataScaling", default)]
+    #[serde(rename = "@TorqueDataScaling", default, skip_serializing_if = "Option::is_none")]
     pub torque_data_scaling: Option<String>,
     /// TorqueDataScalingFactor attribute
-    #[serde(rename = "@TorqueDataScalingFactor", default)]
+    #[serde(rename = "@TorqueDataScalingFactor", default, skip_serializing_if = "Option::is_none")]
     pub torque_data_scaling_factor: Option<String>,
     /// TorqueDataScalingExp attribute
-    #[serde(rename = "@TorqueDataScalingExp", default)]
+    #[serde(rename = "@TorqueDataScalingExp", default, skip_serializing_if = "Option::is_none")]
     pub torque_data_scaling_exp: Option<String>,
     /// DrivePolarity attribute
-    #[serde(rename = "@DrivePolarity", default)]
+    #[serde(rename = "@DrivePolarity", default, skip_serializing_if = "Option::is_none")]
     pub drive_polarity: Option<String>,
     /// MotorFeedbackType attribute
-    #[serde(rename = "@MotorFeedbackType", default)]
+    #[serde(rename = "@MotorFeedbackType", default, skip_serializing_if = "Option::is_none")]
     pub motor_feedback_type: Option<String>,
     /// MotorFeedbackResolution attribute
-    #[serde(rename = "@MotorFeedbackResolution", default)]
+    #[serde(rename = "@MotorFeedbackResolution", default, skip_serializing_if = "Option::is_none")]
     pub motor_feedback_resolution: Option<String>,
     /// AuxFeedbackType attribute
-    #[serde(rename = "@AuxFeedbackType", default)]
+    #[serde(rename = "@AuxFeedbackType", default, skip_serializing_if = "Option::is_none")]
     pub aux_feedback_type: Option<String>,
     /// AuxFeedbackResolution attribute
-    #[serde(rename = "@AuxFeedbackResolution", default)]
+    #[serde(rename = "@AuxFeedbackResolution", default, skip_serializing_if = "Option::is_none")]
     pub aux_feedback_resolution: Option<String>,
     /// MotorFeedbackUnit attribute
-    #[serde(rename = "@MotorFeedbackUnit", default)]
+    #[serde(rename = "@MotorFeedbackUnit", default, skip_serializing_if = "Option::is_none")]
     pub motor_feedback_unit: Option<String>,
     /// AuxFeedbackUnit attribute
-    #[serde(rename = "@AuxFeedbackUnit", default)]
+    #[serde(rename = "@AuxFeedbackUnit", default, skip_serializing_if = "Option::is_none")]
     pub aux_feedback_unit: Option<String>,
     /// OutputNotchFilterFrequency attribute
-    #[serde(rename = "@OutputNotchFilterFrequency", default)]
+    #[serde(rename = "@OutputNotchFilterFrequency", default, skip_serializing_if = "Option::is_none")]
     pub output_notch_filter_frequency: Option<String>,
     /// VelocityDroop attribute
-    #[serde(rename = "@VelocityDroop", default)]
+    #[serde(rename = "@VelocityDroop", default, skip_serializing_if = "Option::is_none")]
     pub velocity_droop: Option<String>,
     /// VelocityLimitBipolar attribute
-    #[serde(rename = "@VelocityLimitBipolar", default)]
+    #[serde(rename = "@VelocityLimitBipolar", default, skip_serializing_if = "Option::is_none")]
     pub velocity_limit_bipolar: Option<String>,
     /// AccelerationLimitBipolar attribute
-    #[serde(rename = "@AccelerationLimitBipolar", default)]
+    #[serde(rename = "@AccelerationLimitBipolar", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_limit_bipolar: Option<String>,
     /// TorqueLimitBipolar attribute
-    #[serde(rename = "@TorqueLimitBipolar", default)]
+    #[serde(rename = "@TorqueLimitBipolar", default, skip_serializing_if = "Option::is_none")]
     pub torque_limit_bipolar: Option<String>,
     /// VelocityLimitPositive attribute
-    #[serde(rename = "@VelocityLimitPositive", default)]
+    #[serde(rename = "@VelocityLimitPositive", default, skip_serializing_if = "Option::is_none")]
     pub velocity_limit_positive: Option<String>,
     /// VelocityLimitNegative attribute
-    #[serde(rename = "@VelocityLimitNegative", default)]
+    #[serde(rename = "@VelocityLimitNegative", default, skip_serializing_if = "Option::is_none")]
     pub velocity_limit_negative: Option<String>,
     /// VelocityThreshold attribute
-    #[serde(rename = "@VelocityThreshold", default)]
+    #[serde(rename = "@VelocityThreshold", default, skip_serializing_if = "Option::is_none")]
     pub velocity_threshold: Option<String>,
     /// VelocityWindow attribute
-    #[serde(rename = "@VelocityWindow", default)]
+    #[serde(rename = "@VelocityWindow", default, skip_serializing_if = "Option::is_none")]
     pub velocity_window: Option<String>,
     /// VelocityStandstillWindow attribute
-    #[serde(rename = "@VelocityStandstillWindow", default)]
+    #[serde(rename = "@VelocityStandstillWindow", default, skip_serializing_if = "Option::is_none")]
     pub velocity_standstill_window: Option<String>,
     /// AccelerationLimitPositive attribute
-    #[serde(rename = "@AccelerationLimitPositive", default)]
+    #[serde(rename = "@AccelerationLimitPositive", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_limit_positive: Option<String>,
     /// AccelerationLimitNegative attribute
-    #[serde(rename = "@AccelerationLimitNegative", default)]
+    #[serde(rename = "@AccelerationLimitNegative", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_limit_negative: Option<String>,
     /// TorqueLimitPositive attribute
-    #[serde(rename = "@TorqueLimitPositive", default)]
+    #[serde(rename = "@TorqueLimitPositive", default, skip_serializing_if = "Option::is_none")]
     pub torque_limit_positive: Option<String>,
     /// TorqueLimitNegative attribute
-    #[serde(rename = "@TorqueLimitNegative", default)]
+    #[serde(rename = "@TorqueLimitNegative", default, skip_serializing_if = "Option::is_none")]
     pub torque_limit_negative: Option<String>,
     /// TorqueThreshold attribute
-    #[serde(rename = "@TorqueThreshold", default)]
+    #[serde(rename = "@TorqueThreshold", default, skip_serializing_if = "Option::is_none")]
     pub torque_threshold: Option<String>,
     /// DriveThermalFaultAction attribute
-    #[serde(rename = "@DriveThermalFaultAction", default)]
+    #[serde(rename = "@DriveThermalFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub drive_thermal_fault_action: Option<String>,
     /// MotorThermalFaultAction attribute
-    #[serde(rename = "@MotorThermalFaultAction", default)]
+    #[serde(rename = "@MotorThermalFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub motor_thermal_fault_action: Option<String>,
     /// DriveEnableInputFaultAction attribute
-    #[serde(rename = "@DriveEnableInputFaultAction", default)]
+    #[serde(rename = "@DriveEnableInputFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub drive_enable_input_fault_action: Option<String>,
     /// StoppingTorque attribute
-    #[serde(rename = "@StoppingTorque", default)]
+    #[serde(rename = "@StoppingTorque", default, skip_serializing_if = "Option::is_none")]
     pub stopping_torque: Option<String>,
     /// StoppingTimeLimit attribute
-    #[serde(rename = "@StoppingTimeLimit", default)]
+    #[serde(rename = "@StoppingTimeLimit", default, skip_serializing_if = "Option::is_none")]
     pub stopping_time_limit: Option<String>,
     /// BrakeEngageDelayTime attribute
-    #[serde(rename = "@BrakeEngageDelayTime", default)]
+    #[serde(rename = "@BrakeEngageDelayTime", default, skip_serializing_if = "Option::is_none")]
     pub brake_engage_delay_time: Option<String>,
     /// BrakeReleaseDelayTime attribute
-    #[serde(rename = "@BrakeReleaseDelayTime", default)]
+    #[serde(rename = "@BrakeReleaseDelayTime", default, skip_serializing_if = "Option::is_none")]
     pub brake_release_delay_time: Option<String>,
     /// PowerSupplyID attribute
-    #[serde(rename = "@PowerSupplyID", default)]
+    #[serde(rename = "@PowerSupplyID", default, skip_serializing_if = "Option::is_none")]
     pub power_supply_id: Option<String>,
     /// BusRegulatorID attribute
-    #[serde(rename = "@BusRegulatorID", default)]
+    #[serde(rename = "@BusRegulatorID", default, skip_serializing_if = "Option::is_none")]
     pub bus_regulator_id: Option<String>,
     /// PWMFrequencySelect attribute
-    #[serde(rename = "@PWMFrequencySelect", default)]
+    #[serde(rename = "@PWMFrequencySelect", default, skip_serializing_if = "Option::is_none")]
     pub pwmfrequency_select: Option<String>,
     /// LoadInertiaRatio attribute
-    #[serde(rename = "@LoadInertiaRatio", default)]
+    #[serde(rename = "@LoadInertiaRatio", default, skip_serializing_if = "Option::is_none")]
     pub load_inertia_ratio: Option<String>,
     /// AmplifierCatalogNumber attribute
-    #[serde(rename = "@AmplifierCatalogNumber", default)]
+    #[serde(rename = "@AmplifierCatalogNumber", default, skip_serializing_if = "Option::is_none")]
     pub amplifier_catalog_number: Option<String>,
     /// AuxFeedbackRatio attribute
-    #[serde(rename = "@AuxFeedbackRatio", default)]
+    #[serde(rename = "@AuxFeedbackRatio", default, skip_serializing_if = "Option::is_none")]
     pub aux_feedback_ratio: Option<String>,
     /// ContinuousTorqueLimit attribute
-    #[serde(rename = "@ContinuousTorqueLimit", default)]
+    #[serde(rename = "@ContinuousTorqueLimit", default, skip_serializing_if = "Option::is_none")]
     pub continuous_torque_limit: Option<String>,
     /// ResistiveBrakeContactDelay attribute
-    #[serde(rename = "@ResistiveBrakeContactDelay", default)]
+    #[serde(rename = "@ResistiveBrakeContactDelay", default, skip_serializing_if = "Option::is_none")]
     pub resistive_brake_contact_delay: Option<String>,
     /// ConfigurationProfile attribute
-    #[serde(rename = "@ConfigurationProfile", default)]
+    #[serde(rename = "@ConfigurationProfile", default, skip_serializing_if = "Option::is_none")]
     pub configuration_profile: Option<String>,
     /// RegistrationInputs attribute
-    #[serde(rename = "@RegistrationInputs", default)]
+    #[serde(rename = "@RegistrationInputs", default, skip_serializing_if = "Option::is_none")]
     pub registration_inputs: Option<String>,
     /// MaximumAccelerationJerk attribute
-    #[serde(rename = "@MaximumAccelerationJerk", default)]
+    #[serde(rename = "@MaximumAccelerationJerk", default, skip_serializing_if = "Option::is_none")]
     pub maximum_acceleration_jerk: Option<String>,
     /// MaximumDecelerationJerk attribute
-    #[serde(rename = "@MaximumDecelerationJerk", default)]
+    #[serde(rename = "@MaximumDecelerationJerk", default, skip_serializing_if = "Option::is_none")]
     pub maximum_deceleration_jerk: Option<String>,
     /// DynamicsConfigurationBits attribute
-    #[serde(rename = "@DynamicsConfigurationBits", default)]
+    #[serde(rename = "@DynamicsConfigurationBits", default, skip_serializing_if = "Option::is_none")]
     pub dynamics_configuration_bits: Option<String>,
     /// PhaseLossFaultAction attribute
-    #[serde(rename = "@PhaseLossFaultAction", default)]
+    #[serde(rename = "@PhaseLossFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub phase_loss_fault_action: Option<String>,
     /// HomeTorqueLevel attribute
-    #[serde(rename = "@HomeTorqueLevel", default)]
+    #[serde(rename = "@HomeTorqueLevel", default, skip_serializing_if = "Option::is_none")]
     pub home_torque_level: Option<String>,
     /// InputPowerPhase attribute
-    #[serde(rename = "@InputPowerPhase", default)]
+    #[serde(rename = "@InputPowerPhase", default, skip_serializing_if = "Option::is_none")]
     pub input_power_phase: Option<String>,
     /// FeedbackUnitRatio attribute
-    #[serde(rename = "@FeedbackUnitRatio", default)]
+    #[serde(rename = "@FeedbackUnitRatio", default, skip_serializing_if = "Option::is_none")]
     pub feedback_unit_ratio: Option<String>,
     /// AccelerationLimit attribute
-    #[serde(rename = "@AccelerationLimit", default)]
+    #[serde(rename = "@AccelerationLimit", default, skip_serializing_if = "Option::is_none")]
     pub acceleration_limit: Option<String>,
     /// DecelerationLimit attribute
-    #[serde(rename = "@DecelerationLimit", default)]
+    #[serde(rename = "@DecelerationLimit", default, skip_serializing_if = "Option::is_none")]
     pub deceleration_limit: Option<String>,
     /// RampJerkControl attribute
-    #[serde(rename = "@RampJerkControl", default)]
+    #[serde(rename = "@RampJerkControl", default, skip_serializing_if = "Option::is_none")]
     pub ramp_jerk_control: Option<String>,
     /// FlyingStartEnable attribute
-    #[serde(rename = "@FlyingStartEnable", default)]
+    #[serde(rename = "@FlyingStartEnable", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_enable: Option<String>,
     /// SkipSpeed1 attribute
-    #[serde(rename = "@SkipSpeed1", default)]
+    #[serde(rename = "@SkipSpeed1", default, skip_serializing_if = "Option::is_none")]
     pub skip_speed1: Option<String>,
     /// SkipSpeed2 attribute
-    #[serde(rename = "@SkipSpeed2", default)]
+    #[serde(rename = "@SkipSpeed2", default, skip_serializing_if = "Option::is_none")]
     pub skip_speed2: Option<String>,
     /// SkipSpeed3 attribute
-    #[serde(rename = "@SkipSpeed3", default)]
+    #[serde(rename = "@SkipSpeed3", default, skip_serializing_if = "Option::is_none")]
     pub skip_speed3: Option<String>,
     /// SkipSpeedBand attribute
-    #[serde(rename = "@SkipSpeedBand", default)]
+    #[serde(rename = "@SkipSpeedBand", default, skip_serializing_if = "Option::is_none")]
     pub skip_speed_band: Option<String>,
     /// CommandTorque attribute
-    #[serde(rename = "@CommandTorque", default)]
+    #[serde(rename = "@CommandTorque", default, skip_serializing_if = "Option::is_none")]
     pub command_torque: Option<String>,
     /// PositionIntegratorBandwidth attribute
-    #[serde(rename = "@PositionIntegratorBandwidth", default)]
+    #[serde(rename = "@PositionIntegratorBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub position_integrator_bandwidth: Option<String>,
     /// PositionErrorToleranceTime attribute
-    #[serde(rename = "@PositionErrorToleranceTime", default)]
+    #[serde(rename = "@PositionErrorToleranceTime", default, skip_serializing_if = "Option::is_none")]
     pub position_error_tolerance_time: Option<String>,
     /// PositionIntegratorControl attribute
-    #[serde(rename = "@PositionIntegratorControl", default)]
+    #[serde(rename = "@PositionIntegratorControl", default, skip_serializing_if = "Option::is_none")]
     pub position_integrator_control: Option<String>,
     /// PositionIntegratorPreload attribute
-    #[serde(rename = "@PositionIntegratorPreload", default)]
+    #[serde(rename = "@PositionIntegratorPreload", default, skip_serializing_if = "Option::is_none")]
     pub position_integrator_preload: Option<String>,
     /// VelocityErrorTolerance attribute
-    #[serde(rename = "@VelocityErrorTolerance", default)]
+    #[serde(rename = "@VelocityErrorTolerance", default, skip_serializing_if = "Option::is_none")]
     pub velocity_error_tolerance: Option<String>,
     /// VelocityErrorToleranceTime attribute
-    #[serde(rename = "@VelocityErrorToleranceTime", default)]
+    #[serde(rename = "@VelocityErrorToleranceTime", default, skip_serializing_if = "Option::is_none")]
     pub velocity_error_tolerance_time: Option<String>,
     /// VelocityIntegratorControl attribute
-    #[serde(rename = "@VelocityIntegratorControl", default)]
+    #[serde(rename = "@VelocityIntegratorControl", default, skip_serializing_if = "Option::is_none")]
     pub velocity_integrator_control: Option<String>,
     /// VelocityIntegratorPreload attribute
-    #[serde(rename = "@VelocityIntegratorPreload", default)]
+    #[serde(rename = "@VelocityIntegratorPreload", default, skip_serializing_if = "Option::is_none")]
     pub velocity_integrator_preload: Option<String>,
     /// VelocityLockTolerance attribute
-    #[serde(rename = "@VelocityLockTolerance", default)]
+    #[serde(rename = "@VelocityLockTolerance", default, skip_serializing_if = "Option::is_none")]
     pub velocity_lock_tolerance: Option<String>,
     /// SystemInertia attribute
-    #[serde(rename = "@SystemInertia", default)]
+    #[serde(rename = "@SystemInertia", default, skip_serializing_if = "Option::is_none")]
     pub system_inertia: Option<String>,
     /// TorqueLowPassFilterBandwidth attribute
-    #[serde(rename = "@TorqueLowPassFilterBandwidth", default)]
+    #[serde(rename = "@TorqueLowPassFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub torque_low_pass_filter_bandwidth: Option<String>,
     /// TorqueNotchFilterFrequency attribute
-    #[serde(rename = "@TorqueNotchFilterFrequency", default)]
+    #[serde(rename = "@TorqueNotchFilterFrequency", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_frequency: Option<String>,
     /// TorqueRateLimit attribute
-    #[serde(rename = "@TorqueRateLimit", default)]
+    #[serde(rename = "@TorqueRateLimit", default, skip_serializing_if = "Option::is_none")]
     pub torque_rate_limit: Option<String>,
     /// OvertorqueLimit attribute
-    #[serde(rename = "@OvertorqueLimit", default)]
+    #[serde(rename = "@OvertorqueLimit", default, skip_serializing_if = "Option::is_none")]
     pub overtorque_limit: Option<String>,
     /// OvertorqueLimitTime attribute
-    #[serde(rename = "@OvertorqueLimitTime", default)]
+    #[serde(rename = "@OvertorqueLimitTime", default, skip_serializing_if = "Option::is_none")]
     pub overtorque_limit_time: Option<String>,
     /// UndertorqueLimit attribute
-    #[serde(rename = "@UndertorqueLimit", default)]
+    #[serde(rename = "@UndertorqueLimit", default, skip_serializing_if = "Option::is_none")]
     pub undertorque_limit: Option<String>,
     /// UndertorqueLimitTime attribute
-    #[serde(rename = "@UndertorqueLimitTime", default)]
+    #[serde(rename = "@UndertorqueLimitTime", default, skip_serializing_if = "Option::is_none")]
     pub undertorque_limit_time: Option<String>,
     /// FluxCurrentReference attribute
-    #[serde(rename = "@FluxCurrentReference", default)]
+    #[serde(rename = "@FluxCurrentReference", default, skip_serializing_if = "Option::is_none")]
     pub flux_current_reference: Option<String>,
     /// CurrentError attribute
-    #[serde(rename = "@CurrentError", default)]
+    #[serde(rename = "@CurrentError", default, skip_serializing_if = "Option::is_none")]
     pub current_error: Option<String>,
     /// TorqueLoopBandwidth attribute
-    #[serde(rename = "@TorqueLoopBandwidth", default)]
+    #[serde(rename = "@TorqueLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub torque_loop_bandwidth: Option<String>,
     /// TorqueIntegralTimeConstant attribute
-    #[serde(rename = "@TorqueIntegralTimeConstant", default)]
+    #[serde(rename = "@TorqueIntegralTimeConstant", default, skip_serializing_if = "Option::is_none")]
     pub torque_integral_time_constant: Option<String>,
     /// FluxLoopBandwidth attribute
-    #[serde(rename = "@FluxLoopBandwidth", default)]
+    #[serde(rename = "@FluxLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub flux_loop_bandwidth: Option<String>,
     /// FluxIntegralTimeConstant attribute
-    #[serde(rename = "@FluxIntegralTimeConstant", default)]
+    #[serde(rename = "@FluxIntegralTimeConstant", default, skip_serializing_if = "Option::is_none")]
     pub flux_integral_time_constant: Option<String>,
     /// FluxUpControl attribute
-    #[serde(rename = "@FluxUpControl", default)]
+    #[serde(rename = "@FluxUpControl", default, skip_serializing_if = "Option::is_none")]
     pub flux_up_control: Option<String>,
     /// FluxUpTime attribute
-    #[serde(rename = "@FluxUpTime", default)]
+    #[serde(rename = "@FluxUpTime", default, skip_serializing_if = "Option::is_none")]
     pub flux_up_time: Option<String>,
     /// FrequencyControlMethod attribute
-    #[serde(rename = "@FrequencyControlMethod", default)]
+    #[serde(rename = "@FrequencyControlMethod", default, skip_serializing_if = "Option::is_none")]
     pub frequency_control_method: Option<String>,
     /// MaximumVoltage attribute
-    #[serde(rename = "@MaximumVoltage", default)]
+    #[serde(rename = "@MaximumVoltage", default, skip_serializing_if = "Option::is_none")]
     pub maximum_voltage: Option<String>,
     /// MaximumFrequency attribute
-    #[serde(rename = "@MaximumFrequency", default)]
+    #[serde(rename = "@MaximumFrequency", default, skip_serializing_if = "Option::is_none")]
     pub maximum_frequency: Option<String>,
     /// BreakVoltage attribute
-    #[serde(rename = "@BreakVoltage", default)]
+    #[serde(rename = "@BreakVoltage", default, skip_serializing_if = "Option::is_none")]
     pub break_voltage: Option<String>,
     /// BreakFrequency attribute
-    #[serde(rename = "@BreakFrequency", default)]
+    #[serde(rename = "@BreakFrequency", default, skip_serializing_if = "Option::is_none")]
     pub break_frequency: Option<String>,
     /// StartBoost attribute
-    #[serde(rename = "@StartBoost", default)]
+    #[serde(rename = "@StartBoost", default, skip_serializing_if = "Option::is_none")]
     pub start_boost: Option<String>,
     /// RunBoost attribute
-    #[serde(rename = "@RunBoost", default)]
+    #[serde(rename = "@RunBoost", default, skip_serializing_if = "Option::is_none")]
     pub run_boost: Option<String>,
     /// StoppingAction attribute
-    #[serde(rename = "@StoppingAction", default)]
+    #[serde(rename = "@StoppingAction", default, skip_serializing_if = "Option::is_none")]
     pub stopping_action: Option<String>,
     /// MechanicalBrakeControl attribute
-    #[serde(rename = "@MechanicalBrakeControl", default)]
+    #[serde(rename = "@MechanicalBrakeControl", default, skip_serializing_if = "Option::is_none")]
     pub mechanical_brake_control: Option<String>,
     /// MechanicalBrakeReleaseDelay attribute
-    #[serde(rename = "@MechanicalBrakeReleaseDelay", default)]
+    #[serde(rename = "@MechanicalBrakeReleaseDelay", default, skip_serializing_if = "Option::is_none")]
     pub mechanical_brake_release_delay: Option<String>,
     /// MechanicalBrakeEngageDelay attribute
-    #[serde(rename = "@MechanicalBrakeEngageDelay", default)]
+    #[serde(rename = "@MechanicalBrakeEngageDelay", default, skip_serializing_if = "Option::is_none")]
     pub mechanical_brake_engage_delay: Option<String>,
     /// PowerLossAction attribute
-    #[serde(rename = "@PowerLossAction", default)]
+    #[serde(rename = "@PowerLossAction", default, skip_serializing_if = "Option::is_none")]
     pub power_loss_action: Option<String>,
     /// PowerLossThreshold attribute
-    #[serde(rename = "@PowerLossThreshold", default)]
+    #[serde(rename = "@PowerLossThreshold", default, skip_serializing_if = "Option::is_none")]
     pub power_loss_threshold: Option<String>,
     /// ShutdownAction attribute
-    #[serde(rename = "@ShutdownAction", default)]
+    #[serde(rename = "@ShutdownAction", default, skip_serializing_if = "Option::is_none")]
     pub shutdown_action: Option<String>,
     /// InverterCapacity attribute
-    #[serde(rename = "@InverterCapacity", default)]
+    #[serde(rename = "@InverterCapacity", default, skip_serializing_if = "Option::is_none")]
     pub inverter_capacity: Option<String>,
     /// ConverterCapacity attribute
-    #[serde(rename = "@ConverterCapacity", default)]
+    #[serde(rename = "@ConverterCapacity", default, skip_serializing_if = "Option::is_none")]
     pub converter_capacity: Option<String>,
     /// InverterOverloadAction attribute
-    #[serde(rename = "@InverterOverloadAction", default)]
+    #[serde(rename = "@InverterOverloadAction", default, skip_serializing_if = "Option::is_none")]
     pub inverter_overload_action: Option<String>,
     /// MotorOverloadAction attribute
-    #[serde(rename = "@MotorOverloadAction", default)]
+    #[serde(rename = "@MotorOverloadAction", default, skip_serializing_if = "Option::is_none")]
     pub motor_overload_action: Option<String>,
     /// CIPAxisExceptionAction attribute
-    #[serde(rename = "@CIPAxisExceptionAction", default)]
+    #[serde(rename = "@CIPAxisExceptionAction", default, skip_serializing_if = "Option::is_none")]
     pub cipaxis_exception_action: Option<String>,
     /// CIPAxisExceptionActionRA attribute
-    #[serde(rename = "@CIPAxisExceptionActionRA", default)]
+    #[serde(rename = "@CIPAxisExceptionActionRA", default, skip_serializing_if = "Option::is_none")]
     pub cipaxis_exception_action_ra: Option<String>,
     /// MotorOverspeedUserLimit attribute
-    #[serde(rename = "@MotorOverspeedUserLimit", default)]
+    #[serde(rename = "@MotorOverspeedUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub motor_overspeed_user_limit: Option<String>,
     /// MotorThermalOverloadUserLimit attribute
-    #[serde(rename = "@MotorThermalOverloadUserLimit", default)]
+    #[serde(rename = "@MotorThermalOverloadUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub motor_thermal_overload_user_limit: Option<String>,
     /// InverterThermalOverloadUserLimit attribute
-    #[serde(rename = "@InverterThermalOverloadUserLimit", default)]
+    #[serde(rename = "@InverterThermalOverloadUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub inverter_thermal_overload_user_limit: Option<String>,
     /// LocalControl attribute
-    #[serde(rename = "@LocalControl", default)]
+    #[serde(rename = "@LocalControl", default, skip_serializing_if = "Option::is_none")]
     pub local_control: Option<String>,
     /// PositionLeadLagFilterBandwidth attribute
-    #[serde(rename = "@PositionLeadLagFilterBandwidth", default)]
+    #[serde(rename = "@PositionLeadLagFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub position_lead_lag_filter_bandwidth: Option<String>,
     /// PositionLeadLagFilterGain attribute
-    #[serde(rename = "@PositionLeadLagFilterGain", default)]
+    #[serde(rename = "@PositionLeadLagFilterGain", default, skip_serializing_if = "Option::is_none")]
     pub position_lead_lag_filter_gain: Option<String>,
     /// PositionNotchFilterFrequency attribute
-    #[serde(rename = "@PositionNotchFilterFrequency", default)]
+    #[serde(rename = "@PositionNotchFilterFrequency", default, skip_serializing_if = "Option::is_none")]
     pub position_notch_filter_frequency: Option<String>,
     /// VelocityNegativeFeedforwardGain attribute
-    #[serde(rename = "@VelocityNegativeFeedforwardGain", default)]
+    #[serde(rename = "@VelocityNegativeFeedforwardGain", default, skip_serializing_if = "Option::is_none")]
     pub velocity_negative_feedforward_gain: Option<String>,
     /// BacklashCompensationWindow attribute
-    #[serde(rename = "@BacklashCompensationWindow", default)]
+    #[serde(rename = "@BacklashCompensationWindow", default, skip_serializing_if = "Option::is_none")]
     pub backlash_compensation_window: Option<String>,
     /// TorqueLeadLagFilterBandwidth attribute
-    #[serde(rename = "@TorqueLeadLagFilterBandwidth", default)]
+    #[serde(rename = "@TorqueLeadLagFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub torque_lead_lag_filter_bandwidth: Option<String>,
     /// TorqueLeadLagFilterGain attribute
-    #[serde(rename = "@TorqueLeadLagFilterGain", default)]
+    #[serde(rename = "@TorqueLeadLagFilterGain", default, skip_serializing_if = "Option::is_none")]
     pub torque_lead_lag_filter_gain: Option<String>,
     /// SLATConfiguration attribute
-    #[serde(rename = "@SLATConfiguration", default)]
+    #[serde(rename = "@SLATConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub slatconfiguration: Option<String>,
     /// SLATSetPoint attribute
-    #[serde(rename = "@SLATSetPoint", default)]
+    #[serde(rename = "@SLATSetPoint", default, skip_serializing_if = "Option::is_none")]
     pub slatset_point: Option<String>,
     /// SLATTimeDelay attribute
-    #[serde(rename = "@SLATTimeDelay", default)]
+    #[serde(rename = "@SLATTimeDelay", default, skip_serializing_if = "Option::is_none")]
     pub slattime_delay: Option<String>,
     /// CurrentDisturbance attribute
-    #[serde(rename = "@CurrentDisturbance", default)]
+    #[serde(rename = "@CurrentDisturbance", default, skip_serializing_if = "Option::is_none")]
     pub current_disturbance: Option<String>,
     /// CommutationSelfSensingCurrent attribute
-    #[serde(rename = "@CommutationSelfSensingCurrent", default)]
+    #[serde(rename = "@CommutationSelfSensingCurrent", default, skip_serializing_if = "Option::is_none")]
     pub commutation_self_sensing_current: Option<String>,
     /// DCInjectionBrakeCurrent attribute
-    #[serde(rename = "@DCInjectionBrakeCurrent", default)]
+    #[serde(rename = "@DCInjectionBrakeCurrent", default, skip_serializing_if = "Option::is_none")]
     pub dcinjection_brake_current: Option<String>,
     /// FluxBrakingEnable attribute
-    #[serde(rename = "@FluxBrakingEnable", default)]
+    #[serde(rename = "@FluxBrakingEnable", default, skip_serializing_if = "Option::is_none")]
     pub flux_braking_enable: Option<String>,
     /// DCInjectionBrakeTime attribute
-    #[serde(rename = "@DCInjectionBrakeTime", default)]
+    #[serde(rename = "@DCInjectionBrakeTime", default, skip_serializing_if = "Option::is_none")]
     pub dcinjection_brake_time: Option<String>,
     /// MotorDeviceCode attribute
-    #[serde(rename = "@MotorDeviceCode", default)]
+    #[serde(rename = "@MotorDeviceCode", default, skip_serializing_if = "Option::is_none")]
     pub motor_device_code: Option<String>,
     /// MotorUnit attribute
-    #[serde(rename = "@MotorUnit", default)]
+    #[serde(rename = "@MotorUnit", default, skip_serializing_if = "Option::is_none")]
     pub motor_unit: Option<String>,
     /// MotorPolarity attribute
-    #[serde(rename = "@MotorPolarity", default)]
+    #[serde(rename = "@MotorPolarity", default, skip_serializing_if = "Option::is_none")]
     pub motor_polarity: Option<String>,
     /// MotorRatedVoltage attribute
-    #[serde(rename = "@MotorRatedVoltage", default)]
+    #[serde(rename = "@MotorRatedVoltage", default, skip_serializing_if = "Option::is_none")]
     pub motor_rated_voltage: Option<String>,
     /// MotorRatedContinuousCurrent attribute
-    #[serde(rename = "@MotorRatedContinuousCurrent", default)]
+    #[serde(rename = "@MotorRatedContinuousCurrent", default, skip_serializing_if = "Option::is_none")]
     pub motor_rated_continuous_current: Option<String>,
     /// MotorRatedPeakCurrent attribute
-    #[serde(rename = "@MotorRatedPeakCurrent", default)]
+    #[serde(rename = "@MotorRatedPeakCurrent", default, skip_serializing_if = "Option::is_none")]
     pub motor_rated_peak_current: Option<String>,
     /// MotorRatedOutputPower attribute
-    #[serde(rename = "@MotorRatedOutputPower", default)]
+    #[serde(rename = "@MotorRatedOutputPower", default, skip_serializing_if = "Option::is_none")]
     pub motor_rated_output_power: Option<String>,
     /// MotorOverloadLimit attribute
-    #[serde(rename = "@MotorOverloadLimit", default)]
+    #[serde(rename = "@MotorOverloadLimit", default, skip_serializing_if = "Option::is_none")]
     pub motor_overload_limit: Option<String>,
     /// MotorIntegralThermalSwitch attribute
-    #[serde(rename = "@MotorIntegralThermalSwitch", default)]
+    #[serde(rename = "@MotorIntegralThermalSwitch", default, skip_serializing_if = "Option::is_none")]
     pub motor_integral_thermal_switch: Option<String>,
     /// MotorMaxWindingTemperature attribute
-    #[serde(rename = "@MotorMaxWindingTemperature", default)]
+    #[serde(rename = "@MotorMaxWindingTemperature", default, skip_serializing_if = "Option::is_none")]
     pub motor_max_winding_temperature: Option<String>,
     /// MotorWindingToAmbientCapacitance attribute
-    #[serde(rename = "@MotorWindingToAmbientCapacitance", default)]
+    #[serde(rename = "@MotorWindingToAmbientCapacitance", default, skip_serializing_if = "Option::is_none")]
     pub motor_winding_to_ambient_capacitance: Option<String>,
     /// MotorWindingToAmbientResistance attribute
-    #[serde(rename = "@MotorWindingToAmbientResistance", default)]
+    #[serde(rename = "@MotorWindingToAmbientResistance", default, skip_serializing_if = "Option::is_none")]
     pub motor_winding_to_ambient_resistance: Option<String>,
     /// PMMotorResistance attribute
-    #[serde(rename = "@PMMotorResistance", default)]
+    #[serde(rename = "@PMMotorResistance", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_resistance: Option<String>,
     /// PMMotorInductance attribute
-    #[serde(rename = "@PMMotorInductance", default)]
+    #[serde(rename = "@PMMotorInductance", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_inductance: Option<String>,
     /// RotaryMotorPoles attribute
-    #[serde(rename = "@RotaryMotorPoles", default)]
+    #[serde(rename = "@RotaryMotorPoles", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_poles: Option<String>,
     /// RotaryMotorInertia attribute
-    #[serde(rename = "@RotaryMotorInertia", default)]
+    #[serde(rename = "@RotaryMotorInertia", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_inertia: Option<String>,
     /// RotaryMotorRatedSpeed attribute
-    #[serde(rename = "@RotaryMotorRatedSpeed", default)]
+    #[serde(rename = "@RotaryMotorRatedSpeed", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_rated_speed: Option<String>,
     /// RotaryMotorMaxSpeed attribute
-    #[serde(rename = "@RotaryMotorMaxSpeed", default)]
+    #[serde(rename = "@RotaryMotorMaxSpeed", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_max_speed: Option<String>,
     /// RotaryMotorDampingCoefficient attribute
-    #[serde(rename = "@RotaryMotorDampingCoefficient", default)]
+    #[serde(rename = "@RotaryMotorDampingCoefficient", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_damping_coefficient: Option<String>,
     /// LinearMotorPolePitch attribute
-    #[serde(rename = "@LinearMotorPolePitch", default)]
+    #[serde(rename = "@LinearMotorPolePitch", default, skip_serializing_if = "Option::is_none")]
     pub linear_motor_pole_pitch: Option<String>,
     /// LinearMotorRatedSpeed attribute
-    #[serde(rename = "@LinearMotorRatedSpeed", default)]
+    #[serde(rename = "@LinearMotorRatedSpeed", default, skip_serializing_if = "Option::is_none")]
     pub linear_motor_rated_speed: Option<String>,
     /// LinearMotorMass attribute
-    #[serde(rename = "@LinearMotorMass", default)]
+    #[serde(rename = "@LinearMotorMass", default, skip_serializing_if = "Option::is_none")]
     pub linear_motor_mass: Option<String>,
     /// LinearMotorMaxSpeed attribute
-    #[serde(rename = "@LinearMotorMaxSpeed", default)]
+    #[serde(rename = "@LinearMotorMaxSpeed", default, skip_serializing_if = "Option::is_none")]
     pub linear_motor_max_speed: Option<String>,
     /// LinearMotorDampingCoefficient attribute
-    #[serde(rename = "@LinearMotorDampingCoefficient", default)]
+    #[serde(rename = "@LinearMotorDampingCoefficient", default, skip_serializing_if = "Option::is_none")]
     pub linear_motor_damping_coefficient: Option<String>,
     /// PMMotorRatedTorque attribute
-    #[serde(rename = "@PMMotorRatedTorque", default)]
+    #[serde(rename = "@PMMotorRatedTorque", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_rated_torque: Option<String>,
     /// PMMotorTorqueConstant attribute
-    #[serde(rename = "@PMMotorTorqueConstant", default)]
+    #[serde(rename = "@PMMotorTorqueConstant", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_torque_constant: Option<String>,
     /// PMMotorRotaryVoltageConstant attribute
-    #[serde(rename = "@PMMotorRotaryVoltageConstant", default)]
+    #[serde(rename = "@PMMotorRotaryVoltageConstant", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_rotary_voltage_constant: Option<String>,
     /// PMMotorRatedForce attribute
-    #[serde(rename = "@PMMotorRatedForce", default)]
+    #[serde(rename = "@PMMotorRatedForce", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_rated_force: Option<String>,
     /// PMMotorForceConstant attribute
-    #[serde(rename = "@PMMotorForceConstant", default)]
+    #[serde(rename = "@PMMotorForceConstant", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_force_constant: Option<String>,
     /// PMMotorLinearVoltageConstant attribute
-    #[serde(rename = "@PMMotorLinearVoltageConstant", default)]
+    #[serde(rename = "@PMMotorLinearVoltageConstant", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_linear_voltage_constant: Option<String>,
     /// InductionMotorRatedFrequency attribute
-    #[serde(rename = "@InductionMotorRatedFrequency", default)]
+    #[serde(rename = "@InductionMotorRatedFrequency", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_rated_frequency: Option<String>,
     /// InductionMotorFluxCurrent attribute
-    #[serde(rename = "@InductionMotorFluxCurrent", default)]
+    #[serde(rename = "@InductionMotorFluxCurrent", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_flux_current: Option<String>,
     /// InductionMotorStatorResistance attribute
-    #[serde(rename = "@InductionMotorStatorResistance", default)]
+    #[serde(rename = "@InductionMotorStatorResistance", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_stator_resistance: Option<String>,
     /// InductionMotorStatorLeakageReactance attribute
-    #[serde(rename = "@InductionMotorStatorLeakageReactance", default)]
+    #[serde(rename = "@InductionMotorStatorLeakageReactance", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_stator_leakage_reactance: Option<String>,
     /// InductionMotorMagnetizationReactance attribute
-    #[serde(rename = "@InductionMotorMagnetizationReactance", default)]
+    #[serde(rename = "@InductionMotorMagnetizationReactance", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_magnetization_reactance: Option<String>,
     /// InductionMotorRotorResistance attribute
-    #[serde(rename = "@InductionMotorRotorResistance", default)]
+    #[serde(rename = "@InductionMotorRotorResistance", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_rotor_resistance: Option<String>,
     /// InductionMotorRotorLeakageReactance attribute
-    #[serde(rename = "@InductionMotorRotorLeakageReactance", default)]
+    #[serde(rename = "@InductionMotorRotorLeakageReactance", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_rotor_leakage_reactance: Option<String>,
     /// Feedback1Unit attribute
-    #[serde(rename = "@Feedback1Unit", default)]
+    #[serde(rename = "@Feedback1Unit", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_unit: Option<String>,
     /// Feedback1Polarity attribute
-    #[serde(rename = "@Feedback1Polarity", default)]
+    #[serde(rename = "@Feedback1Polarity", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_polarity: Option<String>,
     /// Feedback1StartupMethod attribute
-    #[serde(rename = "@Feedback1StartupMethod", default)]
+    #[serde(rename = "@Feedback1StartupMethod", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_startup_method: Option<String>,
     /// Feedback1CycleResolution attribute
-    #[serde(rename = "@Feedback1CycleResolution", default)]
+    #[serde(rename = "@Feedback1CycleResolution", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_cycle_resolution: Option<String>,
     /// Feedback1CycleInterpolation attribute
-    #[serde(rename = "@Feedback1CycleInterpolation", default)]
+    #[serde(rename = "@Feedback1CycleInterpolation", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_cycle_interpolation: Option<String>,
     /// Feedback1Turns attribute
-    #[serde(rename = "@Feedback1Turns", default)]
+    #[serde(rename = "@Feedback1Turns", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_turns: Option<String>,
     /// Feedback1Length attribute
-    #[serde(rename = "@Feedback1Length", default)]
+    #[serde(rename = "@Feedback1Length", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_length: Option<String>,
     /// Feedback1DataLength attribute
-    #[serde(rename = "@Feedback1DataLength", default)]
+    #[serde(rename = "@Feedback1DataLength", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_data_length: Option<String>,
     /// Feedback1DataCode attribute
-    #[serde(rename = "@Feedback1DataCode", default)]
+    #[serde(rename = "@Feedback1DataCode", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_data_code: Option<String>,
     /// Feedback1ResolverTransformerRatio attribute
-    #[serde(rename = "@Feedback1ResolverTransformerRatio", default)]
+    #[serde(rename = "@Feedback1ResolverTransformerRatio", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_resolver_transformer_ratio: Option<String>,
     /// Feedback1ResolverExcitationVoltage attribute
-    #[serde(rename = "@Feedback1ResolverExcitationVoltage", default)]
+    #[serde(rename = "@Feedback1ResolverExcitationVoltage", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_resolver_excitation_voltage: Option<String>,
     /// Feedback1ResolverExcitationFrequency attribute
-    #[serde(rename = "@Feedback1ResolverExcitationFrequency", default)]
+    #[serde(rename = "@Feedback1ResolverExcitationFrequency", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_resolver_excitation_frequency: Option<String>,
     /// Feedback1ResolverCableBalance attribute
-    #[serde(rename = "@Feedback1ResolverCableBalance", default)]
+    #[serde(rename = "@Feedback1ResolverCableBalance", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_resolver_cable_balance: Option<String>,
     /// Feedback1VelocityFilterBandwidth attribute
-    #[serde(rename = "@Feedback1VelocityFilterBandwidth", default)]
+    #[serde(rename = "@Feedback1VelocityFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_velocity_filter_bandwidth: Option<String>,
     /// Feedback1AccelFilterBandwidth attribute
-    #[serde(rename = "@Feedback1AccelFilterBandwidth", default)]
+    #[serde(rename = "@Feedback1AccelFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_accel_filter_bandwidth: Option<String>,
     /// PMMotorFluxSaturation attribute
-    #[serde(rename = "@PMMotorFluxSaturation", default)]
+    #[serde(rename = "@PMMotorFluxSaturation", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_flux_saturation: Option<String>,
     /// RotaryMotorFanCoolingSpeed attribute
-    #[serde(rename = "@RotaryMotorFanCoolingSpeed", default)]
+    #[serde(rename = "@RotaryMotorFanCoolingSpeed", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_fan_cooling_speed: Option<String>,
     /// RotaryMotorFanCoolingDerating attribute
-    #[serde(rename = "@RotaryMotorFanCoolingDerating", default)]
+    #[serde(rename = "@RotaryMotorFanCoolingDerating", default, skip_serializing_if = "Option::is_none")]
     pub rotary_motor_fan_cooling_derating: Option<String>,
     /// LinearMotorIntegralLimitSwitch attribute
-    #[serde(rename = "@LinearMotorIntegralLimitSwitch", default)]
+    #[serde(rename = "@LinearMotorIntegralLimitSwitch", default, skip_serializing_if = "Option::is_none")]
     pub linear_motor_integral_limit_switch: Option<String>,
     /// Feedback1LossAction attribute
-    #[serde(rename = "@Feedback1LossAction", default)]
+    #[serde(rename = "@Feedback1LossAction", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_loss_action: Option<String>,
     /// Feedback1VelocityFilterTaps attribute
-    #[serde(rename = "@Feedback1VelocityFilterTaps", default)]
+    #[serde(rename = "@Feedback1VelocityFilterTaps", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_velocity_filter_taps: Option<String>,
     /// Feedback1AccelFilterTaps attribute
-    #[serde(rename = "@Feedback1AccelFilterTaps", default)]
+    #[serde(rename = "@Feedback1AccelFilterTaps", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_accel_filter_taps: Option<String>,
     /// CIPAxisFaultLog attribute
-    #[serde(rename = "@CIPAxisFaultLog", default)]
+    #[serde(rename = "@CIPAxisFaultLog", default, skip_serializing_if = "Option::is_none")]
     pub cipaxis_fault_log: Option<String>,
     /// CyclicReadUpdateList attribute
-    #[serde(rename = "@CyclicReadUpdateList", default)]
+    #[serde(rename = "@CyclicReadUpdateList", default, skip_serializing_if = "Option::is_none")]
     pub cyclic_read_update_list: Option<String>,
     /// CyclicWriteUpdateList attribute
-    #[serde(rename = "@CyclicWriteUpdateList", default)]
+    #[serde(rename = "@CyclicWriteUpdateList", default, skip_serializing_if = "Option::is_none")]
     pub cyclic_write_update_list: Option<String>,
     /// ScalingSource attribute
-    #[serde(rename = "@ScalingSource", default)]
+    #[serde(rename = "@ScalingSource", default, skip_serializing_if = "Option::is_none")]
     pub scaling_source: Option<String>,
     /// LoadType attribute
-    #[serde(rename = "@LoadType", default)]
+    #[serde(rename = "@LoadType", default, skip_serializing_if = "Option::is_none")]
     pub load_type: Option<String>,
     /// ActuatorType attribute
-    #[serde(rename = "@ActuatorType", default)]
+    #[serde(rename = "@ActuatorType", default, skip_serializing_if = "Option::is_none")]
     pub actuator_type: Option<String>,
     /// TravelMode attribute
-    #[serde(rename = "@TravelMode", default)]
+    #[serde(rename = "@TravelMode", default, skip_serializing_if = "Option::is_none")]
     pub travel_mode: Option<String>,
     /// PositionScalingNumerator attribute
-    #[serde(rename = "@PositionScalingNumerator", default)]
+    #[serde(rename = "@PositionScalingNumerator", default, skip_serializing_if = "Option::is_none")]
     pub position_scaling_numerator: Option<String>,
     /// PositionScalingDenominator attribute
-    #[serde(rename = "@PositionScalingDenominator", default)]
+    #[serde(rename = "@PositionScalingDenominator", default, skip_serializing_if = "Option::is_none")]
     pub position_scaling_denominator: Option<String>,
     /// PositionUnwindNumerator attribute
-    #[serde(rename = "@PositionUnwindNumerator", default)]
+    #[serde(rename = "@PositionUnwindNumerator", default, skip_serializing_if = "Option::is_none")]
     pub position_unwind_numerator: Option<String>,
     /// PositionUnwindDenominator attribute
-    #[serde(rename = "@PositionUnwindDenominator", default)]
+    #[serde(rename = "@PositionUnwindDenominator", default, skip_serializing_if = "Option::is_none")]
     pub position_unwind_denominator: Option<String>,
     /// TravelRange attribute
-    #[serde(rename = "@TravelRange", default)]
+    #[serde(rename = "@TravelRange", default, skip_serializing_if = "Option::is_none")]
     pub travel_range: Option<String>,
     /// MotionResolution attribute
-    #[serde(rename = "@MotionResolution", default)]
+    #[serde(rename = "@MotionResolution", default, skip_serializing_if = "Option::is_none")]
     pub motion_resolution: Option<String>,
     /// MotionPolarity attribute
-    #[serde(rename = "@MotionPolarity", default)]
+    #[serde(rename = "@MotionPolarity", default, skip_serializing_if = "Option::is_none")]
     pub motion_polarity: Option<String>,
     /// MotorTestResistance attribute
-    #[serde(rename = "@MotorTestResistance", default)]
+    #[serde(rename = "@MotorTestResistance", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_resistance: Option<String>,
     /// MotorTestInductance attribute
-    #[serde(rename = "@MotorTestInductance", default)]
+    #[serde(rename = "@MotorTestInductance", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_inductance: Option<String>,
     /// MotorTestFluxCurrent attribute
-    #[serde(rename = "@MotorTestFluxCurrent", default)]
+    #[serde(rename = "@MotorTestFluxCurrent", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_flux_current: Option<String>,
     /// MotorTestSlipSpeed attribute
-    #[serde(rename = "@MotorTestSlipSpeed", default)]
+    #[serde(rename = "@MotorTestSlipSpeed", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_slip_speed: Option<String>,
     /// TuneFriction attribute
-    #[serde(rename = "@TuneFriction", default)]
+    #[serde(rename = "@TuneFriction", default, skip_serializing_if = "Option::is_none")]
     pub tune_friction: Option<String>,
     /// TuneLoadOffset attribute
-    #[serde(rename = "@TuneLoadOffset", default)]
+    #[serde(rename = "@TuneLoadOffset", default, skip_serializing_if = "Option::is_none")]
     pub tune_load_offset: Option<String>,
     /// TotalInertia attribute
-    #[serde(rename = "@TotalInertia", default)]
+    #[serde(rename = "@TotalInertia", default, skip_serializing_if = "Option::is_none")]
     pub total_inertia: Option<String>,
     /// TuningSelect attribute
-    #[serde(rename = "@TuningSelect", default)]
+    #[serde(rename = "@TuningSelect", default, skip_serializing_if = "Option::is_none")]
     pub tuning_select: Option<String>,
     /// TuningDirection attribute
-    #[serde(rename = "@TuningDirection", default)]
+    #[serde(rename = "@TuningDirection", default, skip_serializing_if = "Option::is_none")]
     pub tuning_direction: Option<String>,
     /// ApplicationType attribute
-    #[serde(rename = "@ApplicationType", default)]
+    #[serde(rename = "@ApplicationType", default, skip_serializing_if = "Option::is_none")]
     pub application_type: Option<String>,
     /// LoopResponse attribute
-    #[serde(rename = "@LoopResponse", default)]
+    #[serde(rename = "@LoopResponse", default, skip_serializing_if = "Option::is_none")]
     pub loop_response: Option<String>,
     /// FeedbackCommutationAligned attribute
-    #[serde(rename = "@FeedbackCommutationAligned", default)]
+    #[serde(rename = "@FeedbackCommutationAligned", default, skip_serializing_if = "Option::is_none")]
     pub feedback_commutation_aligned: Option<String>,
     /// FrictionCompensationSliding attribute
-    #[serde(rename = "@FrictionCompensationSliding", default)]
+    #[serde(rename = "@FrictionCompensationSliding", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_sliding: Option<String>,
     /// FrictionCompensationStatic attribute
-    #[serde(rename = "@FrictionCompensationStatic", default)]
+    #[serde(rename = "@FrictionCompensationStatic", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_static: Option<String>,
     /// FrictionCompensationViscous attribute
-    #[serde(rename = "@FrictionCompensationViscous", default)]
+    #[serde(rename = "@FrictionCompensationViscous", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_viscous: Option<String>,
     /// PositionLoopBandwidth attribute
-    #[serde(rename = "@PositionLoopBandwidth", default)]
+    #[serde(rename = "@PositionLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub position_loop_bandwidth: Option<String>,
     /// VelocityLoopBandwidth attribute
-    #[serde(rename = "@VelocityLoopBandwidth", default)]
+    #[serde(rename = "@VelocityLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub velocity_loop_bandwidth: Option<String>,
     /// VelocityIntegratorBandwidth attribute
-    #[serde(rename = "@VelocityIntegratorBandwidth", default)]
+    #[serde(rename = "@VelocityIntegratorBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub velocity_integrator_bandwidth: Option<String>,
     /// FeedbackNoiseUserLimit attribute
-    #[serde(rename = "@FeedbackNoiseUserLimit", default)]
+    #[serde(rename = "@FeedbackNoiseUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub feedback_noise_user_limit: Option<String>,
     /// FeedbackSignalLossUserLimit attribute
-    #[serde(rename = "@FeedbackSignalLossUserLimit", default)]
+    #[serde(rename = "@FeedbackSignalLossUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub feedback_signal_loss_user_limit: Option<String>,
     /// FeedbackDataLossUserLimit attribute
-    #[serde(rename = "@FeedbackDataLossUserLimit", default)]
+    #[serde(rename = "@FeedbackDataLossUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub feedback_data_loss_user_limit: Option<String>,
     /// Feedback1BatteryAbsolute attribute
-    #[serde(rename = "@Feedback1BatteryAbsolute", default)]
+    #[serde(rename = "@Feedback1BatteryAbsolute", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_battery_absolute: Option<String>,
     /// CIPAxisAlarmtLog attribute
-    #[serde(rename = "@CIPAxisAlarmtLog", default)]
+    #[serde(rename = "@CIPAxisAlarmtLog", default, skip_serializing_if = "Option::is_none")]
     pub cipaxis_alarmt_log: Option<String>,
     /// MotionExceptionAction attribute
-    #[serde(rename = "@MotionExceptionAction", default)]
+    #[serde(rename = "@MotionExceptionAction", default, skip_serializing_if = "Option::is_none")]
     pub motion_exception_action: Option<String>,
     /// SoftTravelLimitChecking attribute
-    #[serde(rename = "@SoftTravelLimitChecking", default)]
+    #[serde(rename = "@SoftTravelLimitChecking", default, skip_serializing_if = "Option::is_none")]
     pub soft_travel_limit_checking: Option<String>,
     /// MoveRepeatMode attribute
-    #[serde(rename = "@MoveRepeatMode", default)]
+    #[serde(rename = "@MoveRepeatMode", default, skip_serializing_if = "Option::is_none")]
     pub move_repeat_mode: Option<String>,
     /// MoveRepeatDwell attribute
-    #[serde(rename = "@MoveRepeatDwell", default)]
+    #[serde(rename = "@MoveRepeatDwell", default, skip_serializing_if = "Option::is_none")]
     pub move_repeat_dwell: Option<String>,
     /// Feedback2Unit attribute
-    #[serde(rename = "@Feedback2Unit", default)]
+    #[serde(rename = "@Feedback2Unit", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_unit: Option<String>,
     /// Feedback2Polarity attribute
-    #[serde(rename = "@Feedback2Polarity", default)]
+    #[serde(rename = "@Feedback2Polarity", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_polarity: Option<String>,
     /// Feedback2StartupMethod attribute
-    #[serde(rename = "@Feedback2StartupMethod", default)]
+    #[serde(rename = "@Feedback2StartupMethod", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_startup_method: Option<String>,
     /// Feedback2CycleResolution attribute
-    #[serde(rename = "@Feedback2CycleResolution", default)]
+    #[serde(rename = "@Feedback2CycleResolution", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_cycle_resolution: Option<String>,
     /// Feedback2CycleInterpolation attribute
-    #[serde(rename = "@Feedback2CycleInterpolation", default)]
+    #[serde(rename = "@Feedback2CycleInterpolation", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_cycle_interpolation: Option<String>,
     /// Feedback2Turns attribute
-    #[serde(rename = "@Feedback2Turns", default)]
+    #[serde(rename = "@Feedback2Turns", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_turns: Option<String>,
     /// Feedback2Length attribute
-    #[serde(rename = "@Feedback2Length", default)]
+    #[serde(rename = "@Feedback2Length", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_length: Option<String>,
     /// Feedback2DataLength attribute
-    #[serde(rename = "@Feedback2DataLength", default)]
+    #[serde(rename = "@Feedback2DataLength", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_data_length: Option<String>,
     /// Feedback2DataCode attribute
-    #[serde(rename = "@Feedback2DataCode", default)]
+    #[serde(rename = "@Feedback2DataCode", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_data_code: Option<String>,
     /// Feedback2ResolverTransformerRatio attribute
-    #[serde(rename = "@Feedback2ResolverTransformerRatio", default)]
+    #[serde(rename = "@Feedback2ResolverTransformerRatio", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_resolver_transformer_ratio: Option<String>,
     /// Feedback2ResolverExcitationVoltage attribute
-    #[serde(rename = "@Feedback2ResolverExcitationVoltage", default)]
+    #[serde(rename = "@Feedback2ResolverExcitationVoltage", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_resolver_excitation_voltage: Option<String>,
     /// Feedback2ResolverExcitationFrequency attribute
-    #[serde(rename = "@Feedback2ResolverExcitationFrequency", default)]
+    #[serde(rename = "@Feedback2ResolverExcitationFrequency", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_resolver_excitation_frequency: Option<String>,
     /// Feedback2ResolverCableBalance attribute
-    #[serde(rename = "@Feedback2ResolverCableBalance", default)]
+    #[serde(rename = "@Feedback2ResolverCableBalance", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_resolver_cable_balance: Option<String>,
     /// Feedback2VelocityFilterBandwidth attribute
-    #[serde(rename = "@Feedback2VelocityFilterBandwidth", default)]
+    #[serde(rename = "@Feedback2VelocityFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_velocity_filter_bandwidth: Option<String>,
     /// Feedback2AccelFilterBandwidth attribute
-    #[serde(rename = "@Feedback2AccelFilterBandwidth", default)]
+    #[serde(rename = "@Feedback2AccelFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_accel_filter_bandwidth: Option<String>,
     /// Feedback2LossAction attribute
-    #[serde(rename = "@Feedback2LossAction", default)]
+    #[serde(rename = "@Feedback2LossAction", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_loss_action: Option<String>,
     /// Feedback2VelocityFilterTaps attribute
-    #[serde(rename = "@Feedback2VelocityFilterTaps", default)]
+    #[serde(rename = "@Feedback2VelocityFilterTaps", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_velocity_filter_taps: Option<String>,
     /// Feedback2AccelFilterTaps attribute
-    #[serde(rename = "@Feedback2AccelFilterTaps", default)]
+    #[serde(rename = "@Feedback2AccelFilterTaps", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_accel_filter_taps: Option<String>,
     /// Feedback2BatteryAbsolute attribute
-    #[serde(rename = "@Feedback2BatteryAbsolute", default)]
+    #[serde(rename = "@Feedback2BatteryAbsolute", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_battery_absolute: Option<String>,
     /// LoadRatio attribute
-    #[serde(rename = "@LoadRatio", default)]
+    #[serde(rename = "@LoadRatio", default, skip_serializing_if = "Option::is_none")]
     pub load_ratio: Option<String>,
     /// TotalMass attribute
-    #[serde(rename = "@TotalMass", default)]
+    #[serde(rename = "@TotalMass", default, skip_serializing_if = "Option::is_none")]
     pub total_mass: Option<String>,
     /// TuneInertiaMass attribute
-    #[serde(rename = "@TuneInertiaMass", default)]
+    #[serde(rename = "@TuneInertiaMass", default, skip_serializing_if = "Option::is_none")]
     pub tune_inertia_mass: Option<String>,
     /// SoftTravelLimitPositive attribute
-    #[serde(rename = "@SoftTravelLimitPositive", default)]
+    #[serde(rename = "@SoftTravelLimitPositive", default, skip_serializing_if = "Option::is_none")]
     pub soft_travel_limit_positive: Option<String>,
     /// SoftTravelLimitNegative attribute
-    #[serde(rename = "@SoftTravelLimitNegative", default)]
+    #[serde(rename = "@SoftTravelLimitNegative", default, skip_serializing_if = "Option::is_none")]
     pub soft_travel_limit_negative: Option<String>,
     /// GainTuningConfigurationBits attribute
-    #[serde(rename = "@GainTuningConfigurationBits", default)]
+    #[serde(rename = "@GainTuningConfigurationBits", default, skip_serializing_if = "Option::is_none")]
     pub gain_tuning_configuration_bits: Option<String>,
     /// CommutationOffset attribute
-    #[serde(rename = "@CommutationOffset", default)]
+    #[serde(rename = "@CommutationOffset", default, skip_serializing_if = "Option::is_none")]
     pub commutation_offset: Option<String>,
     /// PowerLossTime attribute
-    #[serde(rename = "@PowerLossTime", default)]
+    #[serde(rename = "@PowerLossTime", default, skip_serializing_if = "Option::is_none")]
     pub power_loss_time: Option<String>,
     /// SystemBandwidth attribute
-    #[serde(rename = "@SystemBandwidth", default)]
+    #[serde(rename = "@SystemBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub system_bandwidth: Option<String>,
     /// VelocityLowPassFilterBandwidth attribute
-    #[serde(rename = "@VelocityLowPassFilterBandwidth", default)]
+    #[serde(rename = "@VelocityLowPassFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub velocity_low_pass_filter_bandwidth: Option<String>,
     /// FeedbackMasterSelect attribute
-    #[serde(rename = "@FeedbackMasterSelect", default)]
+    #[serde(rename = "@FeedbackMasterSelect", default, skip_serializing_if = "Option::is_none")]
     pub feedback_master_select: Option<String>,
     /// TransmissionRatioInput attribute
-    #[serde(rename = "@TransmissionRatioInput", default)]
+    #[serde(rename = "@TransmissionRatioInput", default, skip_serializing_if = "Option::is_none")]
     pub transmission_ratio_input: Option<String>,
     /// TransmissionRatioOutput attribute
-    #[serde(rename = "@TransmissionRatioOutput", default)]
+    #[serde(rename = "@TransmissionRatioOutput", default, skip_serializing_if = "Option::is_none")]
     pub transmission_ratio_output: Option<String>,
     /// ActuatorLead attribute
-    #[serde(rename = "@ActuatorLead", default)]
+    #[serde(rename = "@ActuatorLead", default, skip_serializing_if = "Option::is_none")]
     pub actuator_lead: Option<String>,
     /// ActuatorLeadUnit attribute
-    #[serde(rename = "@ActuatorLeadUnit", default)]
+    #[serde(rename = "@ActuatorLeadUnit", default, skip_serializing_if = "Option::is_none")]
     pub actuator_lead_unit: Option<String>,
     /// ActuatorDiameter attribute
-    #[serde(rename = "@ActuatorDiameter", default)]
+    #[serde(rename = "@ActuatorDiameter", default, skip_serializing_if = "Option::is_none")]
     pub actuator_diameter: Option<String>,
     /// ActuatorDiameterUnit attribute
-    #[serde(rename = "@ActuatorDiameterUnit", default)]
+    #[serde(rename = "@ActuatorDiameterUnit", default, skip_serializing_if = "Option::is_none")]
     pub actuator_diameter_unit: Option<String>,
     /// SystemAccelerationBase attribute
-    #[serde(rename = "@SystemAccelerationBase", default)]
+    #[serde(rename = "@SystemAccelerationBase", default, skip_serializing_if = "Option::is_none")]
     pub system_acceleration_base: Option<String>,
     /// DriveModelTimeConstantBase attribute
-    #[serde(rename = "@DriveModelTimeConstantBase", default)]
+    #[serde(rename = "@DriveModelTimeConstantBase", default, skip_serializing_if = "Option::is_none")]
     pub drive_model_time_constant_base: Option<String>,
     /// DriveRatedPeakCurrent attribute
-    #[serde(rename = "@DriveRatedPeakCurrent", default)]
+    #[serde(rename = "@DriveRatedPeakCurrent", default, skip_serializing_if = "Option::is_none")]
     pub drive_rated_peak_current: Option<String>,
     /// HookupTestDistance attribute
-    #[serde(rename = "@HookupTestDistance", default)]
+    #[serde(rename = "@HookupTestDistance", default, skip_serializing_if = "Option::is_none")]
     pub hookup_test_distance: Option<String>,
     /// HookupTestTime attribute
-    #[serde(rename = "@HookupTestTime", default)]
+    #[serde(rename = "@HookupTestTime", default, skip_serializing_if = "Option::is_none")]
     pub hookup_test_time: Option<String>,
     /// HookupTestFeedbackChannel attribute
-    #[serde(rename = "@HookupTestFeedbackChannel", default)]
+    #[serde(rename = "@HookupTestFeedbackChannel", default, skip_serializing_if = "Option::is_none")]
     pub hookup_test_feedback_channel: Option<String>,
     /// LoadCoupling attribute
-    #[serde(rename = "@LoadCoupling", default)]
+    #[serde(rename = "@LoadCoupling", default, skip_serializing_if = "Option::is_none")]
     pub load_coupling: Option<String>,
     /// SystemDamping attribute
-    #[serde(rename = "@SystemDamping", default)]
+    #[serde(rename = "@SystemDamping", default, skip_serializing_if = "Option::is_none")]
     pub system_damping: Option<String>,
     /// CurrentVectorLimit attribute
-    #[serde(rename = "@CurrentVectorLimit", default)]
+    #[serde(rename = "@CurrentVectorLimit", default, skip_serializing_if = "Option::is_none")]
     pub current_vector_limit: Option<String>,
     /// InductionMotorRatedSlipSpeed attribute
-    #[serde(rename = "@InductionMotorRatedSlipSpeed", default)]
+    #[serde(rename = "@InductionMotorRatedSlipSpeed", default, skip_serializing_if = "Option::is_none")]
     pub induction_motor_rated_slip_speed: Option<String>,
     /// CommutationPolarity attribute
-    #[serde(rename = "@CommutationPolarity", default)]
+    #[serde(rename = "@CommutationPolarity", default, skip_serializing_if = "Option::is_none")]
     pub commutation_polarity: Option<String>,
     /// LoadObserverConfiguration attribute
-    #[serde(rename = "@LoadObserverConfiguration", default)]
+    #[serde(rename = "@LoadObserverConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub load_observer_configuration: Option<String>,
     /// LoadObserverBandwidth attribute
-    #[serde(rename = "@LoadObserverBandwidth", default)]
+    #[serde(rename = "@LoadObserverBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub load_observer_bandwidth: Option<String>,
     /// LoadObserverIntegratorBandwidth attribute
-    #[serde(rename = "@LoadObserverIntegratorBandwidth", default)]
+    #[serde(rename = "@LoadObserverIntegratorBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub load_observer_integrator_bandwidth: Option<String>,
     /// LoadObserverFeedbackGain attribute
-    #[serde(rename = "@LoadObserverFeedbackGain", default)]
+    #[serde(rename = "@LoadObserverFeedbackGain", default, skip_serializing_if = "Option::is_none")]
     pub load_observer_feedback_gain: Option<String>,
     /// AxisID attribute
-    #[serde(rename = "@AxisID", default)]
+    #[serde(rename = "@AxisID", default, skip_serializing_if = "Option::is_none")]
     pub axis_id: Option<String>,
     /// MotorData attribute
-    #[serde(rename = "@MotorData", default)]
+    #[serde(rename = "@MotorData", default, skip_serializing_if = "Option::is_none")]
     pub motor_data: Option<String>,
     /// AdditionalBusCapacitance attribute
-    #[serde(rename = "@AdditionalBusCapacitance", default)]
+    #[serde(rename = "@AdditionalBusCapacitance", default, skip_serializing_if = "Option::is_none")]
     pub additional_bus_capacitance: Option<String>,
     /// InterpolatedPositionConfiguration attribute
-    #[serde(rename = "@InterpolatedPositionConfiguration", default)]
+    #[serde(rename = "@InterpolatedPositionConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub interpolated_position_configuration: Option<String>,
     /// AxisUpdateSchedule attribute
-    #[serde(rename = "@AxisUpdateSchedule", default)]
+    #[serde(rename = "@AxisUpdateSchedule", default, skip_serializing_if = "Option::is_none")]
     pub axis_update_schedule: Option<String>,
     /// ProvingConfiguration attribute
-    #[serde(rename = "@ProvingConfiguration", default)]
+    #[serde(rename = "@ProvingConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub proving_configuration: Option<String>,
     /// TorqueProveCurrent attribute
-    #[serde(rename = "@TorqueProveCurrent", default)]
+    #[serde(rename = "@TorqueProveCurrent", default, skip_serializing_if = "Option::is_none")]
     pub torque_prove_current: Option<String>,
     /// BrakeTestTorque attribute
-    #[serde(rename = "@BrakeTestTorque", default)]
+    #[serde(rename = "@BrakeTestTorque", default, skip_serializing_if = "Option::is_none")]
     pub brake_test_torque: Option<String>,
     /// BrakeProveRampTime attribute
-    #[serde(rename = "@BrakeProveRampTime", default)]
+    #[serde(rename = "@BrakeProveRampTime", default, skip_serializing_if = "Option::is_none")]
     pub brake_prove_ramp_time: Option<String>,
     /// BrakeSlipTolerance attribute
-    #[serde(rename = "@BrakeSlipTolerance", default)]
+    #[serde(rename = "@BrakeSlipTolerance", default, skip_serializing_if = "Option::is_none")]
     pub brake_slip_tolerance: Option<String>,
     /// ZeroSpeed attribute
-    #[serde(rename = "@ZeroSpeed", default)]
+    #[serde(rename = "@ZeroSpeed", default, skip_serializing_if = "Option::is_none")]
     pub zero_speed: Option<String>,
     /// ZeroSpeedTime attribute
-    #[serde(rename = "@ZeroSpeedTime", default)]
+    #[serde(rename = "@ZeroSpeedTime", default, skip_serializing_if = "Option::is_none")]
     pub zero_speed_time: Option<String>,
     /// MotorPhaseLossLimit attribute
-    #[serde(rename = "@MotorPhaseLossLimit", default)]
+    #[serde(rename = "@MotorPhaseLossLimit", default, skip_serializing_if = "Option::is_none")]
     pub motor_phase_loss_limit: Option<String>,
     /// AdaptiveTuningConfiguration attribute
-    #[serde(rename = "@AdaptiveTuningConfiguration", default)]
+    #[serde(rename = "@AdaptiveTuningConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub adaptive_tuning_configuration: Option<String>,
     /// TorqueNotchFilterHighFrequencyLimit attribute
-    #[serde(rename = "@TorqueNotchFilterHighFrequencyLimit", default)]
+    #[serde(rename = "@TorqueNotchFilterHighFrequencyLimit", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_high_frequency_limit: Option<String>,
     /// TorqueNotchFilterLowFrequencyLimit attribute
-    #[serde(rename = "@TorqueNotchFilterLowFrequencyLimit", default)]
+    #[serde(rename = "@TorqueNotchFilterLowFrequencyLimit", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_low_frequency_limit: Option<String>,
     /// TorqueNotchFilterTuningThreshold attribute
-    #[serde(rename = "@TorqueNotchFilterTuningThreshold", default)]
+    #[serde(rename = "@TorqueNotchFilterTuningThreshold", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_tuning_threshold: Option<String>,
     /// AutoSagConfiguration attribute
-    #[serde(rename = "@AutoSagConfiguration", default)]
+    #[serde(rename = "@AutoSagConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub auto_sag_configuration: Option<String>,
     /// AutoSagSlipIncrement attribute
-    #[serde(rename = "@AutoSagSlipIncrement", default)]
+    #[serde(rename = "@AutoSagSlipIncrement", default, skip_serializing_if = "Option::is_none")]
     pub auto_sag_slip_increment: Option<String>,
     /// AutoSagSlipTimeLimit attribute
-    #[serde(rename = "@AutoSagSlipTimeLimit", default)]
+    #[serde(rename = "@AutoSagSlipTimeLimit", default, skip_serializing_if = "Option::is_none")]
     pub auto_sag_slip_time_limit: Option<String>,
     /// AutoSagStart attribute
-    #[serde(rename = "@AutoSagStart", default)]
+    #[serde(rename = "@AutoSagStart", default, skip_serializing_if = "Option::is_none")]
     pub auto_sag_start: Option<String>,
     /// CoastingTimeLimit attribute
-    #[serde(rename = "@CoastingTimeLimit", default)]
+    #[serde(rename = "@CoastingTimeLimit", default, skip_serializing_if = "Option::is_none")]
     pub coasting_time_limit: Option<String>,
     /// SafeTorqueOffAction attribute
-    #[serde(rename = "@SafeTorqueOffAction", default)]
+    #[serde(rename = "@SafeTorqueOffAction", default, skip_serializing_if = "Option::is_none")]
     pub safe_torque_off_action: Option<String>,
     /// FlyingStartMethod attribute
-    #[serde(rename = "@FlyingStartMethod", default)]
+    #[serde(rename = "@FlyingStartMethod", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_method: Option<String>,
     /// CommutationOffsetCompensation attribute
-    #[serde(rename = "@CommutationOffsetCompensation", default)]
+    #[serde(rename = "@CommutationOffsetCompensation", default, skip_serializing_if = "Option::is_none")]
     pub commutation_offset_compensation: Option<String>,
     /// PMMotorLqInductance attribute
-    #[serde(rename = "@PMMotorLqInductance", default)]
+    #[serde(rename = "@PMMotorLqInductance", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_lq_inductance: Option<String>,
     /// PMMotorLdInductance attribute
-    #[serde(rename = "@PMMotorLdInductance", default)]
+    #[serde(rename = "@PMMotorLdInductance", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_ld_inductance: Option<String>,
     /// PMMotorLqFluxSaturation attribute
-    #[serde(rename = "@PMMotorLqFluxSaturation", default)]
+    #[serde(rename = "@PMMotorLqFluxSaturation", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_lq_flux_saturation: Option<String>,
     /// PMMotorLdFluxSaturation attribute
-    #[serde(rename = "@PMMotorLdFluxSaturation", default)]
+    #[serde(rename = "@PMMotorLdFluxSaturation", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_ld_flux_saturation: Option<String>,
     /// PMMotorRotaryBusOvervoltageSpeed attribute
-    #[serde(rename = "@PMMotorRotaryBusOvervoltageSpeed", default)]
+    #[serde(rename = "@PMMotorRotaryBusOvervoltageSpeed", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_rotary_bus_overvoltage_speed: Option<String>,
     /// PMMotorLinearBusOvervoltageSpeed attribute
-    #[serde(rename = "@PMMotorLinearBusOvervoltageSpeed", default)]
+    #[serde(rename = "@PMMotorLinearBusOvervoltageSpeed", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_linear_bus_overvoltage_speed: Option<String>,
     /// PMMotorRotaryMaxExtendedSpeed attribute
-    #[serde(rename = "@PMMotorRotaryMaxExtendedSpeed", default)]
+    #[serde(rename = "@PMMotorRotaryMaxExtendedSpeed", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_rotary_max_extended_speed: Option<String>,
     /// PMMotorLinearMaxExtendedSpeed attribute
-    #[serde(rename = "@PMMotorLinearMaxExtendedSpeed", default)]
+    #[serde(rename = "@PMMotorLinearMaxExtendedSpeed", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_linear_max_extended_speed: Option<String>,
     /// PMMotorExtendedSpeedPermissive attribute
-    #[serde(rename = "@PMMotorExtendedSpeedPermissive", default)]
+    #[serde(rename = "@PMMotorExtendedSpeedPermissive", default, skip_serializing_if = "Option::is_none")]
     pub pmmotor_extended_speed_permissive: Option<String>,
     /// BusOvervoltageOperationalLimit attribute
-    #[serde(rename = "@BusOvervoltageOperationalLimit", default)]
+    #[serde(rename = "@BusOvervoltageOperationalLimit", default, skip_serializing_if = "Option::is_none")]
     pub bus_overvoltage_operational_limit: Option<String>,
     /// ConnectionLossStoppingAction attribute
-    #[serde(rename = "@ConnectionLossStoppingAction", default)]
+    #[serde(rename = "@ConnectionLossStoppingAction", default, skip_serializing_if = "Option::is_none")]
     pub connection_loss_stopping_action: Option<String>,
     /// SafeTorqueOffActionSource attribute
-    #[serde(rename = "@SafeTorqueOffActionSource", default)]
+    #[serde(rename = "@SafeTorqueOffActionSource", default, skip_serializing_if = "Option::is_none")]
     pub safe_torque_off_action_source: Option<String>,
     /// SafeStoppingAction attribute
-    #[serde(rename = "@SafeStoppingAction", default)]
+    #[serde(rename = "@SafeStoppingAction", default, skip_serializing_if = "Option::is_none")]
     pub safe_stopping_action: Option<String>,
     /// SafeStoppingActionSource attribute
-    #[serde(rename = "@SafeStoppingActionSource", default)]
+    #[serde(rename = "@SafeStoppingActionSource", default, skip_serializing_if = "Option::is_none")]
     pub safe_stopping_action_source: Option<String>,
     /// VerticalLoadControl attribute
-    #[serde(rename = "@VerticalLoadControl", default)]
+    #[serde(rename = "@VerticalLoadControl", default, skip_serializing_if = "Option::is_none")]
     pub vertical_load_control: Option<String>,
     /// BusVoltageSetPoint attribute
-    #[serde(rename = "@BusVoltageSetPoint", default)]
+    #[serde(rename = "@BusVoltageSetPoint", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_set_point: Option<String>,
     /// ConverterMotoringPowerLimit attribute
-    #[serde(rename = "@ConverterMotoringPowerLimit", default)]
+    #[serde(rename = "@ConverterMotoringPowerLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_motoring_power_limit: Option<String>,
     /// ConverterRegenerativePowerLimit attribute
-    #[serde(rename = "@ConverterRegenerativePowerLimit", default)]
+    #[serde(rename = "@ConverterRegenerativePowerLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_regenerative_power_limit: Option<String>,
     /// ConverterOvertemperatureUserLimit attribute
-    #[serde(rename = "@ConverterOvertemperatureUserLimit", default)]
+    #[serde(rename = "@ConverterOvertemperatureUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_overtemperature_user_limit: Option<String>,
     /// ConverterThermalOverloadUserLimit attribute
-    #[serde(rename = "@ConverterThermalOverloadUserLimit", default)]
+    #[serde(rename = "@ConverterThermalOverloadUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_thermal_overload_user_limit: Option<String>,
     /// ConverterGroundCurrentUserLimit attribute
-    #[serde(rename = "@ConverterGroundCurrentUserLimit", default)]
+    #[serde(rename = "@ConverterGroundCurrentUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_ground_current_user_limit: Option<String>,
     /// ConverterPreChargeOverloadUserLimit attribute
-    #[serde(rename = "@ConverterPreChargeOverloadUserLimit", default)]
+    #[serde(rename = "@ConverterPreChargeOverloadUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_pre_charge_overload_user_limit: Option<String>,
     /// TotalDCBusCapacitance attribute
-    #[serde(rename = "@TotalDCBusCapacitance", default)]
+    #[serde(rename = "@TotalDCBusCapacitance", default, skip_serializing_if = "Option::is_none")]
     pub total_dcbus_capacitance: Option<String>,
     /// ExternalDCBusCapacitance attribute
-    #[serde(rename = "@ExternalDCBusCapacitance", default)]
+    #[serde(rename = "@ExternalDCBusCapacitance", default, skip_serializing_if = "Option::is_none")]
     pub external_dcbus_capacitance: Option<String>,
     /// ConverterModelTimeConstantBase attribute
-    #[serde(rename = "@ConverterModelTimeConstantBase", default)]
+    #[serde(rename = "@ConverterModelTimeConstantBase", default, skip_serializing_if = "Option::is_none")]
     pub converter_model_time_constant_base: Option<String>,
     /// ConverterCurrentLoopBandwidthBase attribute
-    #[serde(rename = "@ConverterCurrentLoopBandwidthBase", default)]
+    #[serde(rename = "@ConverterCurrentLoopBandwidthBase", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_loop_bandwidth_base: Option<String>,
     /// ConverterRatedCurrent attribute
-    #[serde(rename = "@ConverterRatedCurrent", default)]
+    #[serde(rename = "@ConverterRatedCurrent", default, skip_serializing_if = "Option::is_none")]
     pub converter_rated_current: Option<String>,
     /// ConverterRatedPeakCurrent attribute
-    #[serde(rename = "@ConverterRatedPeakCurrent", default)]
+    #[serde(rename = "@ConverterRatedPeakCurrent", default, skip_serializing_if = "Option::is_none")]
     pub converter_rated_peak_current: Option<String>,
     /// ConverterRatedVoltage attribute
-    #[serde(rename = "@ConverterRatedVoltage", default)]
+    #[serde(rename = "@ConverterRatedVoltage", default, skip_serializing_if = "Option::is_none")]
     pub converter_rated_voltage: Option<String>,
     /// ConverterDCBusCapacitance attribute
-    #[serde(rename = "@ConverterDCBusCapacitance", default)]
+    #[serde(rename = "@ConverterDCBusCapacitance", default, skip_serializing_if = "Option::is_none")]
     pub converter_dcbus_capacitance: Option<String>,
     /// ACLineVoltageTimeConstant attribute
-    #[serde(rename = "@ACLineVoltageTimeConstant", default)]
+    #[serde(rename = "@ACLineVoltageTimeConstant", default, skip_serializing_if = "Option::is_none")]
     pub acline_voltage_time_constant: Option<String>,
     /// BusVoltageErrorTolerance attribute
-    #[serde(rename = "@BusVoltageErrorTolerance", default)]
+    #[serde(rename = "@BusVoltageErrorTolerance", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_error_tolerance: Option<String>,
     /// BusVoltageErrorToleranceTime attribute
-    #[serde(rename = "@BusVoltageErrorToleranceTime", default)]
+    #[serde(rename = "@BusVoltageErrorToleranceTime", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_error_tolerance_time: Option<String>,
     /// ReactivePowerSetPoint attribute
-    #[serde(rename = "@ReactivePowerSetPoint", default)]
+    #[serde(rename = "@ReactivePowerSetPoint", default, skip_serializing_if = "Option::is_none")]
     pub reactive_power_set_point: Option<String>,
     /// ReactivePowerRateLimit attribute
-    #[serde(rename = "@ReactivePowerRateLimit", default)]
+    #[serde(rename = "@ReactivePowerRateLimit", default, skip_serializing_if = "Option::is_none")]
     pub reactive_power_rate_limit: Option<String>,
     /// SystemCapacitance attribute
-    #[serde(rename = "@SystemCapacitance", default)]
+    #[serde(rename = "@SystemCapacitance", default, skip_serializing_if = "Option::is_none")]
     pub system_capacitance: Option<String>,
     /// ConverterCurrentLoopBandwidth attribute
-    #[serde(rename = "@ConverterCurrentLoopBandwidth", default)]
+    #[serde(rename = "@ConverterCurrentLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_loop_bandwidth: Option<String>,
     /// ConverterCurrentIntegratorBandwidth attribute
-    #[serde(rename = "@ConverterCurrentIntegratorBandwidth", default)]
+    #[serde(rename = "@ConverterCurrentIntegratorBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_integrator_bandwidth: Option<String>,
     /// ConverterCurrentVectorLimit attribute
-    #[serde(rename = "@ConverterCurrentVectorLimit", default)]
+    #[serde(rename = "@ConverterCurrentVectorLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_vector_limit: Option<String>,
     /// ACLineVoltageSagThreshold attribute
-    #[serde(rename = "@ACLineVoltageSagThreshold", default)]
+    #[serde(rename = "@ACLineVoltageSagThreshold", default, skip_serializing_if = "Option::is_none")]
     pub acline_voltage_sag_threshold: Option<String>,
     /// ACLineVoltageSagTime attribute
-    #[serde(rename = "@ACLineVoltageSagTime", default)]
+    #[serde(rename = "@ACLineVoltageSagTime", default, skip_serializing_if = "Option::is_none")]
     pub acline_voltage_sag_time: Option<String>,
     /// ConverterInputPhaseLossTime attribute
-    #[serde(rename = "@ConverterInputPhaseLossTime", default)]
+    #[serde(rename = "@ConverterInputPhaseLossTime", default, skip_serializing_if = "Option::is_none")]
     pub converter_input_phase_loss_time: Option<String>,
     /// ACLineFrequencyChangeThreshold attribute
-    #[serde(rename = "@ACLineFrequencyChangeThreshold", default)]
+    #[serde(rename = "@ACLineFrequencyChangeThreshold", default, skip_serializing_if = "Option::is_none")]
     pub acline_frequency_change_threshold: Option<String>,
     /// ACLineFrequencyChangeTime attribute
-    #[serde(rename = "@ACLineFrequencyChangeTime", default)]
+    #[serde(rename = "@ACLineFrequencyChangeTime", default, skip_serializing_if = "Option::is_none")]
     pub acline_frequency_change_time: Option<String>,
     /// ACLineSyncLossTime attribute
-    #[serde(rename = "@ACLineSyncLossTime", default)]
+    #[serde(rename = "@ACLineSyncLossTime", default, skip_serializing_if = "Option::is_none")]
     pub acline_sync_loss_time: Option<String>,
     /// ACLineOvervoltageUserLimit attribute
-    #[serde(rename = "@ACLineOvervoltageUserLimit", default)]
+    #[serde(rename = "@ACLineOvervoltageUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_overvoltage_user_limit: Option<String>,
     /// ACLineUndervoltageUserLimit attribute
-    #[serde(rename = "@ACLineUndervoltageUserLimit", default)]
+    #[serde(rename = "@ACLineUndervoltageUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_undervoltage_user_limit: Option<String>,
     /// ACLineOvervoltageUserLimitAlternate attribute
-    #[serde(rename = "@ACLineOvervoltageUserLimitAlternate", default)]
+    #[serde(rename = "@ACLineOvervoltageUserLimitAlternate", default, skip_serializing_if = "Option::is_none")]
     pub acline_overvoltage_user_limit_alternate: Option<String>,
     /// ACLineUndervoltageUserLimitAlternate attribute
-    #[serde(rename = "@ACLineUndervoltageUserLimitAlternate", default)]
+    #[serde(rename = "@ACLineUndervoltageUserLimitAlternate", default, skip_serializing_if = "Option::is_none")]
     pub acline_undervoltage_user_limit_alternate: Option<String>,
     /// ACLineHighFreqUserLimit attribute
-    #[serde(rename = "@ACLineHighFreqUserLimit", default)]
+    #[serde(rename = "@ACLineHighFreqUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_high_freq_user_limit: Option<String>,
     /// ACLineLowFreqUserLimit attribute
-    #[serde(rename = "@ACLineLowFreqUserLimit", default)]
+    #[serde(rename = "@ACLineLowFreqUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_low_freq_user_limit: Option<String>,
     /// ACLineHighFreqUserLimitAlternate attribute
-    #[serde(rename = "@ACLineHighFreqUserLimitAlternate", default)]
+    #[serde(rename = "@ACLineHighFreqUserLimitAlternate", default, skip_serializing_if = "Option::is_none")]
     pub acline_high_freq_user_limit_alternate: Option<String>,
     /// ACLineLowFreqUserLimitAlternate attribute
-    #[serde(rename = "@ACLineLowFreqUserLimitAlternate", default)]
+    #[serde(rename = "@ACLineLowFreqUserLimitAlternate", default, skip_serializing_if = "Option::is_none")]
     pub acline_low_freq_user_limit_alternate: Option<String>,
     /// ConverterHeatsinkOvertempUserLimit attribute
-    #[serde(rename = "@ConverterHeatsinkOvertempUserLimit", default)]
+    #[serde(rename = "@ConverterHeatsinkOvertempUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub converter_heatsink_overtemp_user_limit: Option<String>,
     /// ACLineOverloadUserLimit attribute
-    #[serde(rename = "@ACLineOverloadUserLimit", default)]
+    #[serde(rename = "@ACLineOverloadUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_overload_user_limit: Option<String>,
     /// ConverterCurrentLoopDamping attribute
-    #[serde(rename = "@ConverterCurrentLoopDamping", default)]
+    #[serde(rename = "@ConverterCurrentLoopDamping", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_loop_damping: Option<String>,
     /// BusObserverBandwidth attribute
-    #[serde(rename = "@BusObserverBandwidth", default)]
+    #[serde(rename = "@BusObserverBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub bus_observer_bandwidth: Option<String>,
     /// BusObserverIntegratorBandwidth attribute
-    #[serde(rename = "@BusObserverIntegratorBandwidth", default)]
+    #[serde(rename = "@BusObserverIntegratorBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub bus_observer_integrator_bandwidth: Option<String>,
     /// ACLineVoltageUnbalanceLimit attribute
-    #[serde(rename = "@ACLineVoltageUnbalanceLimit", default)]
+    #[serde(rename = "@ACLineVoltageUnbalanceLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_voltage_unbalance_limit: Option<String>,
     /// ACLineCurrentUnbalanceLimit attribute
-    #[serde(rename = "@ACLineCurrentUnbalanceLimit", default)]
+    #[serde(rename = "@ACLineCurrentUnbalanceLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_current_unbalance_limit: Option<String>,
     /// ACLineSyncErrorTolerance attribute
-    #[serde(rename = "@ACLineSyncErrorTolerance", default)]
+    #[serde(rename = "@ACLineSyncErrorTolerance", default, skip_serializing_if = "Option::is_none")]
     pub acline_sync_error_tolerance: Option<String>,
     /// ACLineSourceImpedance attribute
-    #[serde(rename = "@ACLineSourceImpedance", default)]
+    #[serde(rename = "@ACLineSourceImpedance", default, skip_serializing_if = "Option::is_none")]
     pub acline_source_impedance: Option<String>,
     /// ACLineSourcePower attribute
-    #[serde(rename = "@ACLineSourcePower", default)]
+    #[serde(rename = "@ACLineSourcePower", default, skip_serializing_if = "Option::is_none")]
     pub acline_source_power: Option<String>,
     /// ACLineSourceImpedanceAlternate attribute
-    #[serde(rename = "@ACLineSourceImpedanceAlternate", default)]
+    #[serde(rename = "@ACLineSourceImpedanceAlternate", default, skip_serializing_if = "Option::is_none")]
     pub acline_source_impedance_alternate: Option<String>,
     /// ACLineSourcePowerAlternate attribute
-    #[serde(rename = "@ACLineSourcePowerAlternate", default)]
+    #[serde(rename = "@ACLineSourcePowerAlternate", default, skip_serializing_if = "Option::is_none")]
     pub acline_source_power_alternate: Option<String>,
     /// BusVoltageLoopBandwidth attribute
-    #[serde(rename = "@BusVoltageLoopBandwidth", default)]
+    #[serde(rename = "@BusVoltageLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_loop_bandwidth: Option<String>,
     /// BusVoltageIntegratorBandwidth attribute
-    #[serde(rename = "@BusVoltageIntegratorBandwidth", default)]
+    #[serde(rename = "@BusVoltageIntegratorBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_integrator_bandwidth: Option<String>,
     /// BusVoltageRateLimit attribute
-    #[serde(rename = "@BusVoltageRateLimit", default)]
+    #[serde(rename = "@BusVoltageRateLimit", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_rate_limit: Option<String>,
     /// ActiveCurrentCommand attribute
-    #[serde(rename = "@ActiveCurrentCommand", default)]
+    #[serde(rename = "@ActiveCurrentCommand", default, skip_serializing_if = "Option::is_none")]
     pub active_current_command: Option<String>,
     /// ReactiveCurrentCommand attribute
-    #[serde(rename = "@ReactiveCurrentCommand", default)]
+    #[serde(rename = "@ReactiveCurrentCommand", default, skip_serializing_if = "Option::is_none")]
     pub reactive_current_command: Option<String>,
     /// ActiveCurrentTrim attribute
-    #[serde(rename = "@ActiveCurrentTrim", default)]
+    #[serde(rename = "@ActiveCurrentTrim", default, skip_serializing_if = "Option::is_none")]
     pub active_current_trim: Option<String>,
     /// ActiveCurrentLowPassFilterBandwidth attribute
-    #[serde(rename = "@ActiveCurrentLowPassFilterBandwidth", default)]
+    #[serde(rename = "@ActiveCurrentLowPassFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub active_current_low_pass_filter_bandwidth: Option<String>,
     /// ActiveCurrentNotchFilterFrequency attribute
-    #[serde(rename = "@ActiveCurrentNotchFilterFrequency", default)]
+    #[serde(rename = "@ActiveCurrentNotchFilterFrequency", default, skip_serializing_if = "Option::is_none")]
     pub active_current_notch_filter_frequency: Option<String>,
     /// ActiveCurrentRateLimit attribute
-    #[serde(rename = "@ActiveCurrentRateLimit", default)]
+    #[serde(rename = "@ActiveCurrentRateLimit", default, skip_serializing_if = "Option::is_none")]
     pub active_current_rate_limit: Option<String>,
     /// ReactiveCurrentRateLimit attribute
-    #[serde(rename = "@ReactiveCurrentRateLimit", default)]
+    #[serde(rename = "@ReactiveCurrentRateLimit", default, skip_serializing_if = "Option::is_none")]
     pub reactive_current_rate_limit: Option<String>,
     /// ConverterControlMode attribute
-    #[serde(rename = "@ConverterControlMode", default)]
+    #[serde(rename = "@ConverterControlMode", default, skip_serializing_if = "Option::is_none")]
     pub converter_control_mode: Option<String>,
     /// ReactivePowerControl attribute
-    #[serde(rename = "@ReactivePowerControl", default)]
+    #[serde(rename = "@ReactivePowerControl", default, skip_serializing_if = "Option::is_none")]
     pub reactive_power_control: Option<String>,
     /// ConverterStartupMethod attribute
-    #[serde(rename = "@ConverterStartupMethod", default)]
+    #[serde(rename = "@ConverterStartupMethod", default, skip_serializing_if = "Option::is_none")]
     pub converter_startup_method: Option<String>,
     /// ACLineVoltageSagAction attribute
-    #[serde(rename = "@ACLineVoltageSagAction", default)]
+    #[serde(rename = "@ACLineVoltageSagAction", default, skip_serializing_if = "Option::is_none")]
     pub acline_voltage_sag_action: Option<String>,
     /// ConverterInputPhaseLossAction attribute
-    #[serde(rename = "@ConverterInputPhaseLossAction", default)]
+    #[serde(rename = "@ConverterInputPhaseLossAction", default, skip_serializing_if = "Option::is_none")]
     pub converter_input_phase_loss_action: Option<String>,
     /// ACLineFrequencyChangeAction attribute
-    #[serde(rename = "@ACLineFrequencyChangeAction", default)]
+    #[serde(rename = "@ACLineFrequencyChangeAction", default, skip_serializing_if = "Option::is_none")]
     pub acline_frequency_change_action: Option<String>,
     /// ACLineSyncLossAction attribute
-    #[serde(rename = "@ACLineSyncLossAction", default)]
+    #[serde(rename = "@ACLineSyncLossAction", default, skip_serializing_if = "Option::is_none")]
     pub acline_sync_loss_action: Option<String>,
     /// ConverterOverloadAction attribute
-    #[serde(rename = "@ConverterOverloadAction", default)]
+    #[serde(rename = "@ConverterOverloadAction", default, skip_serializing_if = "Option::is_none")]
     pub converter_overload_action: Option<String>,
     /// ConverterCurrentLoopTuningMethod attribute
-    #[serde(rename = "@ConverterCurrentLoopTuningMethod", default)]
+    #[serde(rename = "@ConverterCurrentLoopTuningMethod", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_loop_tuning_method: Option<String>,
     /// ConverterACInputPhasing attribute
-    #[serde(rename = "@ConverterACInputPhasing", default)]
+    #[serde(rename = "@ConverterACInputPhasing", default, skip_serializing_if = "Option::is_none")]
     pub converter_acinput_phasing: Option<String>,
     /// ConverterACInputFrequency attribute
-    #[serde(rename = "@ConverterACInputFrequency", default)]
+    #[serde(rename = "@ConverterACInputFrequency", default, skip_serializing_if = "Option::is_none")]
     pub converter_acinput_frequency: Option<String>,
     /// ACLineSourceSelect attribute
-    #[serde(rename = "@ACLineSourceSelect", default)]
+    #[serde(rename = "@ACLineSourceSelect", default, skip_serializing_if = "Option::is_none")]
     pub acline_source_select: Option<String>,
     /// BusVoltageReferenceSource attribute
-    #[serde(rename = "@BusVoltageReferenceSource", default)]
+    #[serde(rename = "@BusVoltageReferenceSource", default, skip_serializing_if = "Option::is_none")]
     pub bus_voltage_reference_source: Option<String>,
     /// BusObserverConfiguration attribute
-    #[serde(rename = "@BusObserverConfiguration", default)]
+    #[serde(rename = "@BusObserverConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub bus_observer_configuration: Option<String>,
     /// ConverterACInputVoltage attribute
-    #[serde(rename = "@ConverterACInputVoltage", default)]
+    #[serde(rename = "@ConverterACInputVoltage", default, skip_serializing_if = "Option::is_none")]
     pub converter_acinput_voltage: Option<String>,
     /// CIPAxisExceptionAction2 attribute
-    #[serde(rename = "@CIPAxisExceptionAction2", default)]
+    #[serde(rename = "@CIPAxisExceptionAction2", default, skip_serializing_if = "Option::is_none")]
     pub cipaxis_exception_action2: Option<String>,
     /// CIPAxisExceptionAction2RA attribute
-    #[serde(rename = "@CIPAxisExceptionAction2RA", default)]
+    #[serde(rename = "@CIPAxisExceptionAction2RA", default, skip_serializing_if = "Option::is_none")]
     pub cipaxis_exception_action2_ra: Option<String>,
     /// ConverterConfiguration attribute
-    #[serde(rename = "@ConverterConfiguration", default)]
+    #[serde(rename = "@ConverterConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub converter_configuration: Option<String>,
     /// ConverterCurrentLimitSource attribute
-    #[serde(rename = "@ConverterCurrentLimitSource", default)]
+    #[serde(rename = "@ConverterCurrentLimitSource", default, skip_serializing_if = "Option::is_none")]
     pub converter_current_limit_source: Option<String>,
     /// SafetyFaultAction attribute
-    #[serde(rename = "@SafetyFaultAction", default)]
+    #[serde(rename = "@SafetyFaultAction", default, skip_serializing_if = "Option::is_none")]
     pub safety_fault_action: Option<String>,
     /// ACLineContactorInputChecking attribute
-    #[serde(rename = "@ACLineContactorInputChecking", default)]
+    #[serde(rename = "@ACLineContactorInputChecking", default, skip_serializing_if = "Option::is_none")]
     pub acline_contactor_input_checking: Option<String>,
     /// ConverterModelTimeConstant attribute
-    #[serde(rename = "@ConverterModelTimeConstant", default)]
+    #[serde(rename = "@ConverterModelTimeConstant", default, skip_serializing_if = "Option::is_none")]
     pub converter_model_time_constant: Option<String>,
     /// ConverterRatedPower attribute
-    #[serde(rename = "@ConverterRatedPower", default)]
+    #[serde(rename = "@ConverterRatedPower", default, skip_serializing_if = "Option::is_none")]
     pub converter_rated_power: Option<String>,
     /// CurrentLoopBandwidthScalingFactor attribute
-    #[serde(rename = "@CurrentLoopBandwidthScalingFactor", default)]
+    #[serde(rename = "@CurrentLoopBandwidthScalingFactor", default, skip_serializing_if = "Option::is_none")]
     pub current_loop_bandwidth_scaling_factor: Option<String>,
     /// CurrentLoopBandwidth attribute
-    #[serde(rename = "@CurrentLoopBandwidth", default)]
+    #[serde(rename = "@CurrentLoopBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub current_loop_bandwidth: Option<String>,
     /// DriveRatedVoltage attribute
-    #[serde(rename = "@DriveRatedVoltage", default)]
+    #[serde(rename = "@DriveRatedVoltage", default, skip_serializing_if = "Option::is_none")]
     pub drive_rated_voltage: Option<String>,
     /// MaxOutputFrequency attribute
-    #[serde(rename = "@MaxOutputFrequency", default)]
+    #[serde(rename = "@MaxOutputFrequency", default, skip_serializing_if = "Option::is_none")]
     pub max_output_frequency: Option<String>,
     /// ACLineResonanceUserLimit attribute
-    #[serde(rename = "@ACLineResonanceUserLimit", default)]
+    #[serde(rename = "@ACLineResonanceUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub acline_resonance_user_limit: Option<String>,
     /// MotorTestDataValid attribute
-    #[serde(rename = "@MotorTestDataValid", default)]
+    #[serde(rename = "@MotorTestDataValid", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_data_valid: Option<String>,
     /// TrackMoverLength attribute
-    #[serde(rename = "@TrackMoverLength", default)]
+    #[serde(rename = "@TrackMoverLength", default, skip_serializing_if = "Option::is_none")]
     pub track_mover_length: Option<String>,
     /// TrackMoverCenterofMassOffset attribute
-    #[serde(rename = "@TrackMoverCenterofMassOffset", default)]
+    #[serde(rename = "@TrackMoverCenterofMassOffset", default, skip_serializing_if = "Option::is_none")]
     pub track_mover_centerof_mass_offset: Option<String>,
     /// Feedback1CalibrationOffset attribute
-    #[serde(rename = "@Feedback1CalibrationOffset", default)]
+    #[serde(rename = "@Feedback1CalibrationOffset", default, skip_serializing_if = "Option::is_none")]
     pub feedback1_calibration_offset: Option<String>,
     /// Feedback2CalibrationOffset attribute
-    #[serde(rename = "@Feedback2CalibrationOffset", default)]
+    #[serde(rename = "@Feedback2CalibrationOffset", default, skip_serializing_if = "Option::is_none")]
     pub feedback2_calibration_offset: Option<String>,
     /// CommandNotchFilterFrequency attribute
-    #[serde(rename = "@CommandNotchFilterFrequency", default)]
+    #[serde(rename = "@CommandNotchFilterFrequency", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter_frequency: Option<String>,
     /// CommandNotchFilterWidth attribute
-    #[serde(rename = "@CommandNotchFilterWidth", default)]
+    #[serde(rename = "@CommandNotchFilterWidth", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter_width: Option<String>,
     /// CommandNotchFilterDepth attribute
-    #[serde(rename = "@CommandNotchFilterDepth", default)]
+    #[serde(rename = "@CommandNotchFilterDepth", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter_depth: Option<String>,
     /// CommandNotchFilterGain attribute
-    #[serde(rename = "@CommandNotchFilterGain", default)]
+    #[serde(rename = "@CommandNotchFilterGain", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter_gain: Option<String>,
     /// CommandNotchFilter2Frequency attribute
-    #[serde(rename = "@CommandNotchFilter2Frequency", default)]
+    #[serde(rename = "@CommandNotchFilter2Frequency", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter2_frequency: Option<String>,
     /// CommandNotchFilter2Width attribute
-    #[serde(rename = "@CommandNotchFilter2Width", default)]
+    #[serde(rename = "@CommandNotchFilter2Width", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter2_width: Option<String>,
     /// CommandNotchFilter2Depth attribute
-    #[serde(rename = "@CommandNotchFilter2Depth", default)]
+    #[serde(rename = "@CommandNotchFilter2Depth", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter2_depth: Option<String>,
     /// CommandNotchFilter2Gain attribute
-    #[serde(rename = "@CommandNotchFilter2Gain", default)]
+    #[serde(rename = "@CommandNotchFilter2Gain", default, skip_serializing_if = "Option::is_none")]
     pub command_notch_filter2_gain: Option<String>,
     /// TorqueNotchFilter2Frequency attribute
-    #[serde(rename = "@TorqueNotchFilter2Frequency", default)]
+    #[serde(rename = "@TorqueNotchFilter2Frequency", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter2_frequency: Option<String>,
     /// TorqueNotchFilter3Frequency attribute
-    #[serde(rename = "@TorqueNotchFilter3Frequency", default)]
+    #[serde(rename = "@TorqueNotchFilter3Frequency", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter3_frequency: Option<String>,
     /// TorqueNotchFilter4Frequency attribute
-    #[serde(rename = "@TorqueNotchFilter4Frequency", default)]
+    #[serde(rename = "@TorqueNotchFilter4Frequency", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter4_frequency: Option<String>,
     /// TorqueNotchFilterWidth attribute
-    #[serde(rename = "@TorqueNotchFilterWidth", default)]
+    #[serde(rename = "@TorqueNotchFilterWidth", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_width: Option<String>,
     /// TorqueNotchFilterDepth attribute
-    #[serde(rename = "@TorqueNotchFilterDepth", default)]
+    #[serde(rename = "@TorqueNotchFilterDepth", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_depth: Option<String>,
     /// TorqueNotchFilterGain attribute
-    #[serde(rename = "@TorqueNotchFilterGain", default)]
+    #[serde(rename = "@TorqueNotchFilterGain", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_gain: Option<String>,
     /// TorqueNotchFilter2Width attribute
-    #[serde(rename = "@TorqueNotchFilter2Width", default)]
+    #[serde(rename = "@TorqueNotchFilter2Width", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter2_width: Option<String>,
     /// TorqueNotchFilter2Depth attribute
-    #[serde(rename = "@TorqueNotchFilter2Depth", default)]
+    #[serde(rename = "@TorqueNotchFilter2Depth", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter2_depth: Option<String>,
     /// TorqueNotchFilter2Gain attribute
-    #[serde(rename = "@TorqueNotchFilter2Gain", default)]
+    #[serde(rename = "@TorqueNotchFilter2Gain", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter2_gain: Option<String>,
     /// TorqueNotchFilter3Width attribute
-    #[serde(rename = "@TorqueNotchFilter3Width", default)]
+    #[serde(rename = "@TorqueNotchFilter3Width", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter3_width: Option<String>,
     /// TorqueNotchFilter3Depth attribute
-    #[serde(rename = "@TorqueNotchFilter3Depth", default)]
+    #[serde(rename = "@TorqueNotchFilter3Depth", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter3_depth: Option<String>,
     /// TorqueNotchFilter3Gain attribute
-    #[serde(rename = "@TorqueNotchFilter3Gain", default)]
+    #[serde(rename = "@TorqueNotchFilter3Gain", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter3_gain: Option<String>,
     /// TorqueNotchFilter4Width attribute
-    #[serde(rename = "@TorqueNotchFilter4Width", default)]
+    #[serde(rename = "@TorqueNotchFilter4Width", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter4_width: Option<String>,
     /// TorqueNotchFilter4Depth attribute
-    #[serde(rename = "@TorqueNotchFilter4Depth", default)]
+    #[serde(rename = "@TorqueNotchFilter4Depth", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter4_depth: Option<String>,
     /// TorqueNotchFilter4Gain attribute
-    #[serde(rename = "@TorqueNotchFilter4Gain", default)]
+    #[serde(rename = "@TorqueNotchFilter4Gain", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter4_gain: Option<String>,
     /// AdaptiveTuningTrackingNotchFilters attribute
-    #[serde(rename = "@AdaptiveTuningTrackingNotchFilters", default)]
+    #[serde(rename = "@AdaptiveTuningTrackingNotchFilters", default, skip_serializing_if = "Option::is_none")]
     pub adaptive_tuning_tracking_notch_filters: Option<String>,
     /// AdaptiveTuningGainScalingFactorMin attribute
-    #[serde(rename = "@AdaptiveTuningGainScalingFactorMin", default)]
+    #[serde(rename = "@AdaptiveTuningGainScalingFactorMin", default, skip_serializing_if = "Option::is_none")]
     pub adaptive_tuning_gain_scaling_factor_min: Option<String>,
     /// TorqueLowPassFilterBandwidthMin attribute
-    #[serde(rename = "@TorqueLowPassFilterBandwidthMin", default)]
+    #[serde(rename = "@TorqueLowPassFilterBandwidthMin", default, skip_serializing_if = "Option::is_none")]
     pub torque_low_pass_filter_bandwidth_min: Option<String>,
     /// TorqueNotchFilterWidthMin attribute
-    #[serde(rename = "@TorqueNotchFilterWidthMin", default)]
+    #[serde(rename = "@TorqueNotchFilterWidthMin", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_width_min: Option<String>,
     /// TorqueNotchFilterWidthMax attribute
-    #[serde(rename = "@TorqueNotchFilterWidthMax", default)]
+    #[serde(rename = "@TorqueNotchFilterWidthMax", default, skip_serializing_if = "Option::is_none")]
     pub torque_notch_filter_width_max: Option<String>,
     /// MotorTestTravelLimit attribute
-    #[serde(rename = "@MotorTestTravelLimit", default)]
+    #[serde(rename = "@MotorTestTravelLimit", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_travel_limit: Option<String>,
     /// MotorTestSpeed attribute
-    #[serde(rename = "@MotorTestSpeed", default)]
+    #[serde(rename = "@MotorTestSpeed", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_speed: Option<String>,
     /// MotorTestTorque attribute
-    #[serde(rename = "@MotorTestTorque", default)]
+    #[serde(rename = "@MotorTestTorque", default, skip_serializing_if = "Option::is_none")]
     pub motor_test_torque: Option<String>,
     /// HookupTestSpeed attribute
-    #[serde(rename = "@HookupTestSpeed", default)]
+    #[serde(rename = "@HookupTestSpeed", default, skip_serializing_if = "Option::is_none")]
     pub hookup_test_speed: Option<String>,
     /// TorqueEstimateCrossoverSpeed attribute
-    #[serde(rename = "@TorqueEstimateCrossoverSpeed", default)]
+    #[serde(rename = "@TorqueEstimateCrossoverSpeed", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_crossover_speed: Option<String>,
     /// TorqueEstimateNotch1Frequency attribute
-    #[serde(rename = "@TorqueEstimateNotch1Frequency", default)]
+    #[serde(rename = "@TorqueEstimateNotch1Frequency", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch1_frequency: Option<String>,
     /// TorqueEstimateNotch1Width attribute
-    #[serde(rename = "@TorqueEstimateNotch1Width", default)]
+    #[serde(rename = "@TorqueEstimateNotch1Width", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch1_width: Option<String>,
     /// TorqueEstimateNotch1Depth attribute
-    #[serde(rename = "@TorqueEstimateNotch1Depth", default)]
+    #[serde(rename = "@TorqueEstimateNotch1Depth", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch1_depth: Option<String>,
     /// TorqueEstimateNotch1Gain attribute
-    #[serde(rename = "@TorqueEstimateNotch1Gain", default)]
+    #[serde(rename = "@TorqueEstimateNotch1Gain", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch1_gain: Option<String>,
     /// TorqueEstimateNotch2Frequency attribute
-    #[serde(rename = "@TorqueEstimateNotch2Frequency", default)]
+    #[serde(rename = "@TorqueEstimateNotch2Frequency", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch2_frequency: Option<String>,
     /// TorqueEstimateNotch2Width attribute
-    #[serde(rename = "@TorqueEstimateNotch2Width", default)]
+    #[serde(rename = "@TorqueEstimateNotch2Width", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch2_width: Option<String>,
     /// TorqueEstimateNotch2Depth attribute
-    #[serde(rename = "@TorqueEstimateNotch2Depth", default)]
+    #[serde(rename = "@TorqueEstimateNotch2Depth", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch2_depth: Option<String>,
     /// TorqueEstimateNotch2Gain attribute
-    #[serde(rename = "@TorqueEstimateNotch2Gain", default)]
+    #[serde(rename = "@TorqueEstimateNotch2Gain", default, skip_serializing_if = "Option::is_none")]
     pub torque_estimate_notch2_gain: Option<String>,
     /// FlyingStartCEMFReconnectDelay attribute
-    #[serde(rename = "@FlyingStartCEMFReconnectDelay", default)]
+    #[serde(rename = "@FlyingStartCEMFReconnectDelay", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfreconnect_delay: Option<String>,
     /// FlyingStartCEMFCurrentRegKp attribute
-    #[serde(rename = "@FlyingStartCEMFCurrentRegKp", default)]
+    #[serde(rename = "@FlyingStartCEMFCurrentRegKp", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfcurrent_reg_kp: Option<String>,
     /// FlyingStartCEMFCurrentRegKi attribute
-    #[serde(rename = "@FlyingStartCEMFCurrentRegKi", default)]
+    #[serde(rename = "@FlyingStartCEMFCurrentRegKi", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfcurrent_reg_ki: Option<String>,
     /// FlyingStartCEMFVelocityRegKp attribute
-    #[serde(rename = "@FlyingStartCEMFVelocityRegKp", default)]
+    #[serde(rename = "@FlyingStartCEMFVelocityRegKp", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfvelocity_reg_kp: Option<String>,
     /// FlyingStartCEMFVelocityRegKi attribute
-    #[serde(rename = "@FlyingStartCEMFVelocityRegKi", default)]
+    #[serde(rename = "@FlyingStartCEMFVelocityRegKi", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfvelocity_reg_ki: Option<String>,
     /// FlyingStartCEMFExcitationRegKp attribute
-    #[serde(rename = "@FlyingStartCEMFExcitationRegKp", default)]
+    #[serde(rename = "@FlyingStartCEMFExcitationRegKp", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfexcitation_reg_kp: Option<String>,
     /// FlyingStartCEMFExcitationRegKi attribute
-    #[serde(rename = "@FlyingStartCEMFExcitationRegKi", default)]
+    #[serde(rename = "@FlyingStartCEMFExcitationRegKi", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfexcitation_reg_ki: Option<String>,
     /// FlyingStartCEMFBrakeLevel attribute
-    #[serde(rename = "@FlyingStartCEMFBrakeLevel", default)]
+    #[serde(rename = "@FlyingStartCEMFBrakeLevel", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfbrake_level: Option<String>,
     /// FlyingStartCEMFBrakeTime attribute
-    #[serde(rename = "@FlyingStartCEMFBrakeTime", default)]
+    #[serde(rename = "@FlyingStartCEMFBrakeTime", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfbrake_time: Option<String>,
     /// FlyingStartCEMFZeroSpeedThreshold attribute
-    #[serde(rename = "@FlyingStartCEMFZeroSpeedThreshold", default)]
+    #[serde(rename = "@FlyingStartCEMFZeroSpeedThreshold", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_cemfzero_speed_threshold: Option<String>,
     /// FlyingStartSweepReconnectDelay attribute
-    #[serde(rename = "@FlyingStartSweepReconnectDelay", default)]
+    #[serde(rename = "@FlyingStartSweepReconnectDelay", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_reconnect_delay: Option<String>,
     /// FlyingStartSweepInitialVoltageRegKp attribute
-    #[serde(rename = "@FlyingStartSweepInitialVoltageRegKp", default)]
+    #[serde(rename = "@FlyingStartSweepInitialVoltageRegKp", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_initial_voltage_reg_kp: Option<String>,
     /// FlyingStartSweepInitialVoltageRegKi attribute
-    #[serde(rename = "@FlyingStartSweepInitialVoltageRegKi", default)]
+    #[serde(rename = "@FlyingStartSweepInitialVoltageRegKi", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_initial_voltage_reg_ki: Option<String>,
     /// FlyingStartSweepTime attribute
-    #[serde(rename = "@FlyingStartSweepTime", default)]
+    #[serde(rename = "@FlyingStartSweepTime", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_time: Option<String>,
     /// FlyingStartSweepVHzDCBoostAdjust attribute
-    #[serde(rename = "@FlyingStartSweepVHzDCBoostAdjust", default)]
+    #[serde(rename = "@FlyingStartSweepVHzDCBoostAdjust", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_vhz_dcboost_adjust: Option<String>,
     /// FlyingStartSweepVHzRatio attribute
-    #[serde(rename = "@FlyingStartSweepVHzRatio", default)]
+    #[serde(rename = "@FlyingStartSweepVHzRatio", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_vhz_ratio: Option<String>,
     /// FlyingStartSweepSpeedDetectLevel attribute
-    #[serde(rename = "@FlyingStartSweepSpeedDetectLevel", default)]
+    #[serde(rename = "@FlyingStartSweepSpeedDetectLevel", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_speed_detect_level: Option<String>,
     /// FlyingStartSweepSpeedDetectTime attribute
-    #[serde(rename = "@FlyingStartSweepSpeedDetectTime", default)]
+    #[serde(rename = "@FlyingStartSweepSpeedDetectTime", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_speed_detect_time: Option<String>,
     /// FlyingStartSweepRecoveryCurrentRegKi attribute
-    #[serde(rename = "@FlyingStartSweepRecoveryCurrentRegKi", default)]
+    #[serde(rename = "@FlyingStartSweepRecoveryCurrentRegKi", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_recovery_current_reg_ki: Option<String>,
     /// FlyingStartSweepVelocityRegKp attribute
-    #[serde(rename = "@FlyingStartSweepVelocityRegKp", default)]
+    #[serde(rename = "@FlyingStartSweepVelocityRegKp", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_velocity_reg_kp: Option<String>,
     /// FlyingStartSweepVelocityRegKi attribute
-    #[serde(rename = "@FlyingStartSweepVelocityRegKi", default)]
+    #[serde(rename = "@FlyingStartSweepVelocityRegKi", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_velocity_reg_ki: Option<String>,
     /// FlyingStartSweepBrakeLevel attribute
-    #[serde(rename = "@FlyingStartSweepBrakeLevel", default)]
+    #[serde(rename = "@FlyingStartSweepBrakeLevel", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_brake_level: Option<String>,
     /// FlyingStartSweepBrakeTime attribute
-    #[serde(rename = "@FlyingStartSweepBrakeTime", default)]
+    #[serde(rename = "@FlyingStartSweepBrakeTime", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_brake_time: Option<String>,
     /// FlyingStartSweepZeroSpeedThreshold attribute
-    #[serde(rename = "@FlyingStartSweepZeroSpeedThreshold", default)]
+    #[serde(rename = "@FlyingStartSweepZeroSpeedThreshold", default, skip_serializing_if = "Option::is_none")]
     pub flying_start_sweep_zero_speed_threshold: Option<String>,
     /// FrictionCompensationMethod attribute
-    #[serde(rename = "@FrictionCompensationMethod", default)]
+    #[serde(rename = "@FrictionCompensationMethod", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_method: Option<String>,
     /// FrictionCompensationStartSpeed attribute
-    #[serde(rename = "@FrictionCompensationStartSpeed", default)]
+    #[serde(rename = "@FrictionCompensationStartSpeed", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_start_speed: Option<String>,
     /// FrictionCompensationHysteresis attribute
-    #[serde(rename = "@FrictionCompensationHysteresis", default)]
+    #[serde(rename = "@FrictionCompensationHysteresis", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_hysteresis: Option<String>,
     /// FrictionCompensationBreakawayTime attribute
-    #[serde(rename = "@FrictionCompensationBreakawayTime", default)]
+    #[serde(rename = "@FrictionCompensationBreakawayTime", default, skip_serializing_if = "Option::is_none")]
     pub friction_compensation_breakaway_time: Option<String>,
     /// MotorAdaptionSpeed attribute
-    #[serde(rename = "@MotorAdaptionSpeed", default)]
+    #[serde(rename = "@MotorAdaptionSpeed", default, skip_serializing_if = "Option::is_none")]
     pub motor_adaption_speed: Option<String>,
     /// TorqueAdaptionEnable attribute
-    #[serde(rename = "@TorqueAdaptionEnable", default)]
+    #[serde(rename = "@TorqueAdaptionEnable", default, skip_serializing_if = "Option::is_none")]
     pub torque_adaption_enable: Option<String>,
     /// SlipAdaptionEnable attribute
-    #[serde(rename = "@SlipAdaptionEnable", default)]
+    #[serde(rename = "@SlipAdaptionEnable", default, skip_serializing_if = "Option::is_none")]
     pub slip_adaption_enable: Option<String>,
     /// FluxAdaptionEnable attribute
-    #[serde(rename = "@FluxAdaptionEnable", default)]
+    #[serde(rename = "@FluxAdaptionEnable", default, skip_serializing_if = "Option::is_none")]
     pub flux_adaption_enable: Option<String>,
     /// TorqueAdaptionRegulatorKp attribute
-    #[serde(rename = "@TorqueAdaptionRegulatorKp", default)]
+    #[serde(rename = "@TorqueAdaptionRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub torque_adaption_regulator_kp: Option<String>,
     /// TorqueAdaptionRegulatorKi attribute
-    #[serde(rename = "@TorqueAdaptionRegulatorKi", default)]
+    #[serde(rename = "@TorqueAdaptionRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub torque_adaption_regulator_ki: Option<String>,
     /// TorqueAdaptionRegulatorLimitPositive attribute
-    #[serde(rename = "@TorqueAdaptionRegulatorLimitPositive", default)]
+    #[serde(rename = "@TorqueAdaptionRegulatorLimitPositive", default, skip_serializing_if = "Option::is_none")]
     pub torque_adaption_regulator_limit_positive: Option<String>,
     /// TorqueAdaptionRegulatorLimitNegative attribute
-    #[serde(rename = "@TorqueAdaptionRegulatorLimitNegative", default)]
+    #[serde(rename = "@TorqueAdaptionRegulatorLimitNegative", default, skip_serializing_if = "Option::is_none")]
     pub torque_adaption_regulator_limit_negative: Option<String>,
     /// SlipandFluxRegulatorSlewTime attribute
-    #[serde(rename = "@SlipandFluxRegulatorSlewTime", default)]
+    #[serde(rename = "@SlipandFluxRegulatorSlewTime", default, skip_serializing_if = "Option::is_none")]
     pub slipand_flux_regulator_slew_time: Option<String>,
     /// SlipandFluxRegulatorSlewRate attribute
-    #[serde(rename = "@SlipandFluxRegulatorSlewRate", default)]
+    #[serde(rename = "@SlipandFluxRegulatorSlewRate", default, skip_serializing_if = "Option::is_none")]
     pub slipand_flux_regulator_slew_rate: Option<String>,
     /// SlipandFluxRegulatorConvergenceLevel attribute
-    #[serde(rename = "@SlipandFluxRegulatorConvergenceLevel", default)]
+    #[serde(rename = "@SlipandFluxRegulatorConvergenceLevel", default, skip_serializing_if = "Option::is_none")]
     pub slipand_flux_regulator_convergence_level: Option<String>,
     /// SlipandFluxRegulatorConvergenceTime attribute
-    #[serde(rename = "@SlipandFluxRegulatorConvergenceTime", default)]
+    #[serde(rename = "@SlipandFluxRegulatorConvergenceTime", default, skip_serializing_if = "Option::is_none")]
     pub slipand_flux_regulator_convergence_time: Option<String>,
     /// SlipAdaptionRegulatorIqThreshold attribute
-    #[serde(rename = "@SlipAdaptionRegulatorIqThreshold", default)]
+    #[serde(rename = "@SlipAdaptionRegulatorIqThreshold", default, skip_serializing_if = "Option::is_none")]
     pub slip_adaption_regulator_iq_threshold: Option<String>,
     /// SlipAdaptionRegulatorKp attribute
-    #[serde(rename = "@SlipAdaptionRegulatorKp", default)]
+    #[serde(rename = "@SlipAdaptionRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub slip_adaption_regulator_kp: Option<String>,
     /// SlipAdaptionRegulatorKi attribute
-    #[serde(rename = "@SlipAdaptionRegulatorKi", default)]
+    #[serde(rename = "@SlipAdaptionRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub slip_adaption_regulator_ki: Option<String>,
     /// FluxAdaptionRegulatorKp attribute
-    #[serde(rename = "@FluxAdaptionRegulatorKp", default)]
+    #[serde(rename = "@FluxAdaptionRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub flux_adaption_regulator_kp: Option<String>,
     /// FluxAdaptionRegulatorKi attribute
-    #[serde(rename = "@FluxAdaptionRegulatorKi", default)]
+    #[serde(rename = "@FluxAdaptionRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub flux_adaption_regulator_ki: Option<String>,
     /// VqIdDecouplingGain attribute
-    #[serde(rename = "@VqIdDecouplingGain", default)]
+    #[serde(rename = "@VqIdDecouplingGain", default, skip_serializing_if = "Option::is_none")]
     pub vq_id_decoupling_gain: Option<String>,
     /// VdIqDecouplingGain attribute
-    #[serde(rename = "@VdIqDecouplingGain", default)]
+    #[serde(rename = "@VdIqDecouplingGain", default, skip_serializing_if = "Option::is_none")]
     pub vd_iq_decoupling_gain: Option<String>,
     /// LqIqFeedbackFilterBandwidth attribute
-    #[serde(rename = "@LqIqFeedbackFilterBandwidth", default)]
+    #[serde(rename = "@LqIqFeedbackFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub lq_iq_feedback_filter_bandwidth: Option<String>,
     /// CurrentLimitRegulatorKp attribute
-    #[serde(rename = "@CurrentLimitRegulatorKp", default)]
+    #[serde(rename = "@CurrentLimitRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub current_limit_regulator_kp: Option<String>,
     /// CurrentLimitRegulatorKi attribute
-    #[serde(rename = "@CurrentLimitRegulatorKi", default)]
+    #[serde(rename = "@CurrentLimitRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub current_limit_regulator_ki: Option<String>,
     /// CurrentLimitRegulatorKd attribute
-    #[serde(rename = "@CurrentLimitRegulatorKd", default)]
+    #[serde(rename = "@CurrentLimitRegulatorKd", default, skip_serializing_if = "Option::is_none")]
     pub current_limit_regulator_kd: Option<String>,
     /// LowFrequencyIdCurrentLimitRegulatorKp attribute
-    #[serde(rename = "@LowFrequencyIdCurrentLimitRegulatorKp", default)]
+    #[serde(rename = "@LowFrequencyIdCurrentLimitRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub low_frequency_id_current_limit_regulator_kp: Option<String>,
     /// LowFrequencyIqCurrentLimitRegulatorKp attribute
-    #[serde(rename = "@LowFrequencyIqCurrentLimitRegulatorKp", default)]
+    #[serde(rename = "@LowFrequencyIqCurrentLimitRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub low_frequency_iq_current_limit_regulator_kp: Option<String>,
     /// PreChargeHoldControl attribute
-    #[serde(rename = "@PreChargeHoldControl", default)]
+    #[serde(rename = "@PreChargeHoldControl", default, skip_serializing_if = "Option::is_none")]
     pub pre_charge_hold_control: Option<String>,
     /// PreChargeHoldDelay attribute
-    #[serde(rename = "@PreChargeHoldDelay", default)]
+    #[serde(rename = "@PreChargeHoldDelay", default, skip_serializing_if = "Option::is_none")]
     pub pre_charge_hold_delay: Option<String>,
     /// MotorOvertemperatureUserLimit attribute
-    #[serde(rename = "@MotorOvertemperatureUserLimit", default)]
+    #[serde(rename = "@MotorOvertemperatureUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub motor_overtemperature_user_limit: Option<String>,
     /// InverterOvertemperatureUserLimit attribute
-    #[serde(rename = "@InverterOvertemperatureUserLimit", default)]
+    #[serde(rename = "@InverterOvertemperatureUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub inverter_overtemperature_user_limit: Option<String>,
     /// SensorlessVectorEconomyAccelDecelKp attribute
-    #[serde(rename = "@SensorlessVectorEconomyAccelDecelKp", default)]
+    #[serde(rename = "@SensorlessVectorEconomyAccelDecelKp", default, skip_serializing_if = "Option::is_none")]
     pub sensorless_vector_economy_accel_decel_kp: Option<String>,
     /// SensorlessVectorEconomyAccelDecelKi attribute
-    #[serde(rename = "@SensorlessVectorEconomyAccelDecelKi", default)]
+    #[serde(rename = "@SensorlessVectorEconomyAccelDecelKi", default, skip_serializing_if = "Option::is_none")]
     pub sensorless_vector_economy_accel_decel_ki: Option<String>,
     /// SensorlessVectorEconomyAtSpeedKi attribute
-    #[serde(rename = "@SensorlessVectorEconomyAtSpeedKi", default)]
+    #[serde(rename = "@SensorlessVectorEconomyAtSpeedKi", default, skip_serializing_if = "Option::is_none")]
     pub sensorless_vector_economy_at_speed_ki: Option<String>,
     /// SensorlessVectorBoostFilterBandwidth attribute
-    #[serde(rename = "@SensorlessVectorBoostFilterBandwidth", default)]
+    #[serde(rename = "@SensorlessVectorBoostFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub sensorless_vector_boost_filter_bandwidth: Option<String>,
     /// VelocityFeedbackDelayCompensation attribute
-    #[serde(rename = "@VelocityFeedbackDelayCompensation", default)]
+    #[serde(rename = "@VelocityFeedbackDelayCompensation", default, skip_serializing_if = "Option::is_none")]
     pub velocity_feedback_delay_compensation: Option<String>,
     /// TorqueCalibrationFactorMotoring attribute
-    #[serde(rename = "@TorqueCalibrationFactorMotoring", default)]
+    #[serde(rename = "@TorqueCalibrationFactorMotoring", default, skip_serializing_if = "Option::is_none")]
     pub torque_calibration_factor_motoring: Option<String>,
     /// TorqueCalibrationFactorRegenerating attribute
-    #[serde(rename = "@TorqueCalibrationFactorRegenerating", default)]
+    #[serde(rename = "@TorqueCalibrationFactorRegenerating", default, skip_serializing_if = "Option::is_none")]
     pub torque_calibration_factor_regenerating: Option<String>,
     /// FluxVectorFrequencyRegulatorKp attribute
-    #[serde(rename = "@FluxVectorFrequencyRegulatorKp", default)]
+    #[serde(rename = "@FluxVectorFrequencyRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub flux_vector_frequency_regulator_kp: Option<String>,
     /// FluxVectorFrequencyRegulatorKi attribute
-    #[serde(rename = "@FluxVectorFrequencyRegulatorKi", default)]
+    #[serde(rename = "@FluxVectorFrequencyRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub flux_vector_frequency_regulator_ki: Option<String>,
     /// MotorStabilityControlEnable attribute
-    #[serde(rename = "@MotorStabilityControlEnable", default)]
+    #[serde(rename = "@MotorStabilityControlEnable", default, skip_serializing_if = "Option::is_none")]
     pub motor_stability_control_enable: Option<String>,
     /// MotorStabilityControlFilterBandwidth attribute
-    #[serde(rename = "@MotorStabilityControlFilterBandwidth", default)]
+    #[serde(rename = "@MotorStabilityControlFilterBandwidth", default, skip_serializing_if = "Option::is_none")]
     pub motor_stability_control_filter_bandwidth: Option<String>,
     /// MotorStabilityControlVoltageGain attribute
-    #[serde(rename = "@MotorStabilityControlVoltageGain", default)]
+    #[serde(rename = "@MotorStabilityControlVoltageGain", default, skip_serializing_if = "Option::is_none")]
     pub motor_stability_control_voltage_gain: Option<String>,
     /// MotorStabilityControlFrequencyGain attribute
-    #[serde(rename = "@MotorStabilityControlFrequencyGain", default)]
+    #[serde(rename = "@MotorStabilityControlFrequencyGain", default, skip_serializing_if = "Option::is_none")]
     pub motor_stability_control_frequency_gain: Option<String>,
     /// PowerDeviceCompensationEnable attribute
-    #[serde(rename = "@PowerDeviceCompensationEnable", default)]
+    #[serde(rename = "@PowerDeviceCompensationEnable", default, skip_serializing_if = "Option::is_none")]
     pub power_device_compensation_enable: Option<String>,
     /// PowerDeviceDeadTimeCompensation attribute
-    #[serde(rename = "@PowerDeviceDeadTimeCompensation", default)]
+    #[serde(rename = "@PowerDeviceDeadTimeCompensation", default, skip_serializing_if = "Option::is_none")]
     pub power_device_dead_time_compensation: Option<String>,
     /// DCInjectionCurrentRegulatorKp attribute
-    #[serde(rename = "@DCInjectionCurrentRegulatorKp", default)]
+    #[serde(rename = "@DCInjectionCurrentRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub dcinjection_current_regulator_kp: Option<String>,
     /// DCInjectionCurrentRegulatorKi attribute
-    #[serde(rename = "@DCInjectionCurrentRegulatorKi", default)]
+    #[serde(rename = "@DCInjectionCurrentRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub dcinjection_current_regulator_ki: Option<String>,
     /// FluxBrakingRegulatorKp attribute
-    #[serde(rename = "@FluxBrakingRegulatorKp", default)]
+    #[serde(rename = "@FluxBrakingRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub flux_braking_regulator_kp: Option<String>,
     /// FluxBrakingRegulatorKi attribute
-    #[serde(rename = "@FluxBrakingRegulatorKi", default)]
+    #[serde(rename = "@FluxBrakingRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub flux_braking_regulator_ki: Option<String>,
     /// FluxBrakingVoltageLimit attribute
-    #[serde(rename = "@FluxBrakingVoltageLimit", default)]
+    #[serde(rename = "@FluxBrakingVoltageLimit", default, skip_serializing_if = "Option::is_none")]
     pub flux_braking_voltage_limit: Option<String>,
     /// FluxDownRegulatorKp attribute
-    #[serde(rename = "@FluxDownRegulatorKp", default)]
+    #[serde(rename = "@FluxDownRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub flux_down_regulator_kp: Option<String>,
     /// FluxDownRegulatorKi attribute
-    #[serde(rename = "@FluxDownRegulatorKi", default)]
+    #[serde(rename = "@FluxDownRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub flux_down_regulator_ki: Option<String>,
     /// ACInjectionBrakeRegulatorKp attribute
-    #[serde(rename = "@ACInjectionBrakeRegulatorKp", default)]
+    #[serde(rename = "@ACInjectionBrakeRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub acinjection_brake_regulator_kp: Option<String>,
     /// ACInjectionBrakeRegulatorKi attribute
-    #[serde(rename = "@ACInjectionBrakeRegulatorKi", default)]
+    #[serde(rename = "@ACInjectionBrakeRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub acinjection_brake_regulator_ki: Option<String>,
     /// ACInjectionBrakePowerThreshold attribute
-    #[serde(rename = "@ACInjectionBrakePowerThreshold", default)]
+    #[serde(rename = "@ACInjectionBrakePowerThreshold", default, skip_serializing_if = "Option::is_none")]
     pub acinjection_brake_power_threshold: Option<String>,
     /// ACInjectionBrakeFrequencyThreshold attribute
-    #[serde(rename = "@ACInjectionBrakeFrequencyThreshold", default)]
+    #[serde(rename = "@ACInjectionBrakeFrequencyThreshold", default, skip_serializing_if = "Option::is_none")]
     pub acinjection_brake_frequency_threshold: Option<String>,
     /// BusRegulatorVoltageLevel attribute
-    #[serde(rename = "@BusRegulatorVoltageLevel", default)]
+    #[serde(rename = "@BusRegulatorVoltageLevel", default, skip_serializing_if = "Option::is_none")]
     pub bus_regulator_voltage_level: Option<String>,
     /// BusRegulatorSetPointSource attribute
-    #[serde(rename = "@BusRegulatorSetPointSource", default)]
+    #[serde(rename = "@BusRegulatorSetPointSource", default, skip_serializing_if = "Option::is_none")]
     pub bus_regulator_set_point_source: Option<String>,
     /// BusRegulatorKp attribute
-    #[serde(rename = "@BusRegulatorKp", default)]
+    #[serde(rename = "@BusRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub bus_regulator_kp: Option<String>,
     /// BusRegulatorKi attribute
-    #[serde(rename = "@BusRegulatorKi", default)]
+    #[serde(rename = "@BusRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub bus_regulator_ki: Option<String>,
     /// BusLimitRegulatorKp attribute
-    #[serde(rename = "@BusLimitRegulatorKp", default)]
+    #[serde(rename = "@BusLimitRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub bus_limit_regulator_kp: Option<String>,
     /// BusLimitRegulatorKd attribute
-    #[serde(rename = "@BusLimitRegulatorKd", default)]
+    #[serde(rename = "@BusLimitRegulatorKd", default, skip_serializing_if = "Option::is_none")]
     pub bus_limit_regulator_kd: Option<String>,
     /// BusLimitActiveCurrentRegulatorKp attribute
-    #[serde(rename = "@BusLimitActiveCurrentRegulatorKp", default)]
+    #[serde(rename = "@BusLimitActiveCurrentRegulatorKp", default, skip_serializing_if = "Option::is_none")]
     pub bus_limit_active_current_regulator_kp: Option<String>,
     /// BusLimitActiveCurrentRegulatorKi attribute
-    #[serde(rename = "@BusLimitActiveCurrentRegulatorKi", default)]
+    #[serde(rename = "@BusLimitActiveCurrentRegulatorKi", default, skip_serializing_if = "Option::is_none")]
     pub bus_limit_active_current_regulator_ki: Option<String>,
     /// InverterGroundCurrentUserLimit attribute
-    #[serde(rename = "@InverterGroundCurrentUserLimit", default)]
+    #[serde(rename = "@InverterGroundCurrentUserLimit", default, skip_serializing_if = "Option::is_none")]
     pub inverter_ground_current_user_limit: Option<String>,
     /// TestModeConfiguration attribute
-    #[serde(rename = "@TestModeConfiguration", default)]
+    #[serde(rename = "@TestModeConfiguration", default, skip_serializing_if = "Option::is_none")]
     pub test_mode_configuration: Option<String>,
     /// TestModeEnable attribute
-    #[serde(rename = "@TestModeEnable", default)]
+    #[serde(rename = "@TestModeEnable", default, skip_serializing_if = "Option::is_none")]
     pub test_mode_enable: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 

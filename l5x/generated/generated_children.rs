@@ -8,13 +8,13 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct ChildProgramCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// ChildProgram element
-    #[serde(rename = "ChildProgram", default)]
+    #[serde(rename = "ChildProgram", default, skip_serializing_if = "Vec::is_empty")]
     pub child_program: Vec<ChildProgram>,
 }
 
@@ -25,13 +25,13 @@ pub struct ChildProgram {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 

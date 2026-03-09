@@ -8,37 +8,37 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct SecurityInfo {
     /// Code attribute
-    #[serde(rename = "@Code", default)]
+    #[serde(rename = "@Code", default, skip_serializing_if = "Option::is_none")]
     pub code: Option<String>,
     /// SecurityAuthorityID attribute
-    #[serde(rename = "@SecurityAuthorityID", default)]
+    #[serde(rename = "@SecurityAuthorityID", default, skip_serializing_if = "Option::is_none")]
     pub security_authority_id: Option<String>,
     /// SecurityAuthorityURI attribute
-    #[serde(rename = "@SecurityAuthorityURI", default)]
+    #[serde(rename = "@SecurityAuthorityURI", default, skip_serializing_if = "Option::is_none")]
     pub security_authority_uri: Option<String>,
     /// SecondarySecurityAuthorityID attribute
-    #[serde(rename = "@SecondarySecurityAuthorityID", default)]
+    #[serde(rename = "@SecondarySecurityAuthorityID", default, skip_serializing_if = "Option::is_none")]
     pub secondary_security_authority_id: Option<String>,
     /// SecondarySecurityAuthorityURI attribute
-    #[serde(rename = "@SecondarySecurityAuthorityURI", default)]
+    #[serde(rename = "@SecondarySecurityAuthorityURI", default, skip_serializing_if = "Option::is_none")]
     pub secondary_security_authority_uri: Option<String>,
     /// ChangesToDetect attribute
-    #[serde(rename = "@ChangesToDetect", default)]
+    #[serde(rename = "@ChangesToDetect", default, skip_serializing_if = "Option::is_none")]
     pub changes_to_detect: Option<String>,
     /// TrustedSlots attribute
-    #[serde(rename = "@TrustedSlots", default)]
+    #[serde(rename = "@TrustedSlots", default, skip_serializing_if = "Option::is_none")]
     pub trusted_slots: Option<String>,
     /// PermissionSet attribute
-    #[serde(rename = "@PermissionSet", default)]
+    #[serde(rename = "@PermissionSet", default, skip_serializing_if = "Option::is_none")]
     pub permission_set: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// PrimaryActionSets element
-    #[serde(rename = "PrimaryActionSets", default)]
+    #[serde(rename = "PrimaryActionSets", default, skip_serializing_if = "Option::is_none")]
     pub primary_action_sets: Option<PrimaryActionSetCollection>,
 }
 

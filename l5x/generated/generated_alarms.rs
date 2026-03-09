@@ -8,13 +8,13 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AlarmDefinitionCollectionAdaptor {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// DatatypeAlarmDefinition element
-    #[serde(rename = "DatatypeAlarmDefinition", default)]
+    #[serde(rename = "DatatypeAlarmDefinition", default, skip_serializing_if = "Vec::is_empty")]
     pub datatype_alarm_definition: Vec<DatatypeAlarmDefinition>,
 }
 
@@ -24,25 +24,25 @@ pub struct AlarmDefinitionCollectionAdaptor {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AlarmConfig {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Messages element
-    #[serde(rename = "Messages", default)]
+    #[serde(rename = "Messages", default, skip_serializing_if = "Option::is_none")]
     pub messages: Option<AlarmMessageCollection>,
     /// AlarmClass element
-    #[serde(rename = "AlarmClass", default)]
+    #[serde(rename = "AlarmClass", default, skip_serializing_if = "Option::is_none")]
     pub alarm_class: Option<String>,
     /// HMICmd element
-    #[serde(rename = "HMICmd", default)]
+    #[serde(rename = "HMICmd", default, skip_serializing_if = "Option::is_none")]
     pub hmicmd: Option<String>,
     /// HMIGroup element
-    #[serde(rename = "HMIGroup", default)]
+    #[serde(rename = "HMIGroup", default, skip_serializing_if = "Option::is_none")]
     pub hmigroup: Option<String>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -50,13 +50,13 @@ pub struct AlarmConfig {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AlarmMessageCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Message element
-    #[serde(rename = "Message", default)]
+    #[serde(rename = "Message", default, skip_serializing_if = "Vec::is_empty")]
     pub message: Vec<AlarmMessage>,
 }
 
@@ -67,16 +67,16 @@ pub struct AlarmMessage {
     #[serde(rename = "@Type", default)]
     pub r#type: String,
     /// ID attribute
-    #[serde(rename = "@ID", default)]
+    #[serde(rename = "@ID", default, skip_serializing_if = "Option::is_none")]
     pub id: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text element
-    #[serde(rename = "Text", default)]
+    #[serde(rename = "Text", default, skip_serializing_if = "Vec::is_empty")]
     pub text: Vec<TextWide>,
 }
 
@@ -86,16 +86,16 @@ pub struct AlarmMessage {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AlarmMessageText {
     /// Lang attribute
-    #[serde(rename = "@Lang", default)]
+    #[serde(rename = "@Lang", default, skip_serializing_if = "Option::is_none")]
     pub lang: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -103,379 +103,379 @@ pub struct AlarmMessageText {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AlarmAnalog {
     /// EnableIn attribute
-    #[serde(rename = "@EnableIn", default)]
+    #[serde(rename = "@EnableIn", default, skip_serializing_if = "Option::is_none")]
     pub enable_in: Option<String>,
     /// InFault attribute
-    #[serde(rename = "@InFault", default)]
+    #[serde(rename = "@InFault", default, skip_serializing_if = "Option::is_none")]
     pub in_fault: Option<String>,
     /// HHEnabled attribute
-    #[serde(rename = "@HHEnabled", default)]
+    #[serde(rename = "@HHEnabled", default, skip_serializing_if = "Option::is_none")]
     pub hhenabled: Option<String>,
     /// HEnabled attribute
-    #[serde(rename = "@HEnabled", default)]
+    #[serde(rename = "@HEnabled", default, skip_serializing_if = "Option::is_none")]
     pub henabled: Option<String>,
     /// LEnabled attribute
-    #[serde(rename = "@LEnabled", default)]
+    #[serde(rename = "@LEnabled", default, skip_serializing_if = "Option::is_none")]
     pub lenabled: Option<String>,
     /// LLEnabled attribute
-    #[serde(rename = "@LLEnabled", default)]
+    #[serde(rename = "@LLEnabled", default, skip_serializing_if = "Option::is_none")]
     pub llenabled: Option<String>,
     /// AckRequired attribute
-    #[serde(rename = "@AckRequired", default)]
+    #[serde(rename = "@AckRequired", default, skip_serializing_if = "Option::is_none")]
     pub ack_required: Option<String>,
     /// ProgAckAll attribute
-    #[serde(rename = "@ProgAckAll", default)]
+    #[serde(rename = "@ProgAckAll", default, skip_serializing_if = "Option::is_none")]
     pub prog_ack_all: Option<String>,
     /// OperAckAll attribute
-    #[serde(rename = "@OperAckAll", default)]
+    #[serde(rename = "@OperAckAll", default, skip_serializing_if = "Option::is_none")]
     pub oper_ack_all: Option<String>,
     /// HHProgAck attribute
-    #[serde(rename = "@HHProgAck", default)]
+    #[serde(rename = "@HHProgAck", default, skip_serializing_if = "Option::is_none")]
     pub hhprog_ack: Option<String>,
     /// HHOperAck attribute
-    #[serde(rename = "@HHOperAck", default)]
+    #[serde(rename = "@HHOperAck", default, skip_serializing_if = "Option::is_none")]
     pub hhoper_ack: Option<String>,
     /// HProgAck attribute
-    #[serde(rename = "@HProgAck", default)]
+    #[serde(rename = "@HProgAck", default, skip_serializing_if = "Option::is_none")]
     pub hprog_ack: Option<String>,
     /// HOperAck attribute
-    #[serde(rename = "@HOperAck", default)]
+    #[serde(rename = "@HOperAck", default, skip_serializing_if = "Option::is_none")]
     pub hoper_ack: Option<String>,
     /// LProgAck attribute
-    #[serde(rename = "@LProgAck", default)]
+    #[serde(rename = "@LProgAck", default, skip_serializing_if = "Option::is_none")]
     pub lprog_ack: Option<String>,
     /// LOperAck attribute
-    #[serde(rename = "@LOperAck", default)]
+    #[serde(rename = "@LOperAck", default, skip_serializing_if = "Option::is_none")]
     pub loper_ack: Option<String>,
     /// LLProgAck attribute
-    #[serde(rename = "@LLProgAck", default)]
+    #[serde(rename = "@LLProgAck", default, skip_serializing_if = "Option::is_none")]
     pub llprog_ack: Option<String>,
     /// LLOperAck attribute
-    #[serde(rename = "@LLOperAck", default)]
+    #[serde(rename = "@LLOperAck", default, skip_serializing_if = "Option::is_none")]
     pub lloper_ack: Option<String>,
     /// ROCPosProgAck attribute
-    #[serde(rename = "@ROCPosProgAck", default)]
+    #[serde(rename = "@ROCPosProgAck", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_prog_ack: Option<String>,
     /// ROCPosOperAck attribute
-    #[serde(rename = "@ROCPosOperAck", default)]
+    #[serde(rename = "@ROCPosOperAck", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_oper_ack: Option<String>,
     /// ROCNegProgAck attribute
-    #[serde(rename = "@ROCNegProgAck", default)]
+    #[serde(rename = "@ROCNegProgAck", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_prog_ack: Option<String>,
     /// ROCNegOperAck attribute
-    #[serde(rename = "@ROCNegOperAck", default)]
+    #[serde(rename = "@ROCNegOperAck", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_oper_ack: Option<String>,
     /// ProgSuppress attribute
-    #[serde(rename = "@ProgSuppress", default)]
+    #[serde(rename = "@ProgSuppress", default, skip_serializing_if = "Option::is_none")]
     pub prog_suppress: Option<String>,
     /// OperSuppress attribute
-    #[serde(rename = "@OperSuppress", default)]
+    #[serde(rename = "@OperSuppress", default, skip_serializing_if = "Option::is_none")]
     pub oper_suppress: Option<String>,
     /// ProgUnsuppress attribute
-    #[serde(rename = "@ProgUnsuppress", default)]
+    #[serde(rename = "@ProgUnsuppress", default, skip_serializing_if = "Option::is_none")]
     pub prog_unsuppress: Option<String>,
     /// OperUnsuppress attribute
-    #[serde(rename = "@OperUnsuppress", default)]
+    #[serde(rename = "@OperUnsuppress", default, skip_serializing_if = "Option::is_none")]
     pub oper_unsuppress: Option<String>,
     /// HHOperShelve attribute
-    #[serde(rename = "@HHOperShelve", default)]
+    #[serde(rename = "@HHOperShelve", default, skip_serializing_if = "Option::is_none")]
     pub hhoper_shelve: Option<String>,
     /// HOperShelve attribute
-    #[serde(rename = "@HOperShelve", default)]
+    #[serde(rename = "@HOperShelve", default, skip_serializing_if = "Option::is_none")]
     pub hoper_shelve: Option<String>,
     /// LOperShelve attribute
-    #[serde(rename = "@LOperShelve", default)]
+    #[serde(rename = "@LOperShelve", default, skip_serializing_if = "Option::is_none")]
     pub loper_shelve: Option<String>,
     /// LLOperShelve attribute
-    #[serde(rename = "@LLOperShelve", default)]
+    #[serde(rename = "@LLOperShelve", default, skip_serializing_if = "Option::is_none")]
     pub lloper_shelve: Option<String>,
     /// ROCPosOperShelve attribute
-    #[serde(rename = "@ROCPosOperShelve", default)]
+    #[serde(rename = "@ROCPosOperShelve", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_oper_shelve: Option<String>,
     /// ROCNegOperShelve attribute
-    #[serde(rename = "@ROCNegOperShelve", default)]
+    #[serde(rename = "@ROCNegOperShelve", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_oper_shelve: Option<String>,
     /// ProgUnshelveAll attribute
-    #[serde(rename = "@ProgUnshelveAll", default)]
+    #[serde(rename = "@ProgUnshelveAll", default, skip_serializing_if = "Option::is_none")]
     pub prog_unshelve_all: Option<String>,
     /// HHOperUnshelve attribute
-    #[serde(rename = "@HHOperUnshelve", default)]
+    #[serde(rename = "@HHOperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub hhoper_unshelve: Option<String>,
     /// HOperUnshelve attribute
-    #[serde(rename = "@HOperUnshelve", default)]
+    #[serde(rename = "@HOperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub hoper_unshelve: Option<String>,
     /// LOperUnshelve attribute
-    #[serde(rename = "@LOperUnshelve", default)]
+    #[serde(rename = "@LOperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub loper_unshelve: Option<String>,
     /// LLOperUnshelve attribute
-    #[serde(rename = "@LLOperUnshelve", default)]
+    #[serde(rename = "@LLOperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub lloper_unshelve: Option<String>,
     /// ROCPosOperUnshelve attribute
-    #[serde(rename = "@ROCPosOperUnshelve", default)]
+    #[serde(rename = "@ROCPosOperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_oper_unshelve: Option<String>,
     /// ROCNegOperUnshelve attribute
-    #[serde(rename = "@ROCNegOperUnshelve", default)]
+    #[serde(rename = "@ROCNegOperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_oper_unshelve: Option<String>,
     /// ProgDisable attribute
-    #[serde(rename = "@ProgDisable", default)]
+    #[serde(rename = "@ProgDisable", default, skip_serializing_if = "Option::is_none")]
     pub prog_disable: Option<String>,
     /// OperDisable attribute
-    #[serde(rename = "@OperDisable", default)]
+    #[serde(rename = "@OperDisable", default, skip_serializing_if = "Option::is_none")]
     pub oper_disable: Option<String>,
     /// ProgEnable attribute
-    #[serde(rename = "@ProgEnable", default)]
+    #[serde(rename = "@ProgEnable", default, skip_serializing_if = "Option::is_none")]
     pub prog_enable: Option<String>,
     /// OperEnable attribute
-    #[serde(rename = "@OperEnable", default)]
+    #[serde(rename = "@OperEnable", default, skip_serializing_if = "Option::is_none")]
     pub oper_enable: Option<String>,
     /// AlarmCountReset attribute
-    #[serde(rename = "@AlarmCountReset", default)]
+    #[serde(rename = "@AlarmCountReset", default, skip_serializing_if = "Option::is_none")]
     pub alarm_count_reset: Option<String>,
     /// HHMinDurationEnable attribute
-    #[serde(rename = "@HHMinDurationEnable", default)]
+    #[serde(rename = "@HHMinDurationEnable", default, skip_serializing_if = "Option::is_none")]
     pub hhmin_duration_enable: Option<String>,
     /// HMinDurationEnable attribute
-    #[serde(rename = "@HMinDurationEnable", default)]
+    #[serde(rename = "@HMinDurationEnable", default, skip_serializing_if = "Option::is_none")]
     pub hmin_duration_enable: Option<String>,
     /// LMinDurationEnable attribute
-    #[serde(rename = "@LMinDurationEnable", default)]
+    #[serde(rename = "@LMinDurationEnable", default, skip_serializing_if = "Option::is_none")]
     pub lmin_duration_enable: Option<String>,
     /// LLMinDurationEnable attribute
-    #[serde(rename = "@LLMinDurationEnable", default)]
+    #[serde(rename = "@LLMinDurationEnable", default, skip_serializing_if = "Option::is_none")]
     pub llmin_duration_enable: Option<String>,
     /// In attribute
-    #[serde(rename = "@In", default)]
+    #[serde(rename = "@In", default, skip_serializing_if = "Option::is_none")]
     pub r#in: Option<String>,
     /// HHLimit attribute
-    #[serde(rename = "@HHLimit", default)]
+    #[serde(rename = "@HHLimit", default, skip_serializing_if = "Option::is_none")]
     pub hhlimit: Option<String>,
     /// HHSeverity attribute
-    #[serde(rename = "@HHSeverity", default)]
+    #[serde(rename = "@HHSeverity", default, skip_serializing_if = "Option::is_none")]
     pub hhseverity: Option<String>,
     /// HLimit attribute
-    #[serde(rename = "@HLimit", default)]
+    #[serde(rename = "@HLimit", default, skip_serializing_if = "Option::is_none")]
     pub hlimit: Option<String>,
     /// HSeverity attribute
-    #[serde(rename = "@HSeverity", default)]
+    #[serde(rename = "@HSeverity", default, skip_serializing_if = "Option::is_none")]
     pub hseverity: Option<String>,
     /// LLimit attribute
-    #[serde(rename = "@LLimit", default)]
+    #[serde(rename = "@LLimit", default, skip_serializing_if = "Option::is_none")]
     pub llimit: Option<String>,
     /// LSeverity attribute
-    #[serde(rename = "@LSeverity", default)]
+    #[serde(rename = "@LSeverity", default, skip_serializing_if = "Option::is_none")]
     pub lseverity: Option<String>,
     /// LLLimit attribute
-    #[serde(rename = "@LLLimit", default)]
+    #[serde(rename = "@LLLimit", default, skip_serializing_if = "Option::is_none")]
     pub lllimit: Option<String>,
     /// LLSeverity attribute
-    #[serde(rename = "@LLSeverity", default)]
+    #[serde(rename = "@LLSeverity", default, skip_serializing_if = "Option::is_none")]
     pub llseverity: Option<String>,
     /// MinDurationPRE attribute
-    #[serde(rename = "@MinDurationPRE", default)]
+    #[serde(rename = "@MinDurationPRE", default, skip_serializing_if = "Option::is_none")]
     pub min_duration_pre: Option<String>,
     /// ShelveDuration attribute
-    #[serde(rename = "@ShelveDuration", default)]
+    #[serde(rename = "@ShelveDuration", default, skip_serializing_if = "Option::is_none")]
     pub shelve_duration: Option<String>,
     /// MaxShelveDuration attribute
-    #[serde(rename = "@MaxShelveDuration", default)]
+    #[serde(rename = "@MaxShelveDuration", default, skip_serializing_if = "Option::is_none")]
     pub max_shelve_duration: Option<String>,
     /// Deadband attribute
-    #[serde(rename = "@Deadband", default)]
+    #[serde(rename = "@Deadband", default, skip_serializing_if = "Option::is_none")]
     pub deadband: Option<String>,
     /// ROCPosLimit attribute
-    #[serde(rename = "@ROCPosLimit", default)]
+    #[serde(rename = "@ROCPosLimit", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_limit: Option<String>,
     /// ROCPosSeverity attribute
-    #[serde(rename = "@ROCPosSeverity", default)]
+    #[serde(rename = "@ROCPosSeverity", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_severity: Option<String>,
     /// ROCNegLimit attribute
-    #[serde(rename = "@ROCNegLimit", default)]
+    #[serde(rename = "@ROCNegLimit", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_limit: Option<String>,
     /// ROCNegSeverity attribute
-    #[serde(rename = "@ROCNegSeverity", default)]
+    #[serde(rename = "@ROCNegSeverity", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_severity: Option<String>,
     /// ROCPeriod attribute
-    #[serde(rename = "@ROCPeriod", default)]
+    #[serde(rename = "@ROCPeriod", default, skip_serializing_if = "Option::is_none")]
     pub rocperiod: Option<String>,
     /// AssocTag1 attribute
-    #[serde(rename = "@AssocTag1", default)]
+    #[serde(rename = "@AssocTag1", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag1: Option<String>,
     /// AssocTag2 attribute
-    #[serde(rename = "@AssocTag2", default)]
+    #[serde(rename = "@AssocTag2", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag2: Option<String>,
     /// AssocTag3 attribute
-    #[serde(rename = "@AssocTag3", default)]
+    #[serde(rename = "@AssocTag3", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag3: Option<String>,
     /// AssocTag4 attribute
-    #[serde(rename = "@AssocTag4", default)]
+    #[serde(rename = "@AssocTag4", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag4: Option<String>,
     /// EnableOut attribute
-    #[serde(rename = "@EnableOut", default)]
+    #[serde(rename = "@EnableOut", default, skip_serializing_if = "Option::is_none")]
     pub enable_out: Option<String>,
     /// InAlarm attribute
-    #[serde(rename = "@InAlarm", default)]
+    #[serde(rename = "@InAlarm", default, skip_serializing_if = "Option::is_none")]
     pub in_alarm: Option<String>,
     /// AnyInAlarmUnack attribute
-    #[serde(rename = "@AnyInAlarmUnack", default)]
+    #[serde(rename = "@AnyInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub any_in_alarm_unack: Option<String>,
     /// HHInAlarm attribute
-    #[serde(rename = "@HHInAlarm", default)]
+    #[serde(rename = "@HHInAlarm", default, skip_serializing_if = "Option::is_none")]
     pub hhin_alarm: Option<String>,
     /// HHAcked attribute
-    #[serde(rename = "@HHAcked", default)]
+    #[serde(rename = "@HHAcked", default, skip_serializing_if = "Option::is_none")]
     pub hhacked: Option<String>,
     /// HHInAlarmUnack attribute
-    #[serde(rename = "@HHInAlarmUnack", default)]
+    #[serde(rename = "@HHInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub hhin_alarm_unack: Option<String>,
     /// HInAlarm attribute
-    #[serde(rename = "@HInAlarm", default)]
+    #[serde(rename = "@HInAlarm", default, skip_serializing_if = "Option::is_none")]
     pub hin_alarm: Option<String>,
     /// HAcked attribute
-    #[serde(rename = "@HAcked", default)]
+    #[serde(rename = "@HAcked", default, skip_serializing_if = "Option::is_none")]
     pub hacked: Option<String>,
     /// HInAlarmUnack attribute
-    #[serde(rename = "@HInAlarmUnack", default)]
+    #[serde(rename = "@HInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub hin_alarm_unack: Option<String>,
     /// LInAlarm attribute
-    #[serde(rename = "@LInAlarm", default)]
+    #[serde(rename = "@LInAlarm", default, skip_serializing_if = "Option::is_none")]
     pub lin_alarm: Option<String>,
     /// LAcked attribute
-    #[serde(rename = "@LAcked", default)]
+    #[serde(rename = "@LAcked", default, skip_serializing_if = "Option::is_none")]
     pub lacked: Option<String>,
     /// LInAlarmUnack attribute
-    #[serde(rename = "@LInAlarmUnack", default)]
+    #[serde(rename = "@LInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub lin_alarm_unack: Option<String>,
     /// LLInAlarm attribute
-    #[serde(rename = "@LLInAlarm", default)]
+    #[serde(rename = "@LLInAlarm", default, skip_serializing_if = "Option::is_none")]
     pub llin_alarm: Option<String>,
     /// LLAcked attribute
-    #[serde(rename = "@LLAcked", default)]
+    #[serde(rename = "@LLAcked", default, skip_serializing_if = "Option::is_none")]
     pub llacked: Option<String>,
     /// LLInAlarmUnack attribute
-    #[serde(rename = "@LLInAlarmUnack", default)]
+    #[serde(rename = "@LLInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub llin_alarm_unack: Option<String>,
     /// ROCPosInAlarm attribute
-    #[serde(rename = "@ROCPosInAlarm", default)]
+    #[serde(rename = "@ROCPosInAlarm", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_in_alarm: Option<String>,
     /// ROCPosAcked attribute
-    #[serde(rename = "@ROCPosAcked", default)]
+    #[serde(rename = "@ROCPosAcked", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_acked: Option<String>,
     /// ROCPosInAlarmUnack attribute
-    #[serde(rename = "@ROCPosInAlarmUnack", default)]
+    #[serde(rename = "@ROCPosInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_in_alarm_unack: Option<String>,
     /// ROCNegInAlarm attribute
-    #[serde(rename = "@ROCNegInAlarm", default)]
+    #[serde(rename = "@ROCNegInAlarm", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_in_alarm: Option<String>,
     /// ROCNegAcked attribute
-    #[serde(rename = "@ROCNegAcked", default)]
+    #[serde(rename = "@ROCNegAcked", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_acked: Option<String>,
     /// ROCNegInAlarmUnack attribute
-    #[serde(rename = "@ROCNegInAlarmUnack", default)]
+    #[serde(rename = "@ROCNegInAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_in_alarm_unack: Option<String>,
     /// Suppressed attribute
-    #[serde(rename = "@Suppressed", default)]
+    #[serde(rename = "@Suppressed", default, skip_serializing_if = "Option::is_none")]
     pub suppressed: Option<String>,
     /// HHShelved attribute
-    #[serde(rename = "@HHShelved", default)]
+    #[serde(rename = "@HHShelved", default, skip_serializing_if = "Option::is_none")]
     pub hhshelved: Option<String>,
     /// HShelved attribute
-    #[serde(rename = "@HShelved", default)]
+    #[serde(rename = "@HShelved", default, skip_serializing_if = "Option::is_none")]
     pub hshelved: Option<String>,
     /// LShelved attribute
-    #[serde(rename = "@LShelved", default)]
+    #[serde(rename = "@LShelved", default, skip_serializing_if = "Option::is_none")]
     pub lshelved: Option<String>,
     /// LLShelved attribute
-    #[serde(rename = "@LLShelved", default)]
+    #[serde(rename = "@LLShelved", default, skip_serializing_if = "Option::is_none")]
     pub llshelved: Option<String>,
     /// ROCPosShelved attribute
-    #[serde(rename = "@ROCPosShelved", default)]
+    #[serde(rename = "@ROCPosShelved", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_shelved: Option<String>,
     /// ROCNegShelved attribute
-    #[serde(rename = "@ROCNegShelved", default)]
+    #[serde(rename = "@ROCNegShelved", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_shelved: Option<String>,
     /// Disabled attribute
-    #[serde(rename = "@Disabled", default)]
+    #[serde(rename = "@Disabled", default, skip_serializing_if = "Option::is_none")]
     pub disabled: Option<String>,
     /// HHInAlarmTime attribute
-    #[serde(rename = "@HHInAlarmTime", default)]
+    #[serde(rename = "@HHInAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub hhin_alarm_time: Option<String>,
     /// HHAlarmCount attribute
-    #[serde(rename = "@HHAlarmCount", default)]
+    #[serde(rename = "@HHAlarmCount", default, skip_serializing_if = "Option::is_none")]
     pub hhalarm_count: Option<String>,
     /// HInAlarmTime attribute
-    #[serde(rename = "@HInAlarmTime", default)]
+    #[serde(rename = "@HInAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub hin_alarm_time: Option<String>,
     /// HAlarmCount attribute
-    #[serde(rename = "@HAlarmCount", default)]
+    #[serde(rename = "@HAlarmCount", default, skip_serializing_if = "Option::is_none")]
     pub halarm_count: Option<String>,
     /// LInAlarmTime attribute
-    #[serde(rename = "@LInAlarmTime", default)]
+    #[serde(rename = "@LInAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub lin_alarm_time: Option<String>,
     /// LAlarmCount attribute
-    #[serde(rename = "@LAlarmCount", default)]
+    #[serde(rename = "@LAlarmCount", default, skip_serializing_if = "Option::is_none")]
     pub lalarm_count: Option<String>,
     /// LLInAlarmTime attribute
-    #[serde(rename = "@LLInAlarmTime", default)]
+    #[serde(rename = "@LLInAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub llin_alarm_time: Option<String>,
     /// LLAlarmCount attribute
-    #[serde(rename = "@LLAlarmCount", default)]
+    #[serde(rename = "@LLAlarmCount", default, skip_serializing_if = "Option::is_none")]
     pub llalarm_count: Option<String>,
     /// ROCPosInAlarmTime attribute
-    #[serde(rename = "@ROCPosInAlarmTime", default)]
+    #[serde(rename = "@ROCPosInAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_in_alarm_time: Option<String>,
     /// ROCPosAlarmCnt attribute
-    #[serde(rename = "@ROCPosAlarmCnt", default)]
+    #[serde(rename = "@ROCPosAlarmCnt", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_alarm_cnt: Option<String>,
     /// ROCNegInAlarmTime attribute
-    #[serde(rename = "@ROCNegInAlarmTime", default)]
+    #[serde(rename = "@ROCNegInAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_in_alarm_time: Option<String>,
     /// ROCNegAlarmCnt attribute
-    #[serde(rename = "@ROCNegAlarmCnt", default)]
+    #[serde(rename = "@ROCNegAlarmCnt", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_alarm_cnt: Option<String>,
     /// AckTime attribute
-    #[serde(rename = "@AckTime", default)]
+    #[serde(rename = "@AckTime", default, skip_serializing_if = "Option::is_none")]
     pub ack_time: Option<String>,
     /// RetToNormalTime attribute
-    #[serde(rename = "@RetToNormalTime", default)]
+    #[serde(rename = "@RetToNormalTime", default, skip_serializing_if = "Option::is_none")]
     pub ret_to_normal_time: Option<String>,
     /// AlarmCountResetTime attribute
-    #[serde(rename = "@AlarmCountResetTime", default)]
+    #[serde(rename = "@AlarmCountResetTime", default, skip_serializing_if = "Option::is_none")]
     pub alarm_count_reset_time: Option<String>,
     /// ShelveTime attribute
-    #[serde(rename = "@ShelveTime", default)]
+    #[serde(rename = "@ShelveTime", default, skip_serializing_if = "Option::is_none")]
     pub shelve_time: Option<String>,
     /// UnshelveTime attribute
-    #[serde(rename = "@UnshelveTime", default)]
+    #[serde(rename = "@UnshelveTime", default, skip_serializing_if = "Option::is_none")]
     pub unshelve_time: Option<String>,
     /// InstructFault attribute
-    #[serde(rename = "@InstructFault", default)]
+    #[serde(rename = "@InstructFault", default, skip_serializing_if = "Option::is_none")]
     pub instruct_fault: Option<String>,
     /// InFaulted attribute
-    #[serde(rename = "@InFaulted", default)]
+    #[serde(rename = "@InFaulted", default, skip_serializing_if = "Option::is_none")]
     pub in_faulted: Option<String>,
     /// SeverityInv attribute
-    #[serde(rename = "@SeverityInv", default)]
+    #[serde(rename = "@SeverityInv", default, skip_serializing_if = "Option::is_none")]
     pub severity_inv: Option<String>,
     /// AlarmLimitsInv attribute
-    #[serde(rename = "@AlarmLimitsInv", default)]
+    #[serde(rename = "@AlarmLimitsInv", default, skip_serializing_if = "Option::is_none")]
     pub alarm_limits_inv: Option<String>,
     /// DeadbandInv attribute
-    #[serde(rename = "@DeadbandInv", default)]
+    #[serde(rename = "@DeadbandInv", default, skip_serializing_if = "Option::is_none")]
     pub deadband_inv: Option<String>,
     /// ROCPosLimitInv attribute
-    #[serde(rename = "@ROCPosLimitInv", default)]
+    #[serde(rename = "@ROCPosLimitInv", default, skip_serializing_if = "Option::is_none")]
     pub rocpos_limit_inv: Option<String>,
     /// ROCNegLimitInv attribute
-    #[serde(rename = "@ROCNegLimitInv", default)]
+    #[serde(rename = "@ROCNegLimitInv", default, skip_serializing_if = "Option::is_none")]
     pub rocneg_limit_inv: Option<String>,
     /// ROCPeriodInv attribute
-    #[serde(rename = "@ROCPeriodInv", default)]
+    #[serde(rename = "@ROCPeriodInv", default, skip_serializing_if = "Option::is_none")]
     pub rocperiod_inv: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 
@@ -483,157 +483,157 @@ pub struct AlarmAnalog {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct AlarmDigital {
     /// EnableIn attribute
-    #[serde(rename = "@EnableIn", default)]
+    #[serde(rename = "@EnableIn", default, skip_serializing_if = "Option::is_none")]
     pub enable_in: Option<String>,
     /// In attribute
-    #[serde(rename = "@In", default)]
+    #[serde(rename = "@In", default, skip_serializing_if = "Option::is_none")]
     pub r#in: Option<String>,
     /// InFault attribute
-    #[serde(rename = "@InFault", default)]
+    #[serde(rename = "@InFault", default, skip_serializing_if = "Option::is_none")]
     pub in_fault: Option<String>,
     /// Condition attribute
-    #[serde(rename = "@Condition", default)]
+    #[serde(rename = "@Condition", default, skip_serializing_if = "Option::is_none")]
     pub condition: Option<String>,
     /// AckRequired attribute
-    #[serde(rename = "@AckRequired", default)]
+    #[serde(rename = "@AckRequired", default, skip_serializing_if = "Option::is_none")]
     pub ack_required: Option<String>,
     /// Latched attribute
-    #[serde(rename = "@Latched", default)]
+    #[serde(rename = "@Latched", default, skip_serializing_if = "Option::is_none")]
     pub latched: Option<String>,
     /// ProgAck attribute
-    #[serde(rename = "@ProgAck", default)]
+    #[serde(rename = "@ProgAck", default, skip_serializing_if = "Option::is_none")]
     pub prog_ack: Option<String>,
     /// OperAck attribute
-    #[serde(rename = "@OperAck", default)]
+    #[serde(rename = "@OperAck", default, skip_serializing_if = "Option::is_none")]
     pub oper_ack: Option<String>,
     /// ProgReset attribute
-    #[serde(rename = "@ProgReset", default)]
+    #[serde(rename = "@ProgReset", default, skip_serializing_if = "Option::is_none")]
     pub prog_reset: Option<String>,
     /// OperReset attribute
-    #[serde(rename = "@OperReset", default)]
+    #[serde(rename = "@OperReset", default, skip_serializing_if = "Option::is_none")]
     pub oper_reset: Option<String>,
     /// ProgSuppress attribute
-    #[serde(rename = "@ProgSuppress", default)]
+    #[serde(rename = "@ProgSuppress", default, skip_serializing_if = "Option::is_none")]
     pub prog_suppress: Option<String>,
     /// OperSuppress attribute
-    #[serde(rename = "@OperSuppress", default)]
+    #[serde(rename = "@OperSuppress", default, skip_serializing_if = "Option::is_none")]
     pub oper_suppress: Option<String>,
     /// ProgUnsuppress attribute
-    #[serde(rename = "@ProgUnsuppress", default)]
+    #[serde(rename = "@ProgUnsuppress", default, skip_serializing_if = "Option::is_none")]
     pub prog_unsuppress: Option<String>,
     /// OperUnsuppress attribute
-    #[serde(rename = "@OperUnsuppress", default)]
+    #[serde(rename = "@OperUnsuppress", default, skip_serializing_if = "Option::is_none")]
     pub oper_unsuppress: Option<String>,
     /// OperShelve attribute
-    #[serde(rename = "@OperShelve", default)]
+    #[serde(rename = "@OperShelve", default, skip_serializing_if = "Option::is_none")]
     pub oper_shelve: Option<String>,
     /// ProgUnshelve attribute
-    #[serde(rename = "@ProgUnshelve", default)]
+    #[serde(rename = "@ProgUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub prog_unshelve: Option<String>,
     /// OperUnshelve attribute
-    #[serde(rename = "@OperUnshelve", default)]
+    #[serde(rename = "@OperUnshelve", default, skip_serializing_if = "Option::is_none")]
     pub oper_unshelve: Option<String>,
     /// ProgDisable attribute
-    #[serde(rename = "@ProgDisable", default)]
+    #[serde(rename = "@ProgDisable", default, skip_serializing_if = "Option::is_none")]
     pub prog_disable: Option<String>,
     /// OperDisable attribute
-    #[serde(rename = "@OperDisable", default)]
+    #[serde(rename = "@OperDisable", default, skip_serializing_if = "Option::is_none")]
     pub oper_disable: Option<String>,
     /// ProgEnable attribute
-    #[serde(rename = "@ProgEnable", default)]
+    #[serde(rename = "@ProgEnable", default, skip_serializing_if = "Option::is_none")]
     pub prog_enable: Option<String>,
     /// OperEnable attribute
-    #[serde(rename = "@OperEnable", default)]
+    #[serde(rename = "@OperEnable", default, skip_serializing_if = "Option::is_none")]
     pub oper_enable: Option<String>,
     /// AlarmCountReset attribute
-    #[serde(rename = "@AlarmCountReset", default)]
+    #[serde(rename = "@AlarmCountReset", default, skip_serializing_if = "Option::is_none")]
     pub alarm_count_reset: Option<String>,
     /// UseProgTime attribute
-    #[serde(rename = "@UseProgTime", default)]
+    #[serde(rename = "@UseProgTime", default, skip_serializing_if = "Option::is_none")]
     pub use_prog_time: Option<String>,
     /// Severity attribute
-    #[serde(rename = "@Severity", default)]
+    #[serde(rename = "@Severity", default, skip_serializing_if = "Option::is_none")]
     pub severity: Option<String>,
     /// MinDurationPRE attribute
-    #[serde(rename = "@MinDurationPRE", default)]
+    #[serde(rename = "@MinDurationPRE", default, skip_serializing_if = "Option::is_none")]
     pub min_duration_pre: Option<String>,
     /// ShelveDuration attribute
-    #[serde(rename = "@ShelveDuration", default)]
+    #[serde(rename = "@ShelveDuration", default, skip_serializing_if = "Option::is_none")]
     pub shelve_duration: Option<String>,
     /// MaxShelveDuration attribute
-    #[serde(rename = "@MaxShelveDuration", default)]
+    #[serde(rename = "@MaxShelveDuration", default, skip_serializing_if = "Option::is_none")]
     pub max_shelve_duration: Option<String>,
     /// ProgTime attribute
-    #[serde(rename = "@ProgTime", default)]
+    #[serde(rename = "@ProgTime", default, skip_serializing_if = "Option::is_none")]
     pub prog_time: Option<String>,
     /// AssocTag1 attribute
-    #[serde(rename = "@AssocTag1", default)]
+    #[serde(rename = "@AssocTag1", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag1: Option<String>,
     /// AssocTag2 attribute
-    #[serde(rename = "@AssocTag2", default)]
+    #[serde(rename = "@AssocTag2", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag2: Option<String>,
     /// AssocTag3 attribute
-    #[serde(rename = "@AssocTag3", default)]
+    #[serde(rename = "@AssocTag3", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag3: Option<String>,
     /// AssocTag4 attribute
-    #[serde(rename = "@AssocTag4", default)]
+    #[serde(rename = "@AssocTag4", default, skip_serializing_if = "Option::is_none")]
     pub assoc_tag4: Option<String>,
     /// EnableOut attribute
-    #[serde(rename = "@EnableOut", default)]
+    #[serde(rename = "@EnableOut", default, skip_serializing_if = "Option::is_none")]
     pub enable_out: Option<String>,
     /// InAlarm attribute
-    #[serde(rename = "@InAlarm", default)]
+    #[serde(rename = "@InAlarm", default, skip_serializing_if = "Option::is_none")]
     pub in_alarm: Option<String>,
     /// Acked attribute
-    #[serde(rename = "@Acked", default)]
+    #[serde(rename = "@Acked", default, skip_serializing_if = "Option::is_none")]
     pub acked: Option<String>,
     /// InAlarmUnack attribute
-    #[serde(rename = "@InAlarmUnack", default)]
+    #[serde(rename = "@InAlarmUnack", default, skip_serializing_if = "Option::is_none")]
     pub in_alarm_unack: Option<String>,
     /// Suppressed attribute
-    #[serde(rename = "@Suppressed", default)]
+    #[serde(rename = "@Suppressed", default, skip_serializing_if = "Option::is_none")]
     pub suppressed: Option<String>,
     /// Shelved attribute
-    #[serde(rename = "@Shelved", default)]
+    #[serde(rename = "@Shelved", default, skip_serializing_if = "Option::is_none")]
     pub shelved: Option<String>,
     /// Disabled attribute
-    #[serde(rename = "@Disabled", default)]
+    #[serde(rename = "@Disabled", default, skip_serializing_if = "Option::is_none")]
     pub disabled: Option<String>,
     /// AlarmCount attribute
-    #[serde(rename = "@AlarmCount", default)]
+    #[serde(rename = "@AlarmCount", default, skip_serializing_if = "Option::is_none")]
     pub alarm_count: Option<String>,
     /// InAlarmTime attribute
-    #[serde(rename = "@InAlarmTime", default)]
+    #[serde(rename = "@InAlarmTime", default, skip_serializing_if = "Option::is_none")]
     pub in_alarm_time: Option<String>,
     /// AckTime attribute
-    #[serde(rename = "@AckTime", default)]
+    #[serde(rename = "@AckTime", default, skip_serializing_if = "Option::is_none")]
     pub ack_time: Option<String>,
     /// RetToNormalTime attribute
-    #[serde(rename = "@RetToNormalTime", default)]
+    #[serde(rename = "@RetToNormalTime", default, skip_serializing_if = "Option::is_none")]
     pub ret_to_normal_time: Option<String>,
     /// AlarmCountResetTime attribute
-    #[serde(rename = "@AlarmCountResetTime", default)]
+    #[serde(rename = "@AlarmCountResetTime", default, skip_serializing_if = "Option::is_none")]
     pub alarm_count_reset_time: Option<String>,
     /// ShelveTime attribute
-    #[serde(rename = "@ShelveTime", default)]
+    #[serde(rename = "@ShelveTime", default, skip_serializing_if = "Option::is_none")]
     pub shelve_time: Option<String>,
     /// UnshelveTime attribute
-    #[serde(rename = "@UnshelveTime", default)]
+    #[serde(rename = "@UnshelveTime", default, skip_serializing_if = "Option::is_none")]
     pub unshelve_time: Option<String>,
     /// InstructFault attribute
-    #[serde(rename = "@InstructFault", default)]
+    #[serde(rename = "@InstructFault", default, skip_serializing_if = "Option::is_none")]
     pub instruct_fault: Option<String>,
     /// InFaulted attribute
-    #[serde(rename = "@InFaulted", default)]
+    #[serde(rename = "@InFaulted", default, skip_serializing_if = "Option::is_none")]
     pub in_faulted: Option<String>,
     /// SeverityInv attribute
-    #[serde(rename = "@SeverityInv", default)]
+    #[serde(rename = "@SeverityInv", default, skip_serializing_if = "Option::is_none")]
     pub severity_inv: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 

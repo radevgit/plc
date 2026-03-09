@@ -15,58 +15,58 @@ pub struct Project {
     #[serde(rename = "@SoftwareRevision", default)]
     pub software_revision: String,
     /// ArchitectureID attribute
-    #[serde(rename = "@ArchitectureID", default)]
+    #[serde(rename = "@ArchitectureID", default, skip_serializing_if = "Option::is_none")]
     pub architecture_id: Option<String>,
     /// TargetName attribute
-    #[serde(rename = "@TargetName", default)]
+    #[serde(rename = "@TargetName", default, skip_serializing_if = "Option::is_none")]
     pub target_name: Option<String>,
     /// TargetType attribute
-    #[serde(rename = "@TargetType", default)]
+    #[serde(rename = "@TargetType", default, skip_serializing_if = "Option::is_none")]
     pub target_type: Option<String>,
     /// TargetSubType attribute
-    #[serde(rename = "@TargetSubType", default)]
+    #[serde(rename = "@TargetSubType", default, skip_serializing_if = "Option::is_none")]
     pub target_sub_type: Option<String>,
     /// TargetClass attribute
-    #[serde(rename = "@TargetClass", default)]
+    #[serde(rename = "@TargetClass", default, skip_serializing_if = "Option::is_none")]
     pub target_class: Option<String>,
     /// TargetCount attribute
-    #[serde(rename = "@TargetCount", default)]
+    #[serde(rename = "@TargetCount", default, skip_serializing_if = "Option::is_none")]
     pub target_count: Option<String>,
     /// TargetRevision attribute
-    #[serde(rename = "@TargetRevision", default)]
+    #[serde(rename = "@TargetRevision", default, skip_serializing_if = "Option::is_none")]
     pub target_revision: Option<String>,
     /// TargetLastEdited attribute
-    #[serde(rename = "@TargetLastEdited", default)]
+    #[serde(rename = "@TargetLastEdited", default, skip_serializing_if = "Option::is_none")]
     pub target_last_edited: Option<String>,
     /// TargetSignature attribute
-    #[serde(rename = "@TargetSignature", default)]
+    #[serde(rename = "@TargetSignature", default, skip_serializing_if = "Option::is_none")]
     pub target_signature: Option<String>,
     /// TargetIsEncrypted attribute
-    #[serde(rename = "@TargetIsEncrypted", default)]
+    #[serde(rename = "@TargetIsEncrypted", default, skip_serializing_if = "Option::is_none")]
     pub target_is_encrypted: Option<String>,
     /// CurrentLanguage attribute
-    #[serde(rename = "@CurrentLanguage", default)]
+    #[serde(rename = "@CurrentLanguage", default, skip_serializing_if = "Option::is_none")]
     pub current_language: Option<String>,
     /// ContainsContext attribute
-    #[serde(rename = "@ContainsContext", default)]
+    #[serde(rename = "@ContainsContext", default, skip_serializing_if = "Option::is_none")]
     pub contains_context: Option<String>,
     /// Owner attribute
-    #[serde(rename = "@Owner", default)]
+    #[serde(rename = "@Owner", default, skip_serializing_if = "Option::is_none")]
     pub owner: Option<String>,
     /// ExportDate attribute
-    #[serde(rename = "@ExportDate", default)]
+    #[serde(rename = "@ExportDate", default, skip_serializing_if = "Option::is_none")]
     pub export_date: Option<String>,
     /// ExportOptions attribute
-    #[serde(rename = "@ExportOptions", default)]
+    #[serde(rename = "@ExportOptions", default, skip_serializing_if = "Option::is_none")]
     pub export_options: Option<String>,
     /// ForceMemorySaving attribute
-    #[serde(rename = "@ForceMemorySaving", default)]
+    #[serde(rename = "@ForceMemorySaving", default, skip_serializing_if = "Option::is_none")]
     pub force_memory_saving: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Controller element
     #[serde(rename = "Controller", default)]

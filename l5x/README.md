@@ -4,9 +4,11 @@ A Rust library for parsing L5X files exported from Studio 5000 Logix Designer.
 
 ## Features
 
+- **Parsing** - fast, type-safe parsing via `quick-xml` and `serde`
+- **Serialization** - serialize back to L5X XML for round-trip editing
 - **RLL (Relay Ladder Logic) parsing** - parse ladder logic instructions into AST
 - **Tag reference extraction** - find all tag references in rungs
-- **Security/Safety features** - protection against certan type of badly formed XML
+- **Security/Safety features** - protection against certain types of badly formed XML
 
 ## Installation
 
@@ -14,10 +16,31 @@ Add to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-l5x = "0.5"
+l5x = "0.6"
 ```
 
 ## Usage
+
+### Modify and write an L5X file
+
+```rust
+use l5x::{from_str, to_string, Project};
+
+let xml = std::fs::read_to_string("project.L5X")?;
+let mut project: Project = l5x::from_str(&xml)?;
+
+// Modify the project
+if let Some(ref mut ctrl) = project.controller {
+    ctrl.description = Some("Updated by tool".to_string());
+}
+
+// Serialize back to XML
+let output = format!(
+    "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n{}",
+    l5x::to_string(&project)?
+);
+std::fs::write("modified.L5X", output)?;
+```
 
 ### Parse an L5X file
 

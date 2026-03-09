@@ -8,10 +8,10 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DeviceObj {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 
@@ -19,13 +19,13 @@ pub struct DeviceObj {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DeviceDiagnosticProfileCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// DeviceDiagnosticProfile element
-    #[serde(rename = "DeviceDiagnosticProfile", default)]
+    #[serde(rename = "DeviceDiagnosticProfile", default, skip_serializing_if = "Vec::is_empty")]
     pub device_diagnostic_profile: Vec<DeviceDiagnosticProfile>,
 }
 
@@ -39,16 +39,16 @@ pub struct DeviceDiagnosticProfile {
     #[serde(rename = "@Version", default)]
     pub version: String,
     /// ProfileReferences attribute
-    #[serde(rename = "@ProfileReferences", default)]
+    #[serde(rename = "@ProfileReferences", default, skip_serializing_if = "Option::is_none")]
     pub profile_references: Option<String>,
     /// MessageReferences attribute
-    #[serde(rename = "@MessageReferences", default)]
+    #[serde(rename = "@MessageReferences", default, skip_serializing_if = "Option::is_none")]
     pub message_references: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// ProfileDefinition element
     #[serde(rename = "ProfileDefinition", default)]
@@ -61,7 +61,7 @@ pub struct DeviceDiagnosticProfile {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DeviceDiagnosticProfileType_ProfileDefinition_Inline {
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
     /// Arbitrary child elements (xs:any) - skipped during deserialization
     #[serde(skip)]
@@ -72,25 +72,25 @@ pub struct DeviceDiagnosticProfileType_ProfileDefinition_Inline {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DeviceLevelRing {
     /// SupervisorModeEnabled attribute
-    #[serde(rename = "@SupervisorModeEnabled", default)]
+    #[serde(rename = "@SupervisorModeEnabled", default, skip_serializing_if = "Option::is_none")]
     pub supervisor_mode_enabled: Option<String>,
     /// SupervisorPrecedence attribute
-    #[serde(rename = "@SupervisorPrecedence", default)]
+    #[serde(rename = "@SupervisorPrecedence", default, skip_serializing_if = "Option::is_none")]
     pub supervisor_precedence: Option<String>,
     /// BeaconInterval attribute
-    #[serde(rename = "@BeaconInterval", default)]
+    #[serde(rename = "@BeaconInterval", default, skip_serializing_if = "Option::is_none")]
     pub beacon_interval: Option<String>,
     /// BeaconTimeout attribute
-    #[serde(rename = "@BeaconTimeout", default)]
+    #[serde(rename = "@BeaconTimeout", default, skip_serializing_if = "Option::is_none")]
     pub beacon_timeout: Option<String>,
     /// VLANID attribute
-    #[serde(rename = "@VLANID", default)]
+    #[serde(rename = "@VLANID", default, skip_serializing_if = "Option::is_none")]
     pub vlanid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 

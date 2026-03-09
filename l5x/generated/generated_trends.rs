@@ -8,19 +8,19 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct TrendGroupCollection {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Trend element
-    #[serde(rename = "Trend", default)]
+    #[serde(rename = "Trend", default, skip_serializing_if = "Vec::is_empty")]
     pub trend: Vec<TrendGroup>,
 }
 
@@ -31,121 +31,121 @@ pub struct TrendGroup {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// SamplePeriod attribute
-    #[serde(rename = "@SamplePeriod", default)]
+    #[serde(rename = "@SamplePeriod", default, skip_serializing_if = "Option::is_none")]
     pub sample_period: Option<String>,
     /// NumberOfCaptures attribute
-    #[serde(rename = "@NumberOfCaptures", default)]
+    #[serde(rename = "@NumberOfCaptures", default, skip_serializing_if = "Option::is_none")]
     pub number_of_captures: Option<String>,
     /// CaptureSizeType attribute
-    #[serde(rename = "@CaptureSizeType", default)]
+    #[serde(rename = "@CaptureSizeType", default, skip_serializing_if = "Option::is_none")]
     pub capture_size_type: Option<String>,
     /// CaptureSize attribute
-    #[serde(rename = "@CaptureSize", default)]
+    #[serde(rename = "@CaptureSize", default, skip_serializing_if = "Option::is_none")]
     pub capture_size: Option<String>,
     /// StartTriggerType attribute
-    #[serde(rename = "@StartTriggerType", default)]
+    #[serde(rename = "@StartTriggerType", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_type: Option<String>,
     /// StartTriggerTag1 attribute
-    #[serde(rename = "@StartTriggerTag1", default)]
+    #[serde(rename = "@StartTriggerTag1", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_tag1: Option<String>,
     /// StartTriggerOperation1 attribute
-    #[serde(rename = "@StartTriggerOperation1", default)]
+    #[serde(rename = "@StartTriggerOperation1", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_operation1: Option<String>,
     /// StartTriggerTargetType1 attribute
-    #[serde(rename = "@StartTriggerTargetType1", default)]
+    #[serde(rename = "@StartTriggerTargetType1", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_target_type1: Option<String>,
     /// StartTriggerTargetValue1 attribute
-    #[serde(rename = "@StartTriggerTargetValue1", default)]
+    #[serde(rename = "@StartTriggerTargetValue1", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_target_value1: Option<String>,
     /// StartTriggerTargetTag1 attribute
-    #[serde(rename = "@StartTriggerTargetTag1", default)]
+    #[serde(rename = "@StartTriggerTargetTag1", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_target_tag1: Option<String>,
     /// StartTriggerLogicalOperation attribute
-    #[serde(rename = "@StartTriggerLogicalOperation", default)]
+    #[serde(rename = "@StartTriggerLogicalOperation", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_logical_operation: Option<String>,
     /// StartTriggerTag2 attribute
-    #[serde(rename = "@StartTriggerTag2", default)]
+    #[serde(rename = "@StartTriggerTag2", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_tag2: Option<String>,
     /// StartTriggerOperation2 attribute
-    #[serde(rename = "@StartTriggerOperation2", default)]
+    #[serde(rename = "@StartTriggerOperation2", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_operation2: Option<String>,
     /// StartTriggerTargetType2 attribute
-    #[serde(rename = "@StartTriggerTargetType2", default)]
+    #[serde(rename = "@StartTriggerTargetType2", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_target_type2: Option<String>,
     /// StartTriggerTargetValue2 attribute
-    #[serde(rename = "@StartTriggerTargetValue2", default)]
+    #[serde(rename = "@StartTriggerTargetValue2", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_target_value2: Option<String>,
     /// StartTriggerTargetTag2 attribute
-    #[serde(rename = "@StartTriggerTargetTag2", default)]
+    #[serde(rename = "@StartTriggerTargetTag2", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_target_tag2: Option<String>,
     /// PreSampleType attribute
-    #[serde(rename = "@PreSampleType", default)]
+    #[serde(rename = "@PreSampleType", default, skip_serializing_if = "Option::is_none")]
     pub pre_sample_type: Option<String>,
     /// PreSamples attribute
-    #[serde(rename = "@PreSamples", default)]
+    #[serde(rename = "@PreSamples", default, skip_serializing_if = "Option::is_none")]
     pub pre_samples: Option<String>,
     /// StopTriggerType attribute
-    #[serde(rename = "@StopTriggerType", default)]
+    #[serde(rename = "@StopTriggerType", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_type: Option<String>,
     /// StopTriggerTag1 attribute
-    #[serde(rename = "@StopTriggerTag1", default)]
+    #[serde(rename = "@StopTriggerTag1", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_tag1: Option<String>,
     /// StopTriggerOperation1 attribute
-    #[serde(rename = "@StopTriggerOperation1", default)]
+    #[serde(rename = "@StopTriggerOperation1", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_operation1: Option<String>,
     /// StopTriggerTargetType1 attribute
-    #[serde(rename = "@StopTriggerTargetType1", default)]
+    #[serde(rename = "@StopTriggerTargetType1", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_target_type1: Option<String>,
     /// StopTriggerTargetValue1 attribute
-    #[serde(rename = "@StopTriggerTargetValue1", default)]
+    #[serde(rename = "@StopTriggerTargetValue1", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_target_value1: Option<String>,
     /// StopTriggerTargetTag1 attribute
-    #[serde(rename = "@StopTriggerTargetTag1", default)]
+    #[serde(rename = "@StopTriggerTargetTag1", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_target_tag1: Option<String>,
     /// StopTriggerLogicalOperation attribute
-    #[serde(rename = "@StopTriggerLogicalOperation", default)]
+    #[serde(rename = "@StopTriggerLogicalOperation", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_logical_operation: Option<String>,
     /// StopTriggerTag2 attribute
-    #[serde(rename = "@StopTriggerTag2", default)]
+    #[serde(rename = "@StopTriggerTag2", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_tag2: Option<String>,
     /// StopTriggerOperation2 attribute
-    #[serde(rename = "@StopTriggerOperation2", default)]
+    #[serde(rename = "@StopTriggerOperation2", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_operation2: Option<String>,
     /// StopTriggerTargetType2 attribute
-    #[serde(rename = "@StopTriggerTargetType2", default)]
+    #[serde(rename = "@StopTriggerTargetType2", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_target_type2: Option<String>,
     /// StopTriggerTargetValue2 attribute
-    #[serde(rename = "@StopTriggerTargetValue2", default)]
+    #[serde(rename = "@StopTriggerTargetValue2", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_target_value2: Option<String>,
     /// StopTriggerTargetTag2 attribute
-    #[serde(rename = "@StopTriggerTargetTag2", default)]
+    #[serde(rename = "@StopTriggerTargetTag2", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_target_tag2: Option<String>,
     /// PostSampleType attribute
-    #[serde(rename = "@PostSampleType", default)]
+    #[serde(rename = "@PostSampleType", default, skip_serializing_if = "Option::is_none")]
     pub post_sample_type: Option<String>,
     /// PostSamples attribute
-    #[serde(rename = "@PostSamples", default)]
+    #[serde(rename = "@PostSamples", default, skip_serializing_if = "Option::is_none")]
     pub post_samples: Option<String>,
     /// TrendxVersion attribute
-    #[serde(rename = "@TrendxVersion", default)]
+    #[serde(rename = "@TrendxVersion", default, skip_serializing_if = "Option::is_none")]
     pub trendx_version: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Description element
-    #[serde(rename = "Description", default)]
+    #[serde(rename = "Description", default, skip_serializing_if = "Option::is_none")]
     pub description: Option<Description>,
     /// Template element
-    #[serde(rename = "Template", default)]
+    #[serde(rename = "Template", default, skip_serializing_if = "Option::is_none")]
     pub template: Option<TrendGroupType_Template_Inline>,
     /// Pens element
-    #[serde(rename = "Pens", default)]
+    #[serde(rename = "Pens", default, skip_serializing_if = "Option::is_none")]
     pub pens: Option<PenCollection>,
 }
 
@@ -153,7 +153,7 @@ pub struct TrendGroup {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct TrendGroupType_Template_Inline {
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 

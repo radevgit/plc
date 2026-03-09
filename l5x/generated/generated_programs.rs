@@ -13,142 +13,142 @@ pub struct AProgram {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Type attribute
-    #[serde(rename = "@Type", default)]
+    #[serde(rename = "@Type", default, skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
     /// TestEdits attribute
-    #[serde(rename = "@TestEdits", default)]
+    #[serde(rename = "@TestEdits", default, skip_serializing_if = "Option::is_none")]
     pub test_edits: Option<String>,
     /// MainRoutineName attribute
-    #[serde(rename = "@MainRoutineName", default)]
+    #[serde(rename = "@MainRoutineName", default, skip_serializing_if = "Option::is_none")]
     pub main_routine_name: Option<String>,
     /// PreStateRoutineName attribute
-    #[serde(rename = "@PreStateRoutineName", default)]
+    #[serde(rename = "@PreStateRoutineName", default, skip_serializing_if = "Option::is_none")]
     pub pre_state_routine_name: Option<String>,
     /// FaultRoutineName attribute
-    #[serde(rename = "@FaultRoutineName", default)]
+    #[serde(rename = "@FaultRoutineName", default, skip_serializing_if = "Option::is_none")]
     pub fault_routine_name: Option<String>,
     /// ExecutingTaskName attribute
-    #[serde(rename = "@ExecutingTaskName", default)]
+    #[serde(rename = "@ExecutingTaskName", default, skip_serializing_if = "Option::is_none")]
     pub executing_task_name: Option<String>,
     /// Verified attribute
-    #[serde(rename = "@Verified", default)]
+    #[serde(rename = "@Verified", default, skip_serializing_if = "Option::is_none")]
     pub verified: Option<String>,
     /// EditsExist attribute
-    #[serde(rename = "@EditsExist", default)]
+    #[serde(rename = "@EditsExist", default, skip_serializing_if = "Option::is_none")]
     pub edits_exist: Option<String>,
     /// Disabled attribute
-    #[serde(rename = "@Disabled", default)]
+    #[serde(rename = "@Disabled", default, skip_serializing_if = "Option::is_none")]
     pub disabled: Option<String>,
     /// InitialStepIndex attribute
-    #[serde(rename = "@InitialStepIndex", default)]
+    #[serde(rename = "@InitialStepIndex", default, skip_serializing_if = "Option::is_none")]
     pub initial_step_index: Option<String>,
     /// InitialState attribute
-    #[serde(rename = "@InitialState", default)]
+    #[serde(rename = "@InitialState", default, skip_serializing_if = "Option::is_none")]
     pub initial_state: Option<String>,
     /// CompleteStateIfNotImpl attribute
-    #[serde(rename = "@CompleteStateIfNotImpl", default)]
+    #[serde(rename = "@CompleteStateIfNotImpl", default, skip_serializing_if = "Option::is_none")]
     pub complete_state_if_not_impl: Option<String>,
     /// LossOfCommCmd attribute
-    #[serde(rename = "@LossOfCommCmd", default)]
+    #[serde(rename = "@LossOfCommCmd", default, skip_serializing_if = "Option::is_none")]
     pub loss_of_comm_cmd: Option<String>,
     /// ExternalRequestAction attribute
-    #[serde(rename = "@ExternalRequestAction", default)]
+    #[serde(rename = "@ExternalRequestAction", default, skip_serializing_if = "Option::is_none")]
     pub external_request_action: Option<String>,
     /// EquipmentId attribute
-    #[serde(rename = "@EquipmentId", default)]
+    #[serde(rename = "@EquipmentId", default, skip_serializing_if = "Option::is_none")]
     pub equipment_id: Option<String>,
     /// RecipePhaseNames attribute
-    #[serde(rename = "@RecipePhaseNames", default)]
+    #[serde(rename = "@RecipePhaseNames", default, skip_serializing_if = "Option::is_none")]
     pub recipe_phase_names: Option<String>,
     /// LastScanTime attribute
-    #[serde(rename = "@LastScanTime", default)]
+    #[serde(rename = "@LastScanTime", default, skip_serializing_if = "Option::is_none")]
     pub last_scan_time: Option<String>,
     /// MaxScanTime attribute
-    #[serde(rename = "@MaxScanTime", default)]
+    #[serde(rename = "@MaxScanTime", default, skip_serializing_if = "Option::is_none")]
     pub max_scan_time: Option<String>,
     /// TagsUId attribute
-    #[serde(rename = "@TagsUId", default)]
+    #[serde(rename = "@TagsUId", default, skip_serializing_if = "Option::is_none")]
     pub tags_uid: Option<String>,
     /// RoutinesUId attribute
-    #[serde(rename = "@RoutinesUId", default)]
+    #[serde(rename = "@RoutinesUId", default, skip_serializing_if = "Option::is_none")]
     pub routines_uid: Option<String>,
     /// Class attribute
-    #[serde(rename = "@Class", default)]
+    #[serde(rename = "@Class", default, skip_serializing_if = "Option::is_none")]
     pub class: Option<String>,
     /// SynchronizeRedundancyDataAfterExecution attribute
-    #[serde(rename = "@SynchronizeRedundancyDataAfterExecution", default)]
+    #[serde(rename = "@SynchronizeRedundancyDataAfterExecution", default, skip_serializing_if = "Option::is_none")]
     pub synchronize_redundancy_data_after_execution: Option<String>,
     /// UseAsFolder attribute
-    #[serde(rename = "@UseAsFolder", default)]
+    #[serde(rename = "@UseAsFolder", default, skip_serializing_if = "Option::is_none")]
     pub use_as_folder: Option<String>,
     /// AutoValueAssignStepToPhase attribute
-    #[serde(rename = "@AutoValueAssignStepToPhase", default)]
+    #[serde(rename = "@AutoValueAssignStepToPhase", default, skip_serializing_if = "Option::is_none")]
     pub auto_value_assign_step_to_phase: Option<String>,
     /// AutoValueAssignPhaseToStepOnComplete attribute
-    #[serde(rename = "@AutoValueAssignPhaseToStepOnComplete", default)]
+    #[serde(rename = "@AutoValueAssignPhaseToStepOnComplete", default, skip_serializing_if = "Option::is_none")]
     pub auto_value_assign_phase_to_step_on_complete: Option<String>,
     /// AutoValueAssignPhaseToStepOnStopped attribute
-    #[serde(rename = "@AutoValueAssignPhaseToStepOnStopped", default)]
+    #[serde(rename = "@AutoValueAssignPhaseToStepOnStopped", default, skip_serializing_if = "Option::is_none")]
     pub auto_value_assign_phase_to_step_on_stopped: Option<String>,
     /// AutoValueAssignPhaseToStepOnAborted attribute
-    #[serde(rename = "@AutoValueAssignPhaseToStepOnAborted", default)]
+    #[serde(rename = "@AutoValueAssignPhaseToStepOnAborted", default, skip_serializing_if = "Option::is_none")]
     pub auto_value_assign_phase_to_step_on_aborted: Option<String>,
     /// Revision attribute
-    #[serde(rename = "@Revision", default)]
+    #[serde(rename = "@Revision", default, skip_serializing_if = "Option::is_none")]
     pub revision: Option<String>,
     /// RevisionExtension attribute
-    #[serde(rename = "@RevisionExtension", default)]
+    #[serde(rename = "@RevisionExtension", default, skip_serializing_if = "Option::is_none")]
     pub revision_extension: Option<String>,
     /// UnitID attribute
-    #[serde(rename = "@UnitID", default)]
+    #[serde(rename = "@UnitID", default, skip_serializing_if = "Option::is_none")]
     pub unit_id: Option<String>,
     /// RetainSequenceIDOnReset attribute
-    #[serde(rename = "@RetainSequenceIDOnReset", default)]
+    #[serde(rename = "@RetainSequenceIDOnReset", default, skip_serializing_if = "Option::is_none")]
     pub retain_sequence_idon_reset: Option<String>,
     /// GenerateSequenceEvents attribute
-    #[serde(rename = "@GenerateSequenceEvents", default)]
+    #[serde(rename = "@GenerateSequenceEvents", default, skip_serializing_if = "Option::is_none")]
     pub generate_sequence_events: Option<String>,
     /// ValuesToUseOnStart attribute
-    #[serde(rename = "@ValuesToUseOnStart", default)]
+    #[serde(rename = "@ValuesToUseOnStart", default, skip_serializing_if = "Option::is_none")]
     pub values_to_use_on_start: Option<String>,
     /// ValuesToUseOnReset attribute
-    #[serde(rename = "@ValuesToUseOnReset", default)]
+    #[serde(rename = "@ValuesToUseOnReset", default, skip_serializing_if = "Option::is_none")]
     pub values_to_use_on_reset: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Description element
-    #[serde(rename = "Description", default)]
+    #[serde(rename = "Description", default, skip_serializing_if = "Option::is_none")]
     pub description: Option<Description>,
     /// RevisionNote element
-    #[serde(rename = "RevisionNote", default)]
+    #[serde(rename = "RevisionNote", default, skip_serializing_if = "Option::is_none")]
     pub revision_note: Option<RevisionNote>,
     /// Tags element
-    #[serde(rename = "Tags", default)]
+    #[serde(rename = "Tags", default, skip_serializing_if = "Option::is_none")]
     pub tags: Option<TagCollection>,
     /// Parameters element
-    #[serde(rename = "Parameters", default)]
+    #[serde(rename = "Parameters", default, skip_serializing_if = "Option::is_none")]
     pub parameters: Option<UDIParameterCollection>,
     /// LocalTags element
-    #[serde(rename = "LocalTags", default)]
+    #[serde(rename = "LocalTags", default, skip_serializing_if = "Option::is_none")]
     pub local_tags: Option<UDILocalTagCollection>,
     /// Routines element
-    #[serde(rename = "Routines", default)]
+    #[serde(rename = "Routines", default, skip_serializing_if = "Option::is_none")]
     pub routines: Option<RoutineCollection>,
     /// ChildPrograms element
-    #[serde(rename = "ChildPrograms", default)]
+    #[serde(rename = "ChildPrograms", default, skip_serializing_if = "Option::is_none")]
     pub child_programs: Option<ChildProgramCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 

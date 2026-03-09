@@ -11,13 +11,13 @@ pub struct DatatypeAlarmDefinition {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// MemberAlarmDefinition element
-    #[serde(rename = "MemberAlarmDefinition", default)]
+    #[serde(rename = "MemberAlarmDefinition", default, skip_serializing_if = "Vec::is_empty")]
     pub member_alarm_definition: Vec<MemberAlarmDefinition>,
 }
 
@@ -25,19 +25,19 @@ pub struct DatatypeAlarmDefinition {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataLogCollection {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// DataLog element
-    #[serde(rename = "DataLog", default)]
+    #[serde(rename = "DataLog", default, skip_serializing_if = "Vec::is_empty")]
     pub data_log: Vec<DataLog>,
 }
 
@@ -50,138 +50,98 @@ pub struct DataLog {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Period attribute
-    #[serde(rename = "@Period", default)]
+    #[serde(rename = "@Period", default, skip_serializing_if = "Option::is_none")]
     pub period: Option<String>,
     /// PeriodUnit attribute
-    #[serde(rename = "@PeriodUnit", default)]
+    #[serde(rename = "@PeriodUnit", default, skip_serializing_if = "Option::is_none")]
     pub period_unit: Option<String>,
     /// EnableDataLoggingOnDownload attribute
-    #[serde(rename = "@EnableDataLoggingOnDownload", default)]
+    #[serde(rename = "@EnableDataLoggingOnDownload", default, skip_serializing_if = "Option::is_none")]
     pub enable_data_logging_on_download: Option<String>,
     /// CollectDataOnlyInRunMode attribute
-    #[serde(rename = "@CollectDataOnlyInRunMode", default)]
+    #[serde(rename = "@CollectDataOnlyInRunMode", default, skip_serializing_if = "Option::is_none")]
     pub collect_data_only_in_run_mode: Option<String>,
     /// DataCollectionType attribute
-    #[serde(rename = "@DataCollectionType", default)]
+    #[serde(rename = "@DataCollectionType", default, skip_serializing_if = "Option::is_none")]
     pub data_collection_type: Option<String>,
     /// SampleEvent attribute
-    #[serde(rename = "@SampleEvent", default)]
+    #[serde(rename = "@SampleEvent", default, skip_serializing_if = "Option::is_none")]
     pub sample_event: Option<String>,
     /// StartTriggerCondition attribute
-    #[serde(rename = "@StartTriggerCondition", default)]
+    #[serde(rename = "@StartTriggerCondition", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_condition: Option<String>,
     /// TriggerCondition attribute
-    #[serde(rename = "@TriggerCondition", default)]
+    #[serde(rename = "@TriggerCondition", default, skip_serializing_if = "Option::is_none")]
     pub trigger_condition: Option<String>,
     /// PreSamples attribute
-    #[serde(rename = "@PreSamples", default)]
+    #[serde(rename = "@PreSamples", default, skip_serializing_if = "Option::is_none")]
     pub pre_samples: Option<String>,
     /// PreSampleUnit attribute
-    #[serde(rename = "@PreSampleUnit", default)]
+    #[serde(rename = "@PreSampleUnit", default, skip_serializing_if = "Option::is_none")]
     pub pre_sample_unit: Option<String>,
     /// StopTriggerCondition attribute
-    #[serde(rename = "@StopTriggerCondition", default)]
+    #[serde(rename = "@StopTriggerCondition", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_condition: Option<String>,
     /// PostSamples attribute
-    #[serde(rename = "@PostSamples", default)]
+    #[serde(rename = "@PostSamples", default, skip_serializing_if = "Option::is_none")]
     pub post_samples: Option<String>,
     /// PostSampleUnit attribute
-    #[serde(rename = "@PostSampleUnit", default)]
+    #[serde(rename = "@PostSampleUnit", default, skip_serializing_if = "Option::is_none")]
     pub post_sample_unit: Option<String>,
     /// CaptureSize attribute
-    #[serde(rename = "@CaptureSize", default)]
+    #[serde(rename = "@CaptureSize", default, skip_serializing_if = "Option::is_none")]
     pub capture_size: Option<String>,
     /// CaptureSizeUnit attribute
-    #[serde(rename = "@CaptureSizeUnit", default)]
+    #[serde(rename = "@CaptureSizeUnit", default, skip_serializing_if = "Option::is_none")]
     pub capture_size_unit: Option<String>,
     /// CaptureSizeExceeded attribute
-    #[serde(rename = "@CaptureSizeExceeded", default)]
+    #[serde(rename = "@CaptureSizeExceeded", default, skip_serializing_if = "Option::is_none")]
     pub capture_size_exceeded: Option<String>,
     /// DataCapturesToKeep attribute
-    #[serde(rename = "@DataCapturesToKeep", default)]
+    #[serde(rename = "@DataCapturesToKeep", default, skip_serializing_if = "Option::is_none")]
     pub data_captures_to_keep: Option<String>,
     /// DataLogCapturesExceeded attribute
-    #[serde(rename = "@DataLogCapturesExceeded", default)]
+    #[serde(rename = "@DataLogCapturesExceeded", default, skip_serializing_if = "Option::is_none")]
     pub data_log_captures_exceeded: Option<String>,
     /// NumberOfDataLogTags attribute
-    #[serde(rename = "@NumberOfDataLogTags", default)]
+    #[serde(rename = "@NumberOfDataLogTags", default, skip_serializing_if = "Option::is_none")]
     pub number_of_data_log_tags: Option<String>,
     /// DataLogSize attribute
-    #[serde(rename = "@DataLogSize", default)]
+    #[serde(rename = "@DataLogSize", default, skip_serializing_if = "Option::is_none")]
     pub data_log_size: Option<String>,
     /// DataLogSizeUnit attribute
-    #[serde(rename = "@DataLogSizeUnit", default)]
+    #[serde(rename = "@DataLogSizeUnit", default, skip_serializing_if = "Option::is_none")]
     pub data_log_size_unit: Option<String>,
     /// DataLogSizeExceeded attribute
-    #[serde(rename = "@DataLogSizeExceeded", default)]
+    #[serde(rename = "@DataLogSizeExceeded", default, skip_serializing_if = "Option::is_none")]
     pub data_log_size_exceeded: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Description element
-    #[serde(rename = "Description", default)]
+    #[serde(rename = "Description", default, skip_serializing_if = "Option::is_none")]
     pub description: Option<Description>,
     /// StartTriggerExpression element
-    #[serde(rename = "StartTriggerExpression", default)]
+    #[serde(rename = "StartTriggerExpression", default, skip_serializing_if = "Option::is_none")]
     pub start_trigger_expression: Option<String>,
     /// TriggerExpression element
-    #[serde(rename = "TriggerExpression", default)]
+    #[serde(rename = "TriggerExpression", default, skip_serializing_if = "Option::is_none")]
     pub trigger_expression: Option<String>,
     /// StopTriggerExpression element
-    #[serde(rename = "StopTriggerExpression", default)]
+    #[serde(rename = "StopTriggerExpression", default, skip_serializing_if = "Option::is_none")]
     pub stop_trigger_expression: Option<String>,
     /// DataLogTags element
-    #[serde(rename = "DataLogTags", default)]
+    #[serde(rename = "DataLogTags", default, skip_serializing_if = "Option::is_none")]
     pub data_log_tags: Option<DataLogTagCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
-}
-
-/// Content variants for DataWideType mixed content
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub enum DataWideContent {
-    /// Value element
-    Value(DataWideType_Value_Inline),
-    /// MessageParameters element
-    MessageParameters(Msg),
-    /// MotionGroupParameters element
-    MotionGroupParameters(MotionGroup),
-    /// HMIBCParameters element
-    HMIBCParameters(HMIBC),
-    /// BEOParameters element
-    BEOParameters(BEO),
-    /// EEOParameters element
-    EEOParameters(EEO),
-    /// CoordinateSystemParameters element
-    CoordinateSystemParameters(CoordinateSystem),
-    /// AxisParameters element
-    AxisParameters(Axis),
-    /// AlarmAnalogParameters element
-    AlarmAnalogParameters(AlarmAnalog),
-    /// AlarmDigitalParameters element
-    AlarmDigitalParameters(AlarmDigital),
-    /// AlarmConfig element
-    AlarmConfig(AlarmConfig),
-    /// DataValue element
-    DataValue(DataValue),
-    /// Array element
-    Array(Box<DataArray>),
-    /// Structure element
-    Structure(Box<DataStructure>),
-    /// Text content (not serialized - raw text in mixed content)
-    #[serde(rename = "$text", skip_serializing)]
-    TextContent(String),
-}
-
-impl Default for DataWideContent {
-    fn default() -> Self { DataWideContent::TextContent(String::new()) }
 }
 
 /// DataWideType element
@@ -190,14 +150,56 @@ impl Default for DataWideContent {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataWide {
     /// Format attribute
-    #[serde(rename = "@Format", default)]
+    #[serde(rename = "@Format", default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
     /// Length attribute
-    #[serde(rename = "@Length", default)]
+    #[serde(rename = "@Length", default, skip_serializing_if = "Option::is_none")]
     pub length: Option<String>,
-    /// Mixed content (elements and text)
-    #[serde(rename = "$value", default)]
-    pub content: Vec<DataWideContent>,
+    /// Value element
+    #[serde(rename = "Value", default, skip_serializing_if = "Vec::is_empty")]
+    pub value: Vec<DataWideType_Value_Inline>,
+    /// MessageParameters element
+    #[serde(rename = "MessageParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub message_parameters: Vec<Msg>,
+    /// MotionGroupParameters element
+    #[serde(rename = "MotionGroupParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub motion_group_parameters: Vec<MotionGroup>,
+    /// HMIBCParameters element
+    #[serde(rename = "HMIBCParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub hmibcparameters: Vec<HMIBC>,
+    /// BEOParameters element
+    #[serde(rename = "BEOParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub beoparameters: Vec<BEO>,
+    /// EEOParameters element
+    #[serde(rename = "EEOParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub eeoparameters: Vec<EEO>,
+    /// CoordinateSystemParameters element
+    #[serde(rename = "CoordinateSystemParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub coordinate_system_parameters: Vec<CoordinateSystem>,
+    /// AxisParameters element
+    #[serde(rename = "AxisParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub axis_parameters: Vec<Axis>,
+    /// AlarmAnalogParameters element
+    #[serde(rename = "AlarmAnalogParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub alarm_analog_parameters: Vec<AlarmAnalog>,
+    /// AlarmDigitalParameters element
+    #[serde(rename = "AlarmDigitalParameters", default, skip_serializing_if = "Vec::is_empty")]
+    pub alarm_digital_parameters: Vec<AlarmDigital>,
+    /// AlarmConfig element
+    #[serde(rename = "AlarmConfig", default, skip_serializing_if = "Vec::is_empty")]
+    pub alarm_config: Vec<AlarmConfig>,
+    /// DataValue element
+    #[serde(rename = "DataValue", default, skip_serializing_if = "Vec::is_empty")]
+    pub data_value: Vec<DataValue>,
+    /// Array element
+    #[serde(rename = "Array", default, skip_serializing_if = "Vec::is_empty")]
+    pub array: Vec<Box<DataArray>>,
+    /// Structure element
+    #[serde(rename = "Structure", default, skip_serializing_if = "Vec::is_empty")]
+    pub structure: Vec<Box<DataStructure>>,
+    /// Text content
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
 }
 
 /// DataWideType_Value_InlineType element
@@ -206,7 +208,7 @@ pub struct DataWide {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataWideType_Value_Inline {
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
     /// Arbitrary child elements (xs:any) - skipped during deserialization
     #[serde(skip)]
@@ -219,22 +221,22 @@ pub struct DataWideType_Value_Inline {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataValue {
     /// Name attribute
-    #[serde(rename = "@Name", default)]
+    #[serde(rename = "@Name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// DataType attribute
-    #[serde(rename = "@DataType", default)]
+    #[serde(rename = "@DataType", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
     /// Radix attribute
-    #[serde(rename = "@Radix", default)]
+    #[serde(rename = "@Radix", default, skip_serializing_if = "Option::is_none")]
     pub radix: Option<String>,
     /// Value attribute
-    #[serde(rename = "@Value", default)]
+    #[serde(rename = "@Value", default, skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
     /// ForceValue attribute
-    #[serde(rename = "@ForceValue", default)]
+    #[serde(rename = "@ForceValue", default, skip_serializing_if = "Option::is_none")]
     pub force_value: Option<String>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -242,19 +244,19 @@ pub struct DataValue {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataArray {
     /// Name attribute
-    #[serde(rename = "@Name", default)]
+    #[serde(rename = "@Name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// DataType attribute
-    #[serde(rename = "@DataType", default)]
+    #[serde(rename = "@DataType", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
     /// Dimensions attribute
-    #[serde(rename = "@Dimensions", default)]
+    #[serde(rename = "@Dimensions", default, skip_serializing_if = "Option::is_none")]
     pub dimensions: Option<String>,
     /// Radix attribute
-    #[serde(rename = "@Radix", default)]
+    #[serde(rename = "@Radix", default, skip_serializing_if = "Option::is_none")]
     pub radix: Option<String>,
     /// Element element
-    #[serde(rename = "Element", default)]
+    #[serde(rename = "Element", default, skip_serializing_if = "Vec::is_empty")]
     pub element: Vec<Box<DataArrayElement>>,
 }
 
@@ -262,19 +264,19 @@ pub struct DataArray {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataStructure {
     /// Name attribute
-    #[serde(rename = "@Name", default)]
+    #[serde(rename = "@Name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// DataType attribute
-    #[serde(rename = "@DataType", default)]
+    #[serde(rename = "@DataType", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
     /// DataValueMember element
-    #[serde(rename = "DataValueMember", default)]
+    #[serde(rename = "DataValueMember", default, skip_serializing_if = "Vec::is_empty")]
     pub data_value_member: Vec<DataValue>,
     /// StructureMember element
-    #[serde(rename = "StructureMember", default)]
+    #[serde(rename = "StructureMember", default, skip_serializing_if = "Vec::is_empty")]
     pub structure_member: Vec<Box<DataStructure>>,
     /// ArrayMember element
-    #[serde(rename = "ArrayMember", default)]
+    #[serde(rename = "ArrayMember", default, skip_serializing_if = "Vec::is_empty")]
     pub array_member: Vec<Box<DataArray>>,
 }
 

@@ -8,19 +8,19 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataTypeCollection {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// DataType element
-    #[serde(rename = "DataType", default)]
+    #[serde(rename = "DataType", default, skip_serializing_if = "Vec::is_empty")]
     pub data_type: Vec<DataType>,
 }
 
@@ -31,44 +31,47 @@ pub struct DataType {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// Family attribute
-    #[serde(rename = "@Family", default)]
+    #[serde(rename = "@Family", default, skip_serializing_if = "Option::is_none")]
     pub family: Option<String>,
     /// Class attribute
-    #[serde(rename = "@Class", default)]
+    #[serde(rename = "@Class", default, skip_serializing_if = "Option::is_none")]
     pub class: Option<String>,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Size attribute
-    #[serde(rename = "@Size", default)]
+    #[serde(rename = "@Size", default, skip_serializing_if = "Option::is_none")]
     pub size: Option<String>,
     /// Verified attribute
-    #[serde(rename = "@Verified", default)]
+    #[serde(rename = "@Verified", default, skip_serializing_if = "Option::is_none")]
     pub verified: Option<String>,
     /// DeletionProhibited attribute
-    #[serde(rename = "@DeletionProhibited", default)]
+    #[serde(rename = "@DeletionProhibited", default, skip_serializing_if = "Option::is_none")]
     pub deletion_prohibited: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Description element
-    #[serde(rename = "Description", default)]
+    #[serde(rename = "Description", default, skip_serializing_if = "Option::is_none")]
     pub description: Option<Description>,
     /// EngineeringUnit element
-    #[serde(rename = "EngineeringUnit", default)]
+    #[serde(rename = "EngineeringUnit", default, skip_serializing_if = "Option::is_none")]
     pub engineering_unit: Option<EngineeringUnit>,
     /// Members element
-    #[serde(rename = "Members", default)]
+    #[serde(rename = "Members", default, skip_serializing_if = "Option::is_none")]
     pub members: Option<TypeMemberCollection>,
     /// Dependencies element
-    #[serde(rename = "Dependencies", default)]
+    #[serde(rename = "Dependencies", default, skip_serializing_if = "Vec::is_empty")]
     pub dependencies: Vec<DependenciesWide>,
+    /// Text content
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
 }
 
 /// DataTypeMemberType element
@@ -81,64 +84,64 @@ pub struct DataTypeMember {
     #[serde(rename = "@DataType", default)]
     pub data_type: String,
     /// DataTypeUId attribute
-    #[serde(rename = "@DataTypeUId", default)]
+    #[serde(rename = "@DataTypeUId", default, skip_serializing_if = "Option::is_none")]
     pub data_type_uid: Option<String>,
     /// Dimension attribute
-    #[serde(rename = "@Dimension", default)]
+    #[serde(rename = "@Dimension", default, skip_serializing_if = "Option::is_none")]
     pub dimension: Option<String>,
     /// Radix attribute
-    #[serde(rename = "@Radix", default)]
+    #[serde(rename = "@Radix", default, skip_serializing_if = "Option::is_none")]
     pub radix: Option<String>,
     /// Hidden attribute
-    #[serde(rename = "@Hidden", default)]
+    #[serde(rename = "@Hidden", default, skip_serializing_if = "Option::is_none")]
     pub hidden: Option<String>,
     /// Target attribute
-    #[serde(rename = "@Target", default)]
+    #[serde(rename = "@Target", default, skip_serializing_if = "Option::is_none")]
     pub target: Option<String>,
     /// BitNumber attribute
-    #[serde(rename = "@BitNumber", default)]
+    #[serde(rename = "@BitNumber", default, skip_serializing_if = "Option::is_none")]
     pub bit_number: Option<String>,
     /// Size attribute
-    #[serde(rename = "@Size", default)]
+    #[serde(rename = "@Size", default, skip_serializing_if = "Option::is_none")]
     pub size: Option<String>,
     /// Offset attribute
-    #[serde(rename = "@Offset", default)]
+    #[serde(rename = "@Offset", default, skip_serializing_if = "Option::is_none")]
     pub offset: Option<String>,
     /// Max attribute
-    #[serde(rename = "@Max", default)]
+    #[serde(rename = "@Max", default, skip_serializing_if = "Option::is_none")]
     pub max: Option<String>,
     /// Min attribute
-    #[serde(rename = "@Min", default)]
+    #[serde(rename = "@Min", default, skip_serializing_if = "Option::is_none")]
     pub min: Option<String>,
     /// DefaultValue attribute
-    #[serde(rename = "@DefaultValue", default)]
+    #[serde(rename = "@DefaultValue", default, skip_serializing_if = "Option::is_none")]
     pub default_value: Option<String>,
     /// EditID attribute
-    #[serde(rename = "@EditID", default)]
+    #[serde(rename = "@EditID", default, skip_serializing_if = "Option::is_none")]
     pub edit_id: Option<String>,
     /// ExternalAccess attribute
-    #[serde(rename = "@ExternalAccess", default)]
+    #[serde(rename = "@ExternalAccess", default, skip_serializing_if = "Option::is_none")]
     pub external_access: Option<String>,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Description element
-    #[serde(rename = "Description", default)]
+    #[serde(rename = "Description", default, skip_serializing_if = "Option::is_none")]
     pub description: Option<Description>,
     /// EngineeringUnit element
-    #[serde(rename = "EngineeringUnit", default)]
+    #[serde(rename = "EngineeringUnit", default, skip_serializing_if = "Option::is_none")]
     pub engineering_unit: Option<EngineeringUnit>,
     /// State0 element
-    #[serde(rename = "State0", default)]
+    #[serde(rename = "State0", default, skip_serializing_if = "Option::is_none")]
     pub state0: Option<State0>,
     /// State1 element
-    #[serde(rename = "State1", default)]
+    #[serde(rename = "State1", default, skip_serializing_if = "Option::is_none")]
     pub state1: Option<State1>,
 }
 
@@ -146,13 +149,13 @@ pub struct DataTypeMember {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataTypeDependencyCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Dependency element
-    #[serde(rename = "Dependency", default)]
+    #[serde(rename = "Dependency", default, skip_serializing_if = "Vec::is_empty")]
     pub dependency: Vec<DependencyWide>,
 }
 
@@ -160,16 +163,16 @@ pub struct DataTypeDependencyCollection {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataTypeDependency {
     /// Type attribute
-    #[serde(rename = "@Type", default)]
+    #[serde(rename = "@Type", default, skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
     /// Name attribute
-    #[serde(rename = "@Name", default)]
+    #[serde(rename = "@Name", default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 
@@ -177,25 +180,25 @@ pub struct DataTypeDependency {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct ConfigData {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ConfigSize attribute
-    #[serde(rename = "@ConfigSize", default)]
+    #[serde(rename = "@ConfigSize", default, skip_serializing_if = "Option::is_none")]
     pub config_size: Option<String>,
     /// DataType attribute
-    #[serde(rename = "@DataType", default)]
+    #[serde(rename = "@DataType", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
     /// Dimension attribute
-    #[serde(rename = "@Dimension", default)]
+    #[serde(rename = "@Dimension", default, skip_serializing_if = "Option::is_none")]
     pub dimension: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Data element
-    #[serde(rename = "Data", default)]
+    #[serde(rename = "Data", default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<DataWide>,
 }
 
@@ -203,22 +206,22 @@ pub struct ConfigData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct InputData {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// DataType attribute
-    #[serde(rename = "@DataType", default)]
+    #[serde(rename = "@DataType", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
     /// Dimension attribute
-    #[serde(rename = "@Dimension", default)]
+    #[serde(rename = "@Dimension", default, skip_serializing_if = "Option::is_none")]
     pub dimension: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Data element
-    #[serde(rename = "Data", default)]
+    #[serde(rename = "Data", default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<DataWide>,
 }
 
@@ -226,22 +229,22 @@ pub struct InputData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct OutputData {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// DataType attribute
-    #[serde(rename = "@DataType", default)]
+    #[serde(rename = "@DataType", default, skip_serializing_if = "Option::is_none")]
     pub data_type: Option<String>,
     /// Dimension attribute
-    #[serde(rename = "@Dimension", default)]
+    #[serde(rename = "@Dimension", default, skip_serializing_if = "Option::is_none")]
     pub dimension: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Data element
-    #[serde(rename = "Data", default)]
+    #[serde(rename = "Data", default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<DataWide>,
 }
 
@@ -251,16 +254,16 @@ pub struct OutputData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct RawDefaultData {
     /// Format attribute
-    #[serde(rename = "@Format", default)]
+    #[serde(rename = "@Format", default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -273,13 +276,13 @@ pub struct L5KDefaultData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -295,13 +298,13 @@ pub struct StringDefaultData {
     #[serde(rename = "@Length", default)]
     pub length: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -311,7 +314,7 @@ pub struct StringDefaultData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DecoratedDefaultData {
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
     /// Arbitrary child elements (xs:any) - skipped during deserialization
     #[serde(skip)]
@@ -330,13 +333,13 @@ pub struct StringData {
     #[serde(rename = "@Length", default)]
     pub length: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -346,16 +349,16 @@ pub struct StringData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct RawData {
     /// Format attribute
-    #[serde(rename = "@Format", default)]
+    #[serde(rename = "@Format", default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -368,13 +371,13 @@ pub struct L5KData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -384,7 +387,7 @@ pub struct L5KData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DecoratedData {
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
     /// Arbitrary child elements (xs:any) - skipped during deserialization
     #[serde(skip)]
@@ -397,16 +400,16 @@ pub struct DecoratedData {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct RawForceData {
     /// Format attribute
-    #[serde(rename = "@Format", default)]
+    #[serde(rename = "@Format", default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -419,13 +422,13 @@ pub struct L5KForceData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Text content
-    #[serde(rename = "$text", default)]
+    #[serde(rename = "$text", default, skip_serializing_if = "Option::is_none")]
     pub text: Option<String>,
 }
 
@@ -436,13 +439,13 @@ pub struct MessageData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// MessageParameters element
-    #[serde(rename = "MessageParameters", default)]
+    #[serde(rename = "MessageParameters", default, skip_serializing_if = "Option::is_none")]
     pub message_parameters: Option<Msg>,
 }
 
@@ -453,13 +456,13 @@ pub struct MotionGroupData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// MotionGroupParameters element
-    #[serde(rename = "MotionGroupParameters", default)]
+    #[serde(rename = "MotionGroupParameters", default, skip_serializing_if = "Option::is_none")]
     pub motion_group_parameters: Option<MotionGroup>,
 }
 
@@ -470,13 +473,13 @@ pub struct CoordinateSystemData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// CoordinateSystemParameters element
-    #[serde(rename = "CoordinateSystemParameters", default)]
+    #[serde(rename = "CoordinateSystemParameters", default, skip_serializing_if = "Option::is_none")]
     pub coordinate_system_parameters: Option<CoordinateSystem>,
 }
 
@@ -487,13 +490,13 @@ pub struct AxisData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// AxisParameters element
-    #[serde(rename = "AxisParameters", default)]
+    #[serde(rename = "AxisParameters", default, skip_serializing_if = "Option::is_none")]
     pub axis_parameters: Option<Axis>,
 }
 
@@ -504,19 +507,19 @@ pub struct AlarmData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// AlarmAnalogParameters element
-    #[serde(rename = "AlarmAnalogParameters", default)]
+    #[serde(rename = "AlarmAnalogParameters", default, skip_serializing_if = "Option::is_none")]
     pub alarm_analog_parameters: Option<AlarmAnalog>,
     /// AlarmDigitalParameters element
-    #[serde(rename = "AlarmDigitalParameters", default)]
+    #[serde(rename = "AlarmDigitalParameters", default, skip_serializing_if = "Option::is_none")]
     pub alarm_digital_parameters: Option<AlarmDigital>,
     /// AlarmConfig element
-    #[serde(rename = "AlarmConfig", default)]
+    #[serde(rename = "AlarmConfig", default, skip_serializing_if = "Option::is_none")]
     pub alarm_config: Option<AlarmConfig>,
 }
 
@@ -527,13 +530,13 @@ pub struct HMIBCData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// HMIBCParameters element
-    #[serde(rename = "HMIBCParameters", default)]
+    #[serde(rename = "HMIBCParameters", default, skip_serializing_if = "Option::is_none")]
     pub hmibcparameters: Option<HMIBC>,
 }
 
@@ -544,13 +547,13 @@ pub struct BEOData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// BEOParameters element
-    #[serde(rename = "BEOParameters", default)]
+    #[serde(rename = "BEOParameters", default, skip_serializing_if = "Option::is_none")]
     pub beoparameters: Option<BEO>,
 }
 
@@ -561,13 +564,13 @@ pub struct EEOData {
     #[serde(rename = "@Format", default)]
     pub format: String,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// EEOParameters element
-    #[serde(rename = "EEOParameters", default)]
+    #[serde(rename = "EEOParameters", default, skip_serializing_if = "Option::is_none")]
     pub eeoparameters: Option<EEO>,
 }
 

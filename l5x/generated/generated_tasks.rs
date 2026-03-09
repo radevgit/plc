@@ -8,19 +8,19 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct TaskCollection {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Task element
-    #[serde(rename = "Task", default)]
+    #[serde(rename = "Task", default, skip_serializing_if = "Vec::is_empty")]
     pub task: Vec<Task>,
 }
 
@@ -31,64 +31,64 @@ pub struct Task {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// ParentUId attribute
-    #[serde(rename = "@ParentUId", default)]
+    #[serde(rename = "@ParentUId", default, skip_serializing_if = "Option::is_none")]
     pub parent_uid: Option<String>,
     /// Type attribute
     #[serde(rename = "@Type", default)]
     pub r#type: String,
     /// Watchdog attribute
-    #[serde(rename = "@Watchdog", default)]
+    #[serde(rename = "@Watchdog", default, skip_serializing_if = "Option::is_none")]
     pub watchdog: Option<String>,
     /// Priority attribute
-    #[serde(rename = "@Priority", default)]
+    #[serde(rename = "@Priority", default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
     /// Rate attribute
-    #[serde(rename = "@Rate", default)]
+    #[serde(rename = "@Rate", default, skip_serializing_if = "Option::is_none")]
     pub rate: Option<String>,
     /// DisableUpdateOutputs attribute
-    #[serde(rename = "@DisableUpdateOutputs", default)]
+    #[serde(rename = "@DisableUpdateOutputs", default, skip_serializing_if = "Option::is_none")]
     pub disable_update_outputs: Option<String>,
     /// InhibitTask attribute
-    #[serde(rename = "@InhibitTask", default)]
+    #[serde(rename = "@InhibitTask", default, skip_serializing_if = "Option::is_none")]
     pub inhibit_task: Option<String>,
     /// Verified attribute
-    #[serde(rename = "@Verified", default)]
+    #[serde(rename = "@Verified", default, skip_serializing_if = "Option::is_none")]
     pub verified: Option<String>,
     /// LastScanTime attribute
-    #[serde(rename = "@LastScanTime", default)]
+    #[serde(rename = "@LastScanTime", default, skip_serializing_if = "Option::is_none")]
     pub last_scan_time: Option<String>,
     /// MaxScanTime attribute
-    #[serde(rename = "@MaxScanTime", default)]
+    #[serde(rename = "@MaxScanTime", default, skip_serializing_if = "Option::is_none")]
     pub max_scan_time: Option<String>,
     /// MaxInterval attribute
-    #[serde(rename = "@MaxInterval", default)]
+    #[serde(rename = "@MaxInterval", default, skip_serializing_if = "Option::is_none")]
     pub max_interval: Option<String>,
     /// MinInterval attribute
-    #[serde(rename = "@MinInterval", default)]
+    #[serde(rename = "@MinInterval", default, skip_serializing_if = "Option::is_none")]
     pub min_interval: Option<String>,
     /// StartTime attribute
-    #[serde(rename = "@StartTime", default)]
+    #[serde(rename = "@StartTime", default, skip_serializing_if = "Option::is_none")]
     pub start_time: Option<String>,
     /// Class attribute
-    #[serde(rename = "@Class", default)]
+    #[serde(rename = "@Class", default, skip_serializing_if = "Option::is_none")]
     pub class: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Description element
-    #[serde(rename = "Description", default)]
+    #[serde(rename = "Description", default, skip_serializing_if = "Option::is_none")]
     pub description: Option<Description>,
     /// EventInfo element
-    #[serde(rename = "EventInfo", default)]
+    #[serde(rename = "EventInfo", default, skip_serializing_if = "Option::is_none")]
     pub event_info: Option<TaskEventInfo>,
     /// ScheduledPrograms element
-    #[serde(rename = "ScheduledPrograms", default)]
+    #[serde(rename = "ScheduledPrograms", default, skip_serializing_if = "Option::is_none")]
     pub scheduled_programs: Option<ScheduledProgramCollection>,
 }
 
@@ -96,19 +96,19 @@ pub struct Task {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct TaskEventInfo {
     /// EventTrigger attribute
-    #[serde(rename = "@EventTrigger", default)]
+    #[serde(rename = "@EventTrigger", default, skip_serializing_if = "Option::is_none")]
     pub event_trigger: Option<String>,
     /// EventTag attribute
-    #[serde(rename = "@EventTag", default)]
+    #[serde(rename = "@EventTag", default, skip_serializing_if = "Option::is_none")]
     pub event_tag: Option<String>,
     /// EnableTimeout attribute
-    #[serde(rename = "@EnableTimeout", default)]
+    #[serde(rename = "@EnableTimeout", default, skip_serializing_if = "Option::is_none")]
     pub enable_timeout: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 
@@ -116,13 +116,13 @@ pub struct TaskEventInfo {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct ScheduledProgramCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// ScheduledProgram element
-    #[serde(rename = "ScheduledProgram", default)]
+    #[serde(rename = "ScheduledProgram", default, skip_serializing_if = "Vec::is_empty")]
     pub scheduled_program: Vec<ScheduledProgram>,
 }
 
@@ -133,13 +133,13 @@ pub struct ScheduledProgram {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 

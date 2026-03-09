@@ -8,16 +8,16 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct DataArrayElement {
     /// Index attribute
-    #[serde(rename = "@Index", default)]
+    #[serde(rename = "@Index", default, skip_serializing_if = "Option::is_none")]
     pub index: Option<String>,
     /// Value attribute
-    #[serde(rename = "@Value", default)]
+    #[serde(rename = "@Value", default, skip_serializing_if = "Option::is_none")]
     pub value: Option<String>,
     /// ForceValue attribute
-    #[serde(rename = "@ForceValue", default)]
+    #[serde(rename = "@ForceValue", default, skip_serializing_if = "Option::is_none")]
     pub force_value: Option<String>,
     /// Structure element
-    #[serde(rename = "Structure", default)]
+    #[serde(rename = "Structure", default, skip_serializing_if = "Vec::is_empty")]
     pub structure: Vec<Box<DataStructure>>,
 }
 

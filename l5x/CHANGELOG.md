@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.0 (2026-03-09)
+- l5x serialization
+
 ## 0.5.0 (2025-12-09)
 - fixed security module
 

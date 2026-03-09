@@ -1,6 +1,6 @@
 [package]
 name = "l5x"
-version = "0.5.1"
+version = "0.6.0"
 edition = "2021"
 description = "Parser for Rockwell Automation L5X files (Studio 5000 Logix Designer)"
 license = "MIT"

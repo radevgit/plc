@@ -8,13 +8,13 @@ use super::*;
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct PortCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Port element
-    #[serde(rename = "Port", default)]
+    #[serde(rename = "Port", default, skip_serializing_if = "Vec::is_empty")]
     pub port: Vec<Port>,
 }
 
@@ -25,49 +25,49 @@ pub struct Port {
     #[serde(rename = "@Id", default)]
     pub id: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Address attribute
-    #[serde(rename = "@Address", default)]
+    #[serde(rename = "@Address", default, skip_serializing_if = "Option::is_none")]
     pub address: Option<String>,
     /// AddressB attribute
-    #[serde(rename = "@AddressB", default)]
+    #[serde(rename = "@AddressB", default, skip_serializing_if = "Option::is_none")]
     pub address_b: Option<String>,
     /// RcpGatewayAddress1 attribute
-    #[serde(rename = "@RcpGatewayAddress1", default)]
+    #[serde(rename = "@RcpGatewayAddress1", default, skip_serializing_if = "Option::is_none")]
     pub rcp_gateway_address1: Option<String>,
     /// RcpGatewayAddress2 attribute
-    #[serde(rename = "@RcpGatewayAddress2", default)]
+    #[serde(rename = "@RcpGatewayAddress2", default, skip_serializing_if = "Option::is_none")]
     pub rcp_gateway_address2: Option<String>,
     /// Type attribute
-    #[serde(rename = "@Type", default)]
+    #[serde(rename = "@Type", default, skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
     /// Upstream attribute
-    #[serde(rename = "@Upstream", default)]
+    #[serde(rename = "@Upstream", default, skip_serializing_if = "Option::is_none")]
     pub upstream: Option<String>,
     /// ConnectorOffset attribute
-    #[serde(rename = "@ConnectorOffset", default)]
+    #[serde(rename = "@ConnectorOffset", default, skip_serializing_if = "Option::is_none")]
     pub connector_offset: Option<String>,
     /// Width attribute
-    #[serde(rename = "@Width", default)]
+    #[serde(rename = "@Width", default, skip_serializing_if = "Option::is_none")]
     pub width: Option<String>,
     /// NATActualAddress attribute
-    #[serde(rename = "@NATActualAddress", default)]
+    #[serde(rename = "@NATActualAddress", default, skip_serializing_if = "Option::is_none")]
     pub natactual_address: Option<String>,
     /// Validation attribute
-    #[serde(rename = "@Validation", default)]
+    #[serde(rename = "@Validation", default, skip_serializing_if = "Option::is_none")]
     pub validation: Option<String>,
     /// SafetyNetwork attribute
-    #[serde(rename = "@SafetyNetwork", default)]
+    #[serde(rename = "@SafetyNetwork", default, skip_serializing_if = "Option::is_none")]
     pub safety_network: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Bus element
-    #[serde(rename = "Bus", default)]
+    #[serde(rename = "Bus", default, skip_serializing_if = "Option::is_none")]
     pub bus: Option<ABus>,
 }
 
@@ -75,19 +75,19 @@ pub struct Port {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct MapConnectionCollection {
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// Connection element
-    #[serde(rename = "Connection", default)]
+    #[serde(rename = "Connection", default, skip_serializing_if = "Vec::is_empty")]
     pub connection: Vec<MapConnection>,
     /// RackConnection element
-    #[serde(rename = "RackConnection", default)]
+    #[serde(rename = "RackConnection", default, skip_serializing_if = "Option::is_none")]
     pub rack_connection: Option<RackConnection>,
 }
 
@@ -98,148 +98,148 @@ pub struct MapConnection {
     #[serde(rename = "@Name", default)]
     pub name: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// RPI attribute
     #[serde(rename = "@RPI", default)]
     pub rpi: String,
     /// Type attribute
-    #[serde(rename = "@Type", default)]
+    #[serde(rename = "@Type", default, skip_serializing_if = "Option::is_none")]
     pub r#type: Option<String>,
     /// InputTagUId attribute
-    #[serde(rename = "@InputTagUId", default)]
+    #[serde(rename = "@InputTagUId", default, skip_serializing_if = "Option::is_none")]
     pub input_tag_uid: Option<String>,
     /// OutputTagUId attribute
-    #[serde(rename = "@OutputTagUId", default)]
+    #[serde(rename = "@OutputTagUId", default, skip_serializing_if = "Option::is_none")]
     pub output_tag_uid: Option<String>,
     /// InputCxnPoint attribute
-    #[serde(rename = "@InputCxnPoint", default)]
+    #[serde(rename = "@InputCxnPoint", default, skip_serializing_if = "Option::is_none")]
     pub input_cxn_point: Option<String>,
     /// OutputCxnPoint attribute
-    #[serde(rename = "@OutputCxnPoint", default)]
+    #[serde(rename = "@OutputCxnPoint", default, skip_serializing_if = "Option::is_none")]
     pub output_cxn_point: Option<String>,
     /// InputSize attribute
-    #[serde(rename = "@InputSize", default)]
+    #[serde(rename = "@InputSize", default, skip_serializing_if = "Option::is_none")]
     pub input_size: Option<String>,
     /// OutputSize attribute
-    #[serde(rename = "@OutputSize", default)]
+    #[serde(rename = "@OutputSize", default, skip_serializing_if = "Option::is_none")]
     pub output_size: Option<String>,
     /// EventID attribute
-    #[serde(rename = "@EventID", default)]
+    #[serde(rename = "@EventID", default, skip_serializing_if = "Option::is_none")]
     pub event_id: Option<String>,
     /// ProgrammaticallySendEventTrigger attribute
-    #[serde(rename = "@ProgrammaticallySendEventTrigger", default)]
+    #[serde(rename = "@ProgrammaticallySendEventTrigger", default, skip_serializing_if = "Option::is_none")]
     pub programmatically_send_event_trigger: Option<String>,
     /// TimeoutMultiplier attribute
-    #[serde(rename = "@TimeoutMultiplier", default)]
+    #[serde(rename = "@TimeoutMultiplier", default, skip_serializing_if = "Option::is_none")]
     pub timeout_multiplier: Option<String>,
     /// NetworkDelayMultiplier attribute
-    #[serde(rename = "@NetworkDelayMultiplier", default)]
+    #[serde(rename = "@NetworkDelayMultiplier", default, skip_serializing_if = "Option::is_none")]
     pub network_delay_multiplier: Option<String>,
     /// ReactionTimeLimit attribute
-    #[serde(rename = "@ReactionTimeLimit", default)]
+    #[serde(rename = "@ReactionTimeLimit", default, skip_serializing_if = "Option::is_none")]
     pub reaction_time_limit: Option<String>,
     /// MaxObservedNetworkDelay attribute
-    #[serde(rename = "@MaxObservedNetworkDelay", default)]
+    #[serde(rename = "@MaxObservedNetworkDelay", default, skip_serializing_if = "Option::is_none")]
     pub max_observed_network_delay: Option<String>,
     /// ControlNetScheduled attribute
-    #[serde(rename = "@ControlNetScheduled", default)]
+    #[serde(rename = "@ControlNetScheduled", default, skip_serializing_if = "Option::is_none")]
     pub control_net_scheduled: Option<String>,
     /// Unicast attribute
-    #[serde(rename = "@Unicast", default)]
+    #[serde(rename = "@Unicast", default, skip_serializing_if = "Option::is_none")]
     pub unicast: Option<String>,
     /// OpenOrder attribute
-    #[serde(rename = "@OpenOrder", default)]
+    #[serde(rename = "@OpenOrder", default, skip_serializing_if = "Option::is_none")]
     pub open_order: Option<String>,
     /// InputRealTimeFormat attribute
-    #[serde(rename = "@InputRealTimeFormat", default)]
+    #[serde(rename = "@InputRealTimeFormat", default, skip_serializing_if = "Option::is_none")]
     pub input_real_time_format: Option<String>,
     /// OutputRealTimeFormat attribute
-    #[serde(rename = "@OutputRealTimeFormat", default)]
+    #[serde(rename = "@OutputRealTimeFormat", default, skip_serializing_if = "Option::is_none")]
     pub output_real_time_format: Option<String>,
     /// ConnMultiplier attribute
-    #[serde(rename = "@ConnMultiplier", default)]
+    #[serde(rename = "@ConnMultiplier", default, skip_serializing_if = "Option::is_none")]
     pub conn_multiplier: Option<String>,
     /// OutputSizeVariable attribute
-    #[serde(rename = "@OutputSizeVariable", default)]
+    #[serde(rename = "@OutputSizeVariable", default, skip_serializing_if = "Option::is_none")]
     pub output_size_variable: Option<String>,
     /// InputSizeVariable attribute
-    #[serde(rename = "@InputSizeVariable", default)]
+    #[serde(rename = "@InputSizeVariable", default, skip_serializing_if = "Option::is_none")]
     pub input_size_variable: Option<String>,
     /// OutputPriority attribute
-    #[serde(rename = "@OutputPriority", default)]
+    #[serde(rename = "@OutputPriority", default, skip_serializing_if = "Option::is_none")]
     pub output_priority: Option<String>,
     /// Priority attribute
-    #[serde(rename = "@Priority", default)]
+    #[serde(rename = "@Priority", default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
     /// OutputConnectionType attribute
-    #[serde(rename = "@OutputConnectionType", default)]
+    #[serde(rename = "@OutputConnectionType", default, skip_serializing_if = "Option::is_none")]
     pub output_connection_type: Option<String>,
     /// InputConnectionType attribute
-    #[serde(rename = "@InputConnectionType", default)]
+    #[serde(rename = "@InputConnectionType", default, skip_serializing_if = "Option::is_none")]
     pub input_connection_type: Option<String>,
     /// OutputRedundantOwner attribute
-    #[serde(rename = "@OutputRedundantOwner", default)]
+    #[serde(rename = "@OutputRedundantOwner", default, skip_serializing_if = "Option::is_none")]
     pub output_redundant_owner: Option<String>,
     /// OutputRPI attribute
-    #[serde(rename = "@OutputRPI", default)]
+    #[serde(rename = "@OutputRPI", default, skip_serializing_if = "Option::is_none")]
     pub output_rpi: Option<String>,
     /// TransportClass attribute
-    #[serde(rename = "@TransportClass", default)]
+    #[serde(rename = "@TransportClass", default, skip_serializing_if = "Option::is_none")]
     pub transport_class: Option<String>,
     /// InputProductionTrigger attribute
-    #[serde(rename = "@InputProductionTrigger", default)]
+    #[serde(rename = "@InputProductionTrigger", default, skip_serializing_if = "Option::is_none")]
     pub input_production_trigger: Option<String>,
     /// Direction attribute
-    #[serde(rename = "@Direction", default)]
+    #[serde(rename = "@Direction", default, skip_serializing_if = "Option::is_none")]
     pub direction: Option<String>,
     /// ConnectionPath attribute
-    #[serde(rename = "@ConnectionPath", default)]
+    #[serde(rename = "@ConnectionPath", default, skip_serializing_if = "Option::is_none")]
     pub connection_path: Option<String>,
     /// IncludeDataSegment attribute
-    #[serde(rename = "@IncludeDataSegment", default)]
+    #[serde(rename = "@IncludeDataSegment", default, skip_serializing_if = "Option::is_none")]
     pub include_data_segment: Option<String>,
     /// GenerateFaultMember attribute
-    #[serde(rename = "@GenerateFaultMember", default)]
+    #[serde(rename = "@GenerateFaultMember", default, skip_serializing_if = "Option::is_none")]
     pub generate_fault_member: Option<String>,
     /// InputTagSuffix attribute
-    #[serde(rename = "@InputTagSuffix", default)]
+    #[serde(rename = "@InputTagSuffix", default, skip_serializing_if = "Option::is_none")]
     pub input_tag_suffix: Option<String>,
     /// OutputTagSuffix attribute
-    #[serde(rename = "@OutputTagSuffix", default)]
+    #[serde(rename = "@OutputTagSuffix", default, skip_serializing_if = "Option::is_none")]
     pub output_tag_suffix: Option<String>,
     /// DisplayName attribute
-    #[serde(rename = "@DisplayName", default)]
+    #[serde(rename = "@DisplayName", default, skip_serializing_if = "Option::is_none")]
     pub display_name: Option<String>,
     /// MaxConsumerNumber attribute
-    #[serde(rename = "@MaxConsumerNumber", default)]
+    #[serde(rename = "@MaxConsumerNumber", default, skip_serializing_if = "Option::is_none")]
     pub max_consumer_number: Option<String>,
     /// ExcludeFromAggregation attribute
-    #[serde(rename = "@ExcludeFromAggregation", default)]
+    #[serde(rename = "@ExcludeFromAggregation", default, skip_serializing_if = "Option::is_none")]
     pub exclude_from_aggregation: Option<String>,
     /// IsConcurrent attribute
-    #[serde(rename = "@IsConcurrent", default)]
+    #[serde(rename = "@IsConcurrent", default, skip_serializing_if = "Option::is_none")]
     pub is_concurrent: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// InputTag element
-    #[serde(rename = "InputTag", default)]
+    #[serde(rename = "InputTag", default, skip_serializing_if = "Option::is_none")]
     pub input_tag: Option<InputTag>,
     /// InputData element
-    #[serde(rename = "InputData", default)]
+    #[serde(rename = "InputData", default, skip_serializing_if = "Option::is_none")]
     pub input_data: Option<InputData>,
     /// OutputTag element
-    #[serde(rename = "OutputTag", default)]
+    #[serde(rename = "OutputTag", default, skip_serializing_if = "Option::is_none")]
     pub output_tag: Option<OutputTag>,
     /// OutputData element
-    #[serde(rename = "OutputData", default)]
+    #[serde(rename = "OutputData", default, skip_serializing_if = "Option::is_none")]
     pub output_data: Option<OutputData>,
     /// InputImageInit element
-    #[serde(rename = "InputImageInit", default)]
+    #[serde(rename = "InputImageInit", default, skip_serializing_if = "Option::is_none")]
     pub input_image_init: Option<InputImageInit>,
 }
 
@@ -247,16 +247,16 @@ pub struct MapConnection {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct RackConnection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// InAliasTag element
-    #[serde(rename = "InAliasTag", default)]
+    #[serde(rename = "InAliasTag", default, skip_serializing_if = "Option::is_none")]
     pub in_alias_tag: Option<InAliasTag>,
     /// OutAliasTag element
-    #[serde(rename = "OutAliasTag", default)]
+    #[serde(rename = "OutAliasTag", default, skip_serializing_if = "Option::is_none")]
     pub out_alias_tag: Option<OutAliasTag>,
 }
 
@@ -264,13 +264,13 @@ pub struct RackConnection {
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 pub struct ParameterConnectionCollection {
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
     /// ParameterConnection element
-    #[serde(rename = "ParameterConnection", default)]
+    #[serde(rename = "ParameterConnection", default, skip_serializing_if = "Vec::is_empty")]
     pub parameter_connection: Vec<ParameterConnection>,
 }
 
@@ -284,13 +284,13 @@ pub struct ParameterConnection {
     #[serde(rename = "@EndPoint2", default)]
     pub end_point2: String,
     /// UId attribute
-    #[serde(rename = "@UId", default)]
+    #[serde(rename = "@UId", default, skip_serializing_if = "Option::is_none")]
     pub uid: Option<String>,
     /// Use attribute
-    #[serde(rename = "@Use", default)]
+    #[serde(rename = "@Use", default, skip_serializing_if = "Option::is_none")]
     pub r#use: Option<String>,
     /// CustomProperties element
-    #[serde(rename = "CustomProperties", default)]
+    #[serde(rename = "CustomProperties", default, skip_serializing_if = "Option::is_none")]
     pub custom_properties: Option<CustomPropertiesCollection>,
 }
 
