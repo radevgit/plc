@@ -26,9 +26,9 @@ pub struct AddData_data_Inline {
     /// Text content
     #[serde(rename = "$text", default)]
     pub text: Option<String>,
-    /// Arbitrary child elements (xs:any) - captured as text content
-    #[serde(skip)]
-    pub children: Vec<AnyElement>,
+    /// Arbitrary child elements (xs:any)
+    #[serde(flatten)]
+    pub children: std::collections::HashMap<String, serde_json::Value>,
 }
 
 /// addDataInfo element

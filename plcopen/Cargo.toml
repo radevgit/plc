@@ -18,3 +18,4 @@ quick-xml = { version = "0.37", features = ["serialize", "overlapped-lists"] }
 serde = { version = "1.0", features = ["derive"] }
 iec61131 = { path = "../iec61131", version = "0.7" }
 thiserror = "1.0"
+serde_json = "1.0" 
